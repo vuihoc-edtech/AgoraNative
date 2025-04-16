@@ -1,0 +1,19 @@
+{
+  "images" : [
+    {
+      "filename" : "clean.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "clean 1.pdf",
+      "idiom" : "iphone"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
+  }
+}

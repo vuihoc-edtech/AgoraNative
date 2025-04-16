@@ -11,7 +11,25 @@ class MethodChannelAgoraNative extends AgoraNativePlatform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version =
+        await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
+  }
+
+  @override
+  Future<void> joinClassRoom(String roomUUID) async {
+    await methodChannel.invokeMethod("joinClassRoom", roomUUID);
+  }
+
+  @override
+  Future<bool> saveLoginInfo(Map<String, dynamic> user) async {
+    final res = await methodChannel.invokeMethod<bool>("saveLoginInfo", user);
+    return res ?? false;
+  }
+
+  @override
+  Future<String> getGlobalUUID() async {
+    final res = await methodChannel.invokeMethod<String>("getGlobalUUID");
+    return res ?? '';
   }
 }

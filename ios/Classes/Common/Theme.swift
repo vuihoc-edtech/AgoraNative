@@ -136,7 +136,7 @@ class Theme {
                 }
                 return .default
             } catch {
-                globalLogger.error("get userPreferredStyle, \(error)")
+                print("get userPreferredStyle, \(error)")
                 return .default
             }
         }
@@ -176,7 +176,7 @@ class Theme {
             let data = try encoder.encode(["style": newValue])
             UserDefaults.standard.setValue(data, forKey: "userPreferredStyle")
         } catch {
-            globalLogger.error("set userPreferredStyle, \(error)")
+            print("set userPreferredStyle, \(error)")
         }
     }
 

@@ -22,7 +22,7 @@ extension Rtc: FastAudioMixerDelegate {
     func startAudioMixing(audioBridge: WhiteAudioMixerBridge, filePath: String, loopback: Bool, replace _: Bool, cycle: Int) {
         currentAudioBridge = audioBridge
         let errorCode = Int(agoraKit.startAudioMixing(filePath, loopback: loopback, cycle: cycle, startPos: 0))
-        globalLogger.info("mixing start code: \(errorCode)")
+        print("mixing start code: \(errorCode)")
         if errorCode != agoraSuccessStateCode {
             audioBridge.setMediaState(agoraPlayErrorStateCode, errorCode: errorCode)
         }
@@ -30,7 +30,7 @@ extension Rtc: FastAudioMixerDelegate {
 
     func stopAudioMixing(audioBridge: WhiteAudioMixerBridge) {
         let errorCode = Int(agoraKit.stopAudioMixing())
-        globalLogger.info("mixing stop code: \(errorCode)")
+        print("mixing stop code: \(errorCode)")
         if errorCode != agoraSuccessStateCode {
             audioBridge.setMediaState(agoraPlaceholderStateCode, errorCode: errorCode)
         }
@@ -38,7 +38,7 @@ extension Rtc: FastAudioMixerDelegate {
 
     func pauseAudioMixing(audioBridge: WhiteAudioMixerBridge) {
         let errorCode = Int(agoraKit.pauseAudioMixing())
-        globalLogger.info("mixing pause code: \(errorCode)")
+        print("mixing pause code: \(errorCode)")
         if errorCode != agoraSuccessStateCode {
             audioBridge.setMediaState(agoraPlaceholderStateCode, errorCode: errorCode)
         }
@@ -46,7 +46,7 @@ extension Rtc: FastAudioMixerDelegate {
 
     func resumeAudioMixing(audioBridge: WhiteAudioMixerBridge) {
         let errorCode = Int(agoraKit.resumeAudioMixing())
-        globalLogger.info("mixing resume code: \(errorCode)")
+        print("mixing resume code: \(errorCode)")
         if errorCode != agoraSuccessStateCode {
             audioBridge.setMediaState(agoraPlaceholderStateCode, errorCode: errorCode)
         }
@@ -54,7 +54,7 @@ extension Rtc: FastAudioMixerDelegate {
 
     func setAudioMixingPosition(audioBridge: WhiteAudioMixerBridge, _ position: Int) {
         let errorCode = Int(agoraKit.setAudioMixingPosition(position))
-        globalLogger.info("mixing set position: \(position), code: \(errorCode)")
+        print("mixing set position: \(position), code: \(errorCode)")
         if errorCode != agoraSuccessStateCode {
             audioBridge.setMediaState(agoraPlaceholderStateCode, errorCode: errorCode)
         }
@@ -73,7 +73,7 @@ extension Rtc {
     }
 
     func rtcEngine(_: AgoraRtcEngineKit, audioMixingStateChanged state: AgoraAudioMixingStateType, reasonCode: AgoraAudioMixingReasonCode) {
-        globalLogger.info("mixing rtc state update state: \(state.rawValue), errorCode: \(reasonCode.rawValue) ")
+        print("mixing rtc state update state: \(state.rawValue), errorCode: \(reasonCode.rawValue) ")
         currentAudioBridge?.setMediaState(state.rawValue, errorCode: reasonCode.rawValue)
     }
 }

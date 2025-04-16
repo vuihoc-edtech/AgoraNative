@@ -21,14 +21,14 @@ class VideoLayoutStoreImp: NSObject, VideoLayoutStore, SyncedStoreUpdateCallBack
 
     func setup(whiteboardDisplayer displayer: WhiteDisplayer) {
         syncStore = displayer.obtainSyncedStore()
-        globalLogger.info("setup video layout store")
+        print("setup video layout store")
         syncStore.connectStorage(storeName, defaultValue: [:]) { [weak self] _, error in
             guard let self else { return }
             if let error {
-                globalLogger.info("connect store \(storeName) fail, \(error.localizedDescription)")
+                print("connect store \(storeName) fail, \(error.localizedDescription)")
                 self.resultPublisher.onError(error)
             } else {
-                globalLogger.info("connect store \(storeName) success")
+                print("connect store \(storeName) success")
                 self.getStorageValue()
             }
         }

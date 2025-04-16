@@ -34,7 +34,7 @@ enum ClassroomFactory {
         let userName = AuthStore.shared.user?.name ?? ""
 
         let mixerDelegate: FastAudioMixerDelegate? = (PerferrenceManager.shared.preferences[.audioMixing] ?? false) ? rtc : nil
-        globalLogger.info("set audio mixer \(mixerDelegate != nil)")
+        print("set audio mixer \(mixerDelegate != nil)")
         fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
                                                       roomUUID: playInfo.whiteboardRoomUUID,
                                                       roomToken: playInfo.whiteboardRoomToken,
@@ -63,12 +63,14 @@ enum ClassroomFactory {
         fastRoomConfiguration.whiteSdkConfiguration.log = true
         fastRoomConfiguration.whiteSdkConfiguration.loggerOptions = ["printLevelMask": WhiteSDKLoggerOptionLevelKey.debug.rawValue]
         fastRoomConfiguration.whiteRoomConfig.isWritable = basicInfo.roomType.whiteboardAlwaysWritable ? true : isOwner
-        if let customBundlePath = Bundle.main.path(forResource: "whiteboard_rebuild", ofType: "bundle"),
-           let customBundle = Bundle(path: customBundlePath),
-           let indexPath = customBundle.path(forResource: "index", ofType: "html")
-        {
-            fastRoomConfiguration.customWhiteboardUrl = URL(fileURLWithPath: indexPath).absoluteString
-        }
+//        if let customBundlePath = AgoraNativePlugin.resourceBundle.path(forResource: "whiteboard_rebuild", ofType: "bundle"),
+//           let customBundle = Bundle(path: customBundlePath),
+//           let indexPath = customBundle.path(forResource: "index", ofType: "html")
+//        {
+//            fastRoomConfiguration.customWhiteboardUrl = URL(fileURLWithPath: indexPath).absoluteString
+//        }
+        //TODO: This link is whiteboard_rebuild with apps
+        fastRoomConfiguration.customWhiteboardUrl = "https://vuihoc-edtech.github.io/white_board_with_apps/"
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
 
@@ -173,7 +175,7 @@ enum ClassroomFactory {
                                                  ownerUUID: playInfo.ownerUUID,
                                                  beginTime: basicInfo.beginTime)
         alertProvider.root = controller
-        globalLogger.info("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
+        print("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
         return controller
     }
 }

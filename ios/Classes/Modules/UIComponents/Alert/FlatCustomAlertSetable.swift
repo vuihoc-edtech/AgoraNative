@@ -37,7 +37,7 @@ extension UIButton: FlatCustomAlertSetable {
     }
     
     func _flat_viewContainingController() -> UIViewController? {
-        iq.viewContainingController()
+        AgoraNativePlugin.topViewController()
     }
     
     func _onClickCommonCustomAlert() {

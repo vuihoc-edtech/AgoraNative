@@ -80,7 +80,7 @@ class ClassRoomViewController: UIViewController {
         classroomStatusBar = .init(beginTime: beginTime)
         super.init(nibName: nil, bundle: AgoraNativePlugin.pluginBundle)
         modalPresentationStyle = .fullScreen
-        globalLogger.trace("\(self) init")
+        print("\(self) init")
     }
 
     @available(*, unavailable)
@@ -150,7 +150,7 @@ class ClassRoomViewController: UIViewController {
     }
 
     deinit {
-        globalLogger.trace("\(self) deinit")
+        print("\(self) deinit")
     }
 
     override func viewDidLoad() {
@@ -173,7 +173,7 @@ class ClassRoomViewController: UIViewController {
                     guard let self else { return }
                     self.view.endFlatLoading {
                         if self.viewModel.roomTimeLimit > 0 {
-                            let msg = String(format: NSLocalizedString("FreeRoomTimeLimitTip %@", comment: "free room time limit tips"), self.viewModel.roomTimeLimit.description)
+                            let msg = String(format: NSLocalizedString("FreeRoomTimeLimitTip %@", bundle: AgoraNativePlugin.resourceBundle, comment: "free room time limit tips"), self.viewModel.roomTimeLimit.description)
                             self.toast(msg, timeInterval: 3, offset: .init(x: 0, y: MBProgressMaxOffset), hidePreviouds: false)
                         }
                     }
@@ -208,7 +208,7 @@ class ClassRoomViewController: UIViewController {
             .subscribe(with: self, onNext: { weakSelf, error in
                 func loopToAlert() {
                     if let _ = weakSelf.presentedViewController {
-                        globalLogger.trace("delay room error alert \(error)")
+                        print("delay room error alert \(error)")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             loopToAlert()
                         }
@@ -334,7 +334,7 @@ class ClassRoomViewController: UIViewController {
     func bindTerminate() {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
-                globalLogger.info("device terminate")
+                print("device terminate")
                 weakSelf.stopSubModules(cleanRtc: false) // Clean rtc by system.
             })
             .disposed(by: rx.disposeBag)
@@ -828,7 +828,7 @@ class ClassRoomViewController: UIViewController {
     @objc func onSceneDisconnect(notification: Notification) {
         guard let scene = notification.object as? UIWindowScene else { return }
         if view.window?.windowScene === scene {
-            globalLogger.info("classroom destroy by scene disconnect")
+            print("classroom destroy by scene disconnect")
             stopSubModules(cleanRtc: true)
         }
     }

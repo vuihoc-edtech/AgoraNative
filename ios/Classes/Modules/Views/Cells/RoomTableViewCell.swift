@@ -121,7 +121,7 @@ class RoomTableViewCell: UITableViewCell {
                     make.edges.equalToSuperview()
                 }
                 let minutes = Int(interval / 60)
-                rightStatusLabel.text = String(format: NSLocalizedString("RoomListCountString %d", comment: "Room count down label"), minutes)
+                rightStatusLabel.text = String(format: NSLocalizedString("RoomListCountString %d", bundle: AgoraNativePlugin.resourceBundle, comment: "Room count down label"), minutes)
                 rightStatusLabel.textColor = .color(type: .success)
             } else { // Show button.
                 if isOnSplitView {

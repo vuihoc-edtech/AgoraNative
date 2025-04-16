@@ -29,7 +29,7 @@ class AgoraRtmChannelImp: NSObject, RtmChannelProvider {
 
     deinit {
         sharedAgoraKit.removeDelegate(self)
-        globalLogger.trace("\(self), channelId \(channelId) deinit")
+        print("\(self), channelId \(channelId) deinit")
     }
 
     func sendRawData(_ data: Data) -> RxSwift.Single<Void> {
@@ -80,18 +80,18 @@ class AgoraRtmChannelImp: NSObject, RtmChannelProvider {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
-            globalLogger.info("start get members")
+            print("start get members")
             // TODO: 这里要分页，先不搞了。 这里人多的时候一定会出错。
             sharedAgoraKit.getPresence()?.whoNow(channelName: channelId, channelType: .message, options: nil, completion: { response, error in
                 if let error, error.errorCode != .ok {
                     let strError = "get member error, \(error.errorCode)"
                     observer(.failure(strError))
-                    globalLogger.error("\(strError)")
+                    print("\(strError)")
                     return
                 }
                 guard let response else { return }
                 let memberIds = response.userStateList.map(\.userId)
-                globalLogger.info("success get members \(memberIds)")
+                print("success get members \(memberIds)")
                 observer(.success(memberIds))
             })
             return Disposables.create()
@@ -103,11 +103,11 @@ extension AgoraRtmChannelImp: AgoraRtmClientDelegate {
     func rtmKit(_: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
         guard event.channelName == channelId, let userId = event.publisher else { return }
         if event.type == .remoteJoinChannel {
-            globalLogger.info("memberJoined \(userId)")
+            print("memberJoined \(userId)")
             newMemberPublisher.accept(userId)
         }
         if event.type == .remoteLeaveChannel {
-            globalLogger.info("memberLeft \(userId)")
+            print("memberLeft \(userId)")
             memberLeftPublisher.accept(userId)
         }
     }
@@ -127,7 +127,7 @@ extension AgoraRtmChannelImp: AgoraRtmClientDelegate {
                     rawDataPublish.accept((msgData, userId))
                 }
             } catch {
-                globalLogger.error("transform flat-server msg error, \(error)")
+                print("transform flat-server msg error, \(error)")
             }
             return
         }

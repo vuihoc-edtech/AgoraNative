@@ -17,13 +17,6 @@ let jwtExpireNotificationName: Notification.Name = .init("jwtExpireNotification"
 
 typealias LoginHandler = (Result<User, Error>) -> Void
 
-struct AccountLoginInfo: Codable {
-    var account: AccountType
-    var regionCode: String
-    var inputText: String // Not include country phone code.
-    var pwd: String
-}
-
 class AuthStore {
     private let userDefaultKey = "AuthStore_user"
 
@@ -37,7 +30,7 @@ class AuthStore {
             } catch {
               // Logger may not be ready...
               DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                  globalLogger.error("decode user error, \(error)")
+                  print("decode user error, \(error)")
               }
             }
         }
@@ -49,26 +42,6 @@ class AuthStore {
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: "unsetDefaultProfileSet")
-        }
-    }
-
-    var lastAccountLoginInfo: AccountLoginInfo? {
-        get {
-            guard let data = UserDefaults.standard.data(forKey: "lastAccountLoginInfo"),
-                  let model = try? JSONDecoder().decode(AccountLoginInfo.self, from: data)
-            else { return nil }
-            return model
-        }
-        set {
-            guard let newValue else {
-                UserDefaults.standard.set(nil, forKey: "lastAccountLoginInfo")
-                return
-            }
-            guard let data = try? JSONEncoder().encode(newValue) else {
-                UserDefaults.standard.set(nil, forKey: "lastAccountLoginInfo")
-                return
-            }
-            UserDefaults.standard.set(data, forKey: "lastAccountLoginInfo")
         }
     }
     
@@ -101,7 +74,7 @@ class AuthStore {
             let data = try JSONEncoder().encode(user)
             UserDefaults.standard.setValue(data, forKey: userDefaultKey)
         } catch {
-            globalLogger.error("encode user error \(error)")
+            print("encode user error \(error)")
         }
         self.user = user
 //        if relogin {
@@ -116,7 +89,7 @@ class AuthStore {
             .take(1)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { weakSelf, _ in
-                globalLogger.error("post jwt expire notification")
+                print("post jwt expire notification")
                 ApiProvider.shared.cancelAllTasks()
                 NotificationCenter.default.post(name: jwtExpireNotificationName, object: nil)
             })

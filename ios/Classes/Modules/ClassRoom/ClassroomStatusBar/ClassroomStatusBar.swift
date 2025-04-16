@@ -50,7 +50,7 @@ class ClassroomStatusBar: UIView {
     }
     
     deinit {
-        globalLogger.info("classroomStatusbar deinit")
+        print("classroomStatusbar deinit")
     }
     
     override func willMove(toWindow newWindow: UIWindow?) {
@@ -112,7 +112,7 @@ class ClassroomStatusBar: UIView {
             make.width.greaterThanOrEqualTo(100)
         }
         title.snp.makeConstraints { make in
-            make.left.equalTo(timeCountLabel.snp.right)
+            make.left.equalTo(timeCountLabel.snp.right).offset(15)
             make.centerY.equalToSuperview()
         }
         addLine(direction: .bottom, color: .borderColor)

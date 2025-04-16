@@ -42,11 +42,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
             tabBar.scrollEdgeAppearance = appearance
         }
 
-        let home = makeSubController(fromViewController: HomeViewController(),
-                                     image: UIImage.fromPlugin(named: "side_home")!,
-                                     selectedImage: UIImage.fromPlugin(named: "side_home_filled")!,
-                                     title: localizeStrings("Home"))
-        addChild(home)
         let cloudStorage = makeSubController(fromViewController: CloudStorageViewController(),
                                              image: UIImage.fromPlugin(named: "side_cloud")!,
                                              selectedImage: UIImage.fromPlugin(named: "side_cloud_filled")!,

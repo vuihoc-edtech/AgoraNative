@@ -9,21 +9,6 @@
 import Fastboard
 import UIKit
 
-extension ClassRoomViewController: GlobalKeyboardShortcutRespondable {
-    func escape(_: Any?) {
-        if presentedViewController != nil {
-            dismiss(animated: true)
-            return
-        }
-        if fastboardViewController.roomPermission.value.inputEnable {
-            fastboardViewController.fastRoom.dismissAllSubPanels()
-            // Update appliance to update focus.
-            if let i = fastboardViewController.fastRoom.room?.memberState.currentApplianceName.rawValue {
-                fastboardViewController.fastRoom.updateApplianceIdentifier(i)
-            }
-        }
-    }
-}
 
 extension ClassRoomViewController: ClassroomKeyboardRespondable {
     override var canBecomeFirstResponder: Bool { true }

@@ -158,7 +158,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         raisingHandIds.accept(result.roomState.raiseHandUsers)
         onStageIds.accept(result.onStageUsers.filter(\.value).map(\.key))
         whiteboardIds.accept(result.whiteboardUsers.filter(\.value).map(\.key))
-        globalLogger.info("initialize state from synced store \(result)")
+        print("initialize state from synced store \(result)")
     }
 
     fileprivate func processCommandMessage(data: Data, senderId: String) -> Observable<RtmCommand?> {
@@ -170,7 +170,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 f.dateStyle = .none
                 f.timeStyle = .short
                 let timeStr = f.string(from: expireInfo.expireAt)
-                let msg = String(format: NSLocalizedString("room expire %@ %@", comment: "room expire toast"), expireInfo.roomLevel.localizedString, timeStr)
+                let msg = String(format: NSLocalizedString("room expire %@ %@", bundle: AgoraNativePlugin.resourceBundle, comment: "room expire toast"), expireInfo.roomLevel.localizedString, timeStr)
                 toastNoticePublisher.accept(msg)
             case .newUserEnter(roomUUID: _, userUUID: let userUUID, userInfo: let userInfo):
                 roomUserInfoCache[userUUID] = userInfo
@@ -219,13 +219,13 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             }
             return .just(command)
         } catch {
-            globalLogger.error("process rtm command error \(error)")
+            print("process rtm command error \(error)")
             return .just(nil)
         }
     }
 
     func send(command: ClassroomCommand) -> Single<Void> {
-        globalLogger.info("try send command \(command)")
+        print("try send command \(command)")
         do {
             switch command {
             case let .sendReward(toUserUUID: uuid):
@@ -370,7 +370,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 return rtmProvider.sendP2PMessage(data: msgData, toUUID: ownerUUID)
             }
         } catch {
-            globalLogger.error("classroomStateImp send command \(command)")
+            print("classroomStateImp send command \(command)")
             return .error(error)
         }
     }

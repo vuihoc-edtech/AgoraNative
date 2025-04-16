@@ -54,7 +54,7 @@ extension UIViewController {
                                        completion: (() -> Void)? = nil)
     {
         if let presentedViewController {
-            globalLogger.error("can't present when there is presented \(presentedViewController)")
+            print("can't present when there is presented \(presentedViewController)")
             completion?()
             return
         }

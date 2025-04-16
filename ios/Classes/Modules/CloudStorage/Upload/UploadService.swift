@@ -146,7 +146,7 @@ class UploadService {
                 tracker.accept(.uploadFinish)
             }, onError: { error in
                 if let fileUUID {
-                    globalLogger.error("cancel task by error \(error) \(fileUUID)")
+                    print("cancel task by error \(error) \(fileUUID)")
                     ApiProvider.shared.request(fromApi: CancelUploadRequest(fileUUIDs: [fileUUID]), completionHandler: { _ in })
                 }
             })
@@ -181,7 +181,7 @@ class UploadService {
                         fileURL.stopAccessingSecurityScopedResource()
                     }
                     if let fileUUID {
-                        globalLogger.info("cancel task manual \(fileUUID)")
+                        print("cancel task manual \(fileUUID)")
                         ApiProvider.shared.request(fromApi: CancelUploadRequest(fileUUIDs: [fileUUID]), completionHandler: { _ in })
                     }
                 }

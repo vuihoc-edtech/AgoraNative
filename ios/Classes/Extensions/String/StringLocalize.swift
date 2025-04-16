@@ -10,14 +10,11 @@ import Foundation
 
 func localizeStrings(_ strs: String...) -> String {
     strs.reduce(into: "") { partialResult, str in
-        if LocaleManager.language == .Chinese {
-            return partialResult += NSLocalizedString(str, comment: "")
+        if partialResult.isEmpty {
+            return partialResult += NSLocalizedString(str, bundle: AgoraNativePlugin.resourceBundle, comment: "")
         } else {
-            if partialResult.isEmpty {
-                return partialResult += NSLocalizedString(str, comment: "")
-            } else {
-                return partialResult += (" " + NSLocalizedString(str, comment: ""))
-            }
+            return partialResult += (" " + NSLocalizedString(str, bundle: AgoraNativePlugin.resourceBundle, comment: ""))
         }
+    
     }
 }

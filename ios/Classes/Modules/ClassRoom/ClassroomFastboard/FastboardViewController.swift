@@ -66,7 +66,7 @@ class FastboardViewController: UIViewController {
 
     func updateRoomPermission(_ permission: WhiteboardPermission) -> Single<WhiteboardPermission> {
         guard let w = fastRoom.room?.isWritable else { return .just(permission) }
-        globalLogger.info("update whiteboard permission \(permission)")
+        print("update whiteboard permission \(permission)")
         fastRoom.room?.disableDeviceInputs(!permission.inputEnable)
         if w != permission.writable {
             return .create { [weak self] ob in
@@ -74,7 +74,7 @@ class FastboardViewController: UIViewController {
                     ob(.failure("self not exist"))
                     return Disposables.create()
                 }
-                globalLogger.info("update writable success \(permission.writable)")
+                print("update writable success \(permission.writable)")
                 self.fastRoom.updateWritable(permission.writable) { [weak self] error in
                     if let error {
                         ob(.failure(error))
@@ -112,7 +112,7 @@ class FastboardViewController: UIViewController {
         super.init(nibName: nil, bundle: AgoraNativePlugin.pluginBundle)
         fastRoom.commonDelegate = self
         fastRoom.delegate = self
-        globalLogger.trace("\(self)")
+        print("\(self)")
     }
 
     @available(*, unavailable)
@@ -121,7 +121,7 @@ class FastboardViewController: UIViewController {
     }
 
     deinit {
-        globalLogger.trace("\(self), deinit")
+        print("\(self), deinit")
     }
 
     override func viewDidLoad() {
@@ -332,7 +332,7 @@ extension FastboardViewController: FastRoomDelegate {
     }
 
     func fastboardPhaseDidUpdate(_: FastRoom, phase: FastRoomPhase) {
-        globalLogger.info("phase update \(phase)")
+        print("phase update \(phase)")
         switch phase {
         case .connecting, .reconnecting, .disconnecting, .disconnected:
             isRoomJoined.accept(false)
@@ -439,13 +439,13 @@ extension FastboardViewController: UIGestureRecognizerDelegate {
 extension FastboardViewController: WhiteCommonCallbackDelegate {
     func logger(_ dict: [AnyHashable: Any]) {
         if let str = dict["[WhiteWKConsole]"] as? String {
-            globalLogger.trace("Whiteboard-WKConsole: \(str)")
+            print("Whiteboard-WKConsole: \(str)")
         } else {
             dict.keys.enumerated().map(\.element).forEach { key in
                 if let strKey = key as? String,
                    let info = dict[key] as? String
                 {
-                    globalLogger.trace("Whiteboard-Log: \(strKey): \(info)")
+                    print("Whiteboard-Log: \(strKey): \(info)")
                 }
             }
         }

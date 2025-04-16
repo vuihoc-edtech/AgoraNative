@@ -31,16 +31,16 @@ class AgoraRtm: NSObject, RtmProvider {
             let config = AgoraRtmClientConfig(appId: agoraAppId, userId: rtmUserUUID)
             agoraKit = try AgoraRtmClientKit(config, delegate: self)
         } catch {
-            globalLogger.error("init agorakit error \(error)")
+            print("init agorakit error \(error)")
         }
         agoraGenerator.agoraToken = rtmToken
         agoraGenerator.agoraUserId = rtmUserUUID
-        globalLogger.trace("\(self)")
+        print("\(self)")
     }
 
     deinit {
         agoraKit.removeDelegate(self)
-        globalLogger.trace("\(self) deinit")
+        print("\(self) deinit")
     }
 
     func sendP2PMessageFromArray(_ array: [(data: Data, uuid: String)]) -> Single<Void> {
@@ -53,7 +53,7 @@ class AgoraRtm: NSObject, RtmProvider {
     }
 
     func sendP2PMessage(data: Data, toUUID UUID: String) -> Single<Void> {
-        globalLogger.info("send p2p raw message data, to \(UUID)")
+        print("send p2p raw message data, to \(UUID)")
         switch state.value {
         case .connecting, .idle, .reconnecting: return .just(())
         case .connected:
@@ -67,7 +67,7 @@ class AgoraRtm: NSObject, RtmProvider {
                 self.agoraKit.publish(channelName: UUID, data: data, option: options) { _, error in
                     if let error, error.errorCode != .ok {
                         let errMsg = "send p2p msg error \(error.errorCode.rawValue)"
-                        globalLogger.error("\(errMsg)")
+                        print("\(errMsg)")
                         if error.errorCode == .presenceUserNotExist { // TOOD: 还不知道是不是这个错误。
                             observer(.failure(localizeStrings("UserNotInRoom")))
                         } else {
@@ -105,19 +105,19 @@ class AgoraRtm: NSObject, RtmProvider {
         case .connected, .reconnecting: return .just(())
         case .connecting: return createLoginObserver()
         case .idle:
-            globalLogger.info("start login: \(rtmToken), \(rtmUserId)")
+            print("start login: \(rtmToken), \(rtmUserId)")
             agoraKit.login(rtmToken) { [weak self] response, errorInfo in
                 guard let self else { return }
                 if let errorInfo, errorInfo.errorCode != .ok {
                     let code = errorInfo.errorCode
-                    globalLogger.error("login failed. code \(code)")
+                    print("login failed. code \(code)")
                     self.loginCallbacks.forEach { $0(code) }
                     self.loginCallbacks = []
                     self.state.accept(.idle)
                     return
                 }
                 guard let response else { return } // TODO: 这个 response 来干啥的？？
-                globalLogger.info("login success")
+                print("login success")
                 self.loginCallbacks.forEach { $0(.ok) }
                 self.loginCallbacks = []
                 self.state.accept(.connected)
@@ -152,18 +152,18 @@ class AgoraRtm: NSObject, RtmProvider {
             }
 
             let rtmUserId = self.rtmUserId
-            globalLogger.info("start join channel: \(channelId)")
+            print("start join channel: \(channelId)")
             let options = AgoraRtmSubscribeOptions()
             options.features = [.message, .presence]
             sharedAgoraKit = agoraKit
             agoraKit.subscribe(channelName: channelId, option: options) { response, error in
                 if let error, error.errorCode != .ok {
-                    globalLogger.error("join channel: \(channelId) fail, \(error.errorCode.rawValue)")
+                    print("join channel: \(channelId) fail, \(error.errorCode.rawValue)")
                     observer(.failure("join channel error \(error)"))
                     return
                 }
                 guard let response else { return }
-                globalLogger.info("start join channel: \(channelId) success")
+                print("start join channel: \(channelId) success")
                 let handler = AgoraRtmChannelImp(channelId: channelId, userId: rtmUserId)
                 observer(.success(handler))
             }
@@ -176,7 +176,7 @@ class AgoraRtm: NSObject, RtmProvider {
 
 extension AgoraRtm: AgoraRtmClientDelegate {
     func rtmKit(_: AgoraRtmClientKit, channel _: String, connectionChangedToState state: AgoraRtmClientConnectionState, reason: AgoraRtmClientConnectionChangeReason) {
-        globalLogger.info("state \(state), reason \(reason)")
+        print("state \(state), reason \(reason)")
         switch state {
         case .connected:
             self.state.accept(.connected)
@@ -194,7 +194,7 @@ extension AgoraRtm: AgoraRtmClientDelegate {
             }
         case .disconnected:
             if reason == .changedSameUidLogin {
-                globalLogger.error("remote login")
+                print("remote login")
                 error.accept(.remoteLogin)
             }
         default:
@@ -205,7 +205,7 @@ extension AgoraRtm: AgoraRtmClientDelegate {
     func rtmKit(_: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
         guard event.channelType == .user else { return }
         if let data = event.message.rawData {
-            globalLogger.info("receive p2p message \(data.count) b")
+            print("receive p2p message \(data.count) b")
             p2pMessage.accept((data, event.publisher))
         }
     }

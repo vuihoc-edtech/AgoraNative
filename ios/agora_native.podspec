@@ -15,7 +15,7 @@ A new Flutter Agora project.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.resource_bundles = {
-  'agora_native' => ['Assets/*.xcassets']
+  'agora_native' => ['Assets/*.xcassets', 'Assets/*.json', 'Assets/*.mp3', 'Assets/*.lproj']
   }
   s.dependency 'Flutter'
   s.dependency 'Agora_Chat_iOS', "~> 1.0.6"
@@ -28,13 +28,9 @@ A new Flutter Agora project.
   s.dependency 'RxCocoa', '6.9.0'
   s.dependency 'NSObject+Rx', '5.2.2'
   s.dependency 'RxDataSources', '5.0.0'
-  s.dependency 'AcknowList', '3.3.0'
   s.dependency 'CropViewController', '2.7.4'
-  s.dependency 'Siren', '6.1.3'
-  s.dependency 'IQKeyboardManagerSwift', '8.0.1'
   s.dependency 'Zip', '2.1.2'
   s.dependency 'lottie-ios', '4.5.1'
-  s.dependency 'PhoneNumberKit', '3.7.10'
   s.dependency 'ScreenCorners', '1.0.1'
 
   s.dependency 'SyncPlayer', '0.3.3'
@@ -45,10 +41,7 @@ A new Flutter Agora project.
   s.dependency 'Hero', '1.6.4'
   s.dependency 'SnapKit', '5.7.1'
   s.dependency 'DZNEmptyDataSet', '1.8.1'
-  s.dependency 'Logging', '1.4.0'
-  s.dependency 'SwiftyBeaver', '1.9.5'
-  s.dependency 'AliyunLogProducer/Core'
-  s.dependency 'AliyunLogProducer/Bricks'
+
   s.platform = :ios, '13'
 
   # Flutter.framework does not contain a i386 slice.

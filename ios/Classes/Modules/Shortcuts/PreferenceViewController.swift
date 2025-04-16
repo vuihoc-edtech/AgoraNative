@@ -53,17 +53,17 @@ class PerferrenceManager {
         case .ains:
             NotificationCenter.default.post(name: ainsPreferenceUpdateNotificaton, object: nil, userInfo: ["enable": value])
         }
-        globalLogger.info("update preference \(type), \(value)")
+        print("update preference \(type), \(value)")
         do {
             let newData = try JSONEncoder().encode(preferences)
             UserDefaults.standard.setValue(newData, forKey: Self.key)
         } catch {
-            globalLogger.error("update shortcuts error \(error)")
+            print("update shortcuts error \(error)")
         }
     }
 
     func resetPreferences() {
-        globalLogger.info("reset preferences")
+        print("reset preferences")
         UserDefaults.standard.removeObject(forKey: Self.key)
         preferences = defaultPreferences
 

@@ -22,7 +22,7 @@ struct CommandEncoder {
             return dict
         }
         catch {
-            globalLogger.error("encode \(self) \(error)")
+            print("encode \(self) \(error)")
             return nil
         }
     }

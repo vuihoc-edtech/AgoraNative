@@ -47,7 +47,7 @@ class ClassroomCoordinator: NSObject {
             UserDefaults.standard.setValue(data, forKey: joinRoomHistoryUserDefaultsKey)
             updateJoinRoomHistoryItem()
         } catch {
-            globalLogger.error("joinRoomHistory encode error \(error)")
+            print("joinRoomHistory encode error \(error)")
         }
     }
     
@@ -58,7 +58,7 @@ class ClassroomCoordinator: NSObject {
                 let items = try JSONDecoder().decode([JoinRoomHistoryItem].self, from: data)
                 self.joinRoomHisotryItems = items
             } catch {
-                globalLogger.error("joinRoomHistory decode error \(error)")
+                print("joinRoomHistory decode error \(error)")
             }
         } else {
             self.joinRoomHisotryItems = []
@@ -74,9 +74,6 @@ class ClassroomCoordinator: NSObject {
         currentClassroomUUID = nil
         if let enterClassDate {
             let duration = Date().timeIntervalSince(enterClassDate)
-            if #available(iOS 14.0, *) {
-                RatingManager.requestReviewIfAppropriate(context: .init(enterClassroomDuration: duration))
-            }
             self.enterClassDate = nil
         }
     }
@@ -165,10 +162,10 @@ class ClassroomCoordinator: NSObject {
                 weakSelf.currentClassroomUUID = nil
                 if let flatError = error as? FlatApiError {
                     if flatError == .RoomNotBegin {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", comment: "room not begin alert"), Int(Env().joinEarly / 60))
+                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
                         controller?.showAlertWith(message: errorStr)
                     } else if flatError == .RoomNotBeginAndAddList {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", comment: "room not begin alert"), Int(Env().joinEarly / 60))
+                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
                         controller?.showAlertWith(message: errorStr)
                     } else {
                         controller?.showAlertWith(message: error.localizedDescription)
@@ -244,18 +241,19 @@ class ClassroomCoordinator: NSObject {
                 }
             }, onFailure: { weakSelf, error in
                 weakSelf.currentClassroomUUID = nil
+                let controller = AgoraNativePlugin.topViewController()
                 if let flatError = error as? FlatApiError {
                     if flatError == .RoomNotBegin {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", comment: "room not begin alert"), Int(Env().joinEarly / 60))
-//                        controller?.showAlertWith(message: errorStr)
+                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
+                        controller?.showAlertWith(message: errorStr)
                     } else if flatError == .RoomNotBeginAndAddList {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", comment: "room not begin alert"), Int(Env().joinEarly / 60))
-//                        controller?.showAlertWith(message: errorStr)
+                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
+                        controller?.showAlertWith(message: errorStr)
                     } else {
-//                        controller?.showAlertWith(message: error.localizedDescription)
+                        controller?.showAlertWith(message: error.localizedDescription)
                     }
                 } else {
-//                    controller?.showAlertWith(message: error.localizedDescription)
+                    controller?.showAlertWith(message: error.localizedDescription)
                 }
                 
                 if let flatError = error as? FlatApiError {

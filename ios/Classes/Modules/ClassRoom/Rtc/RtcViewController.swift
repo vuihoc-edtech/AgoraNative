@@ -375,14 +375,14 @@ class RtcViewController: UIViewController {
     }
 
     lazy var rewardPlayer: AVAudioPlayer? = {
-        guard let rewardAudioPath = Bundle.main.url(forResource: "reward", withExtension: "mp3") else { return nil }
+        guard let rewardAudioPath = AgoraNativePlugin.resourceBundle.url(forResource: "reward", withExtension: "mp3") else { return nil }
         do {
             let player = try AVAudioPlayer(contentsOf: rewardAudioPath)
             player.prepareToPlay()
             return player
         }
         catch {
-            globalLogger.error("play reward audio fail \(error)")
+            print("play reward audio fail \(error)")
             return nil
         }
     }()
@@ -390,7 +390,7 @@ class RtcViewController: UIViewController {
     func rewardAnimation(uid: UInt) {
         guard let window = view.window else { return }
         rewardPlayer?.play()
-        let animationView = LottieAnimationView(name: "reward")
+        let animationView = LottieAnimationView(name: "reward", bundle: AgoraNativePlugin.resourceBundle)
         window.addSubview(animationView)
         let windowSize = window.bounds.size
         animationView.center = .init(x: windowSize.width / 2, y: windowSize.height / 2)

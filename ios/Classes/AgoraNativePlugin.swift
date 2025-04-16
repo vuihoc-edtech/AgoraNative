@@ -18,7 +18,6 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
         pluginBundle = Bundle(for: AgoraNativePlugin.self)
         let channel = FlutterMethodChannel(name: "agora_native", binaryMessenger: registrar.messenger())
         let instance = AgoraNativePlugin()
-        bootstrapLogger()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
@@ -55,7 +54,7 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
         let avatar = argument["avatar"] as? String ?? ""
         let userUUID = argument["userUUID"] as? String ?? ""
         let token = argument["token"] as? String ?? ""
-        let user = User(name: "", avatar: "", userUUID: userUUID, token: token, hasPhone: false, hasPassword: false)
+        let user = User(name: name, avatar: avatar, userUUID: userUUID, token: token, hasPhone: false, hasPassword: false)
         AuthStore.shared.user = user
     }
     

@@ -11,7 +11,14 @@ class MethodChannelAgoraNative extends AgoraNativePlatform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version =
+        await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
+  }
+
+  @override
+  void joinClassRoom(String roomId, String userName, int role) {
+    methodChannel.invokeMethod('joinClassRoom',
+        {'role': role, 'roomId': roomId, 'userName': userName});
   }
 }

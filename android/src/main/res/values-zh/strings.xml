@@ -1,0 +1,415 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Flat</string>
+    <string name="toast_in_development">Not Supported Yet</string>
+
+    <!-- common -->
+    <string name="commit">提交</string>
+    <string name="username">用户名</string>
+    <string name="delete">删除</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="agree">同意</string>
+    <string name="refuse">拒绝</string>
+    <string name="end">结束</string>
+    <string name="create">创建</string>
+    <string name="start">开始</string>
+    <string name="enter">加入</string>
+    <string name="update">升级</string>
+    <string name="retry">重试</string>
+    <string name="done">完成</string>
+    <string name="preview">预览</string>
+    <string name="rename">重命名</string>
+    <string name="send">发送</string>
+    <string name="next">下一步</string>
+
+    <string name="account">账号</string>
+    <string name="preferences">首选项</string>
+    <string name="privacy">隐私</string>
+    <string name="more">更多</string>
+    <string name="setting_on">开启</string>
+    <string name="setting_off">关闭</string>
+
+    <!-- time -->
+    <string name="relative_time_mm">%d分</string>
+    <string name="relative_time_hh">%d小时</string>
+    <string name="relative_time_dd">%d天</string>
+    <string name="home_room_info_today_format">今天 %s</string>
+    <string name="home_room_info_yesterday_format">昨天 %s</string>
+    <string name="home_room_info_tomorrow_format">明天 %s</string>
+
+    <!-- title -->
+    <string name="title_home">Home</string>F
+    <string name="title_cloud_storage">云盘</string>
+    <string name="title_cloud_pick">上传</string>
+    <string name="title_cloud_preview">预览</string>
+    <string name="title_user_info">个人信息</string>
+    <string name="title_setting">个人设置</string>
+    <string name="title_my_profile">我的资料</string>
+    <string name="title_room_detail">房间详情</string>
+    <string name="title_room_all">全部房间</string>
+    <string name="title_join_room">加入房间</string>
+    <string name="title_feedback">吐个槽</string>
+    <string name="title_about_us">关于我们</string>
+    <string name="title_language">语言设置</string>
+    <string name="title_dark_mode">深色模式</string>
+    <string name="title_activity_compose_test">ComposeTest</string>
+    <string name="title_country_or_area">国家/地区</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="term_of_service">服务协议</string>
+    <string name="info_gathering">个人信息收集公示</string>
+    <string name="info_third_party">第三方信息数据共享</string>
+    <string name="network_acceleration">网络加速</string>
+    <string name="account_security">账户安全</string>
+    <string name="delete_account">注销账户</string>
+    <string name="stream_data_analysis">音视频数据采集</string>
+
+    <string name="room_type_big_class">大班课</string>
+    <string name="room_type_small_class">小班课</string>
+    <string name="room_type_one_to_one">一对一</string>
+
+    <string name="room_type_desc_big_class">面向大量学生</string>
+    <string name="room_type_desc_small_class">最多16位学生</string>
+    <string name="room_type_desc_one_to_one">面向1位学生</string>
+
+    <string name="create_room">创建房间</string>
+    <string name="room_theme">主题</string>
+    <string name="create_room_type">类型</string>
+    <string name="create_room_input_theme">请输入房间主题</string>
+    <string name="class_room_no_operate_permission">无法操作</string>
+    <string name="room_theme_empty_toast">房间主题不能为空</string>
+
+    <string name="schedule_room">预约房间</string>
+    <string name="quick_start_room">快速开始</string>
+
+    <string name="join_room">加入房间</string>
+    <string name="enter_room">进入房间</string>
+    <string name="room_id">房间号</string>
+    <string name="input_room_id_hint">请输入房间号</string>
+    <string name="room_type">房间类型</string>
+    <string name="nickname">昵称</string>
+    <string name="input_nickname_hint">请输入昵称</string>
+    <string name="join">加入</string>
+    <string name="join_option">加入选项</string>
+    <string name="turn_on_camera">开启摄像头</string>
+    <string name="turn_on_mic">开启麦克风</string>
+    <string name="join_room_default_time_format">%1$s 创建的房间</string>
+    <string name="join_room_toast_empty">房间号不能为空</string>
+    <string name="join_room_record_pmi_title">%1$s 的个人房间</string>
+    <string name="room_not_stared">房间未开始</string>
+
+    <string name="home_room_list">房间列表</string>
+    <string name="home_room_history">历史记录</string>
+    <string name="home_room_state_idle">待开始</string>
+    <string name="home_room_state_started">进行中</string>
+    <string name="home_room_state_paused">已暂停</string>
+    <string name="home_room_state_end">已结束</string>
+    <string name="home_no_room_tip">暂无房间</string>
+    <string name="home_no_history_room_tip">暂无记录</string>
+    <string name="home_room_start_at_min">%1$d 分钟后开始</string>
+
+    <string name="setting_check_update">检查更新</string>
+
+    <!-- login -->
+    <string name="intent_no_browser">链接错误或无浏览器</string>
+    <string name="intent_browser_choose_title">选择浏览器</string>
+    <string name="login_set_auth_uuid_error">设置认证码失败</string>
+    <string name="login_page_label_1">在线互动，让想法同步</string>
+    <string name="login_page_label_2">powered by Agora</string>
+    <string name="login_success_and_jump">登录成功，跳转中…</string>
+    <string name="login_fail">登录失败</string>
+    <string name="login_exit">退出登录</string>
+
+    <string name="login_agreement_message">已阅读并同意 隐私政策 和 服务协议</string>
+    <string name="login_agreement_unchecked_hint">请先同意服务条款</string>
+    <string name="login_agreement_dialog_title">服务协议及隐私保护</string>
+    <string name="login_agreement_dialog_message">为了更好的保证您的合法权益，请你阅读并同意以下协议《Flat 隐私政策》、《Flat 用户协议》</string>
+
+    <string name="login_phone_input_placeholder">请输入手机号</string>
+    <string name="login_phone_invalid_tip">请填写正确手机号</string>
+    <string name="login_email_invalid_tip">请填写正确的邮箱</string>
+    <string name="login_password_invalid_tip">密码至少8位，包含字母和数字</string>
+    <string name="login_code_input_placeholder">请输入验证码</string>
+    <string name="login_code_invalid_tip">请填写正确验证码</string>
+    <string name="login_send_sms_code">发送验证码</string>
+    <string name="login_code_send">验证码已发送</string>
+    <string name="login_others_tip">也可通过以下方式直接登录</string>
+    <string name="login_sign_in_or_up">注册或登录</string>
+    <string name="login_welcome">欢迎使用 Flat</string>
+    <string name="login_welcome_slogan">在线互动，让想法同步</string>
+
+    <string name="login_already_bind_phone">已经绑定过手机号</string>
+    <string name="login_phone_already_bound">该手机已被绑定</string>
+    <string name="login_verification_code_invalid">验证码无效</string>
+    <string name="wechat">微信</string>
+    <string name="github">Github</string>
+    <string name="google">Google</string>
+    <string name="email">邮箱</string>
+    <string name="phone">手机号</string>
+
+    <string name="login_sign_in">登录</string>
+    <string name="login_sign_up">注册</string>
+    <string name="login_use_sms_login">短信登录</string>
+    <string name="login_use_password_login">密码登录</string>
+    <string name="login_forgot_pwd">忘记密码？</string>
+    <string name="login_password_input_hint">请输入密码</string>
+    <string name="login_email_input_hint">请输入邮箱</string>
+    <string name="login_phone_or_email_input_hint">请输入邮箱和手机号</string>
+
+    <!-- bind -->
+    <string name="bind">绑定</string>
+    <string name="unbind">解绑</string>
+    <string name="bind_fail">绑定失败</string>
+    <string name="bind_success">绑定成功</string>
+    <string name="user_avatar">用户头像</string>
+    <string name="bind_info">绑定信息</string>
+
+    <string name="bind_phone">绑定手机号</string>
+    <string name="phone_number">手机号</string>
+    <string name="verification_code">验证码</string>
+
+    <string name="bind_email">绑定邮箱</string>
+
+    <string name="not_bound">未绑定</string>
+    <string name="check_unbind_title">确认解绑</string>
+    <string name="check_unbind_message">解绑账号后将无法继续使用它登录</string>
+    <string name="unbind_limit_message">当前登录方式为唯一方式，无法解绑</string>
+
+    <!-- register -->
+    <string name="register">注册新账号</string>
+    <string name="register_success">注册成功</string>
+    <string name="register_profile_title">设置信息</string>
+    <string name="register_profile_avatar_tip">上传头像(可选)</string>
+    <string name="register_profile_username_tip">请输入昵称(可选)</string>
+
+    <string name="reset_password">重置密码</string>
+    <string name="new_password">新密码</string>
+    <string name="change_password">修改密码</string>
+    <string name="set_password">设置密码</string>
+
+    <string name="old_password_input_hint">请输入旧密码</string>
+    <string name="new_password_input_hint">请输入新密码</string>
+    <string name="new_password_input_hint_again">请再次输入新密码</string>
+    <string name="password_rule_tips">密码至少8位，至少包括字母和数字</string>
+
+    <string name="merge_account">合并账号</string>
+    <string name="merge_account_message">手机号已绑定其他账号，是否将当前新建账号和已有账号合并？合并操作将会清除当前新建账号所有数据。</string>
+
+    <string name="agreement_global_dialog_message">感谢您信任并使用 Flat。\n\n我们将依据《Flat 用户协议》及《Flat 隐私政策》来帮助您了解我们在收集、使用、存储您个人信息的情况以及您享有的相关权利。\n\n在您使用 Flat 时，我们将收集您的设备信息、操作日志及浏览记录等信息，同时为了保证上课的体验，你可以授予 Flat 获取您设备的摄像头权限、麦克风权限等信息。\n\n您可通过阅读完整的《Flat 用户协议》及《Flat 隐私政策》来了解详细信息。</string>
+    <string name="agreement_global_recheck_dialog_message">您需要同意用户协议与隐私政策后才能使 Flat。\n\n如您不同意，很遗憾我们无法为您提供服务。\n\n您可通过阅读完整的《Flat 用户协议》及《Flat 隐私政策》来了解详细信息。</string>
+    <string name="agreement_global_privacy">《Flat 隐私政策》</string>
+    <string name="agreement_global_service">《Flat 用户协议》</string>
+    <string name="agreement_global_agree">同意并继续</string>
+    <string name="agreement_global_disagree">不同意</string>
+    <string name="agreement_global_disagree_and_exit">不同意并退出</string>
+
+    <string name="room_class_start_class_success">开始房间成功</string>
+    <string name="room_class_start_class_fail">开始房间失败</string>
+    <string name="room_class_stop_class_fail">结束房间失败</string>
+
+    <string name="loaded_all">已加载全部</string>
+    <string name="loaded_retry">点击加载</string>
+    <string name="loaded_loading">加载中…</string>
+    <string name="modify_room">修改房间</string>
+    <string name="cancel_room">取消房间</string>
+    <string name="remove_room">移除房间</string>
+    <string name="delete_history">删除记录</string>
+    <string name="show_all">显示全部</string>
+
+    <string name="say_something">说点什么…</string>
+    <string name="message_muted">已禁言</string>
+    <string name="message_unmuted">已解除禁言</string>
+    <string name="class_room_message_muted">全员禁言中</string>
+    <string name="room_class_message_empty_hit">说点什么吧…</string>
+    <string name="room_class_cloud_empty_hint">暂无文件</string>
+    <string name="room_class_teacher_leave">老师暂时离开</string>
+    <string name="room_class_student_left">学生暂时离开</string>
+    <string name="room_dialog_exit_title">关闭选项</string>
+
+    <string name="user_list">用户列表</string>
+    <string name="room_class_userlist_state_speaking">(发言中)</string>
+    <string name="room_class_userlist_state_speaking_left">(已离开)</string>
+    <string name="room_class_userlist_state_handup">(已举手)</string>
+    <string name="room_class_userlist_state_teacher">(老师)</string>
+    <string name="room_class_userlist_state_teacher_left">(老师已离开)</string>
+    <string name="room_recording_hit">课程录制中…</string>
+    <string name="start_room">开始上课</string>
+    <string name="stop_record">停止录制</string>
+    <string name="end_room">结束上课</string>
+    <string name="settings">设置</string>
+    <string name="camera">摄像头</string>
+    <string name="microphone">麦克风</string>
+    <string name="exit_room">退出教室</string>
+    <string name="start_record">开始录制</string>
+    <string name="chat">聊天</string>
+    <string name="class_settings">课堂设置</string>
+    <string name="interaction_mode">互动模式</string>
+    <string name="lecture_mode">讲课模式</string>
+
+    <string name="record_started_toast">开启录制</string>
+    <string name="record_stopped_toast">录制完成，可到历史记录查看</string>
+
+    <string name="room_class_time_waiting_format">距离上课: %1$s</string>
+    <string name="room_class_time_started_format">开始上课: %1$s</string>
+    <string name="room_class_time_left_format">剩余时间: %1$s</string>
+    <string name="room_class_time_ended">房间已经结束</string>
+    
+    <string name="room_class_network_status">网络:</string>
+    <string name="room_class_network_delay">延迟: %1$dms</string>
+
+    <string name="cloud_storage">云盘</string>
+    <string name="cloud_storage_usage_format">已使用 %1$s</string>
+    <string name="cloud_storage_upload_image">上传照片</string>
+    <string name="cloud_storage_upload_video">上传视频</string>
+    <string name="cloud_storage_upload_music">上传音频</string>
+    <string name="cloud_storage_upload_doc">上传文件</string>
+    <string name="cloud_storage_upload_list_title">传输列表</string>
+    <string name="cloud_storage_no_files">暂无数据</string>
+    <string name="cloud_preview_transcoding_hint">课件转换中，请稍后…</string>
+    <string name="cloud_new_folder_title">新建文件夹</string>
+    <string name="cloud_new_folder_hint">输入文件夹名称</string>
+    <string name="cloud_rename_hint">请输入名称</string>
+
+    <string name="upload_success">上传成功</string>
+    <string name="upload_failure">上传失败</string>
+    <string name="service_agreement">服务协议</string>
+    <string name="privacy_agreement">隐私协议</string>
+    <string name="icp_registration_record">ICP编号: 沪ICP备14053584号-25A</string>
+    <string name="network_error">网络异常，请检查网络设置</string>
+    <string name="copy_success">复制成功</string>
+
+    <string name="invite_text_format">%1$s 邀请你加入 Flat 房间\n\n房间主题：%2$s\n房间号：%3$s\n\n开始时间：%4$s\n加入链接：%5$s</string>
+    <string name="invite_title_format">%1$s 邀请你加入 Flat 房间</string>
+
+    <string name="invite_pmi_text_format">%1$s 邀请你加入 Flat 个人房间\n\n房间主题：%2$s\n房间号：%3$s\n\n开始时间：%4$s\n加入链接：%5$s</string>
+    <string name="invite_pmi_title_format">%1$s 邀请你加入 Flat 个人房间</string>
+
+    <string name="replay">回放</string>
+    <string name="exit_replay">退出回放</string>
+    <string name="exit_replay_tip">确定退出回放？</string>
+    <string name="camera_has_closed">摄像头已关闭</string>
+    <string name="video_area">视频区域</string>
+    <string name="time_start">开始时间</string>
+    <string name="copy_link_to_invite">复制邀请链接</string>
+    <string name="hangup_room">挂起房间</string>
+    <string name="hangup_room_exit_tip">课堂正在继续，你是暂时退出挂起房间还是结束上课？</string>
+    <string name="feedback_input_hint">请输入内容</string>
+    <string name="view_all_room_format">查看全部%1$d房间</string>
+    <string name="copy_invite">复制邀请</string>
+    <string name="invite">邀请</string>
+    <string name="exit_room_i_known_format">知道了（%1$d）</string>
+    <string name="exit_remote_login_message">你已在另外一台设备进入房间</string>
+    <string name="exit_room_stopped_message">房间结束，退出中…</string>
+    <string name="exit_room_title">退出房间</string>
+
+    <!-- String Fetcher -->
+    <string name="fetcher_room_not_found">房间不存在</string>
+    <string name="fetcher_room_is_ended">房间已结束</string>
+    <string name="fetcher_join_room_error">加入房间错误(%1$d)</string>
+    <string name="fetcher_start_room_with_record">开始上课并录制…</string>
+
+    <string name="language_follow_system">跟随系统</string>
+
+    <string name="dark_mode_auto">跟随系统</string>
+    <string name="dark_mode_light">普通模式</string>
+    <string name="dark_mode_dark">深色模式</string>
+
+    <string name="account_security_cancel_limited_tip">你有%1$d个尚未结束或退出的房间，处理完毕后才可以申请注销账号</string>
+    <string name="account_security_cancel_dialog_title">Agora Flat 账号注销重要提示</string>
+    <string name="account_security_cancel_dialog_message">"你正在进行 Flat 账号注销，为保障你的账号和财产安全，请你在注销账号前，充分阅读理解并同意下列事项，谨慎操作.
+如你申请注销的 Flat 账号同时满足以下条件，平台将为你完成核验及账号的注销，注销立即生效.
+1. 账号处于正常状态，不涉及任何争议纠纷(包括投诉举报或被投诉举报);
+2. 如有未完成的课程，为避免影响你的权利或发生纠纷，建议你在注销账号前，联系相关师生妥善处理未完成的课程;
+3. 账号内不存在其他未了结的权利义务或因注销账号而产生纠纷的情況;
+4. 不存在其他可能影响账号注销的情况.
+
+注销 Flat 账号的行为是不可逆的，Flat 账号注销成功后，我们将停止为你提供产品或服务，不再收集你的个人信息，我们将删除你的个人信息，或对其进行匿名化处理.
+Flat 账号成功注销后，你将无法再使用该 Flat 账号，也将无法找回该账号中与账号相关的任何内容或信息（即使你使用相同的方式再次注册并使用 Flat），包括但不限于:
+1. 所有课程、课节记录将被删除;
+2. 所有聊天数据（文本、图片、视频、音频等）将被抹除;
+3. 云盘数据将被删除;
+4. 所有回放将被清空;
+
+Flat 账号一旦被注销相关数据将不可恢复，请你在操作注销之前自行备份账号相关的所有信息和数据.
+在您注销帐号之后，我们将停止为您提供产品或服务，并对您的个人信息进行删除或匿名化处理，但法律法规另有规定的除外.
+点击下方按钮继续注销，即表明你对上述提示己完全知晓并同意."</string>
+    <string name="account_cancel_and_exit">注销并退出登录</string>
+    <string name="account_cancel_agree_tip">我已完全知晓并同意</string>
+
+    <string name="stage_off_all">全员下台</string>
+    <string name="mute_mic_all">全员静音</string>
+    <string name="user_list_student_size_format">学生 (%1$s)</string>
+    <string name="on_or_off_stage">上/下台</string>
+    <string name="whiteboard_allow_draw">白板权限</string>
+    <string name="user_list_handup">举手</string>
+    <string name="user_list_teacher_name_format">老师：%1$s</string>
+    <string name="view_all">查看全部</string>
+
+    <string name="teacher_send_request_device">已发送邀请</string>
+    <string name="teacher_request_camera">老师请求开启摄像头</string>
+    <string name="teacher_request_mic">老师请求开启麦克风</string>
+    <string name="refuse_turn_on_camera_format">%1$s 拒绝开启摄像头</string>
+    <string name="refuse_turn_on_mic_format">%1$s 拒绝开启麦克风</string>
+    <string name="turn_off_camera">已关闭该学生的摄像头</string>
+    <string name="turn_off_mic">已关闭该学生的麦克风</string>
+    <string name="teacher_turn_off_camera">老师已关闭你的摄像头</string>
+    <string name="teacher_turn_off_mic">老师已关闭你的麦克风</string>
+    <string name="user_offline">已离开</string>
+    <string name="onstage_size_limited">台上座位已满，请先下台已有学生</string>
+    <string name="handup_list_empty">暂无学生举手</string>
+    <string name="user_list_empty">暂无学生</string>
+    <string name="install_permission_description">处于安全的考虑，你的手机目前不允许安装来自此来源的未知应用。你可以在"设置"中对此进行更改。</string>
+
+    <string name="app_name_code">代码</string>
+    <string name="app_name_geometry">几何代数</string>
+    <string name="app_name_clock">计时器</string>
+    <string name="app_name_dice">骰子</string>
+    <string name="app_name_question">答题器</string>
+    <string name="app_name_mindmap">思维导图</string>
+    <string name="app_name_rich_text">富文本</string>
+
+    <string name="toast_mute_all_mic">全体学生已静音</string>
+
+    <string name="clear_record">清空记录</string>
+
+    <!-- errors -->
+    <string name="error_jwt_sign_failed">登录已失效，请重新登录</string>
+    <string name="error_request_too_frequently">请求太过频繁</string>
+    <string name="error_request_common_fail">请求失败</string>
+    <string name="request_common_success">操作成功</string>
+    <string name="error_string_known_network">未知网络错误(%1$s)</string>
+
+    <string name="error_user_not_found">用户不存在</string>
+    <string name="error_user_room_list_not_empty">房间列表非空</string>
+    <string name="error_user_already_binding">用户已绑定</string>
+    <string name="error_user_password_incorrect">用户密码错误</string>
+    <string name="error_user_or_password_incorrect">用户或密码错误</string>
+
+    <string name="error_email_verification_code_invalid">验证码错误</string>
+    <string name="error_email_already_exist">邮箱已存在</string>
+    <string name="error_email_already_binding">邮箱已绑定</string>
+    <string name="error_email_failed_to_send_code">发送验证码失败</string>
+
+    <string name="error_params_check_failed">参数错误</string>
+
+    <string name="error_verification_code_invalid">验证码错误</string>
+    <string name="error_phone_already_binding">手机已绑定</string>
+    <string name="error_phone_already_exist">手机已存在</string>
+    <string name="error_send_verification_code">发送验证码失败</string>
+
+    <string name="error_pmi_not_started">房间未开始，请等待老师加入</string>
+
+    <!--messages -->
+    <string name="message_code_send_success">验证码已发送</string>
+    <string name="message_reset_success">密码重置成功</string>
+    <string name="message_set_password_success">设置密码成功</string>
+
+    <!-- payment -->
+    <string name="pay_room_reached_limit">本月创建免费房间个数已达上限，升级版本享受更多权益</string>
+    <string name="pay_room_users_limit">免费版房间人数已达上限，暂时无法加入，请联系老师解决</string>
+    <string name="pay_room_expired">房间已结束</string>
+    <string name="room_not_started">"房间未开始，开课前 %1$d 分钟可进入</string>
+    <string name="room_not_started_added">"房间未开始，开课前 %1$d 分钟可进入, 已将该房间添加到房间列表</string>
+    <string name="pay_time_limit_tip">你已加入免费版 %1$d 分钟限时房间</string>
+    <string name="pay_room_about_to_end">房间即将到达时长上限，将于 %1$s (%2$d 分钟后) 结束</string>
+</resources>

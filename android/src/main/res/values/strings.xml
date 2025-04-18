@@ -1,0 +1,405 @@
+<resources>
+    <string name="app_name">Flat</string>
+    <string name="toast_in_development">Not Supported Yet</string>
+    <string name="commit">Commit</string>
+    <string name="username">Username</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="agree">Agree</string>
+    <string name="refuse">Refuse</string>
+    <string name="end">End</string>
+    <string name="create">Create</string>
+    <string name="start">Start</string>
+    <string name="enter">Enter</string>
+    <string name="update">Update</string>
+    <string name="retry">Retry</string>
+    <string name="done">Done</string>
+    <string name="preview">Preview</string>
+    <string name="rename">Rename</string>
+    <string name="send">Send</string>
+    <string name="next">Next</string>
+
+    <string name="account">Account</string>
+    <string name="preferences">Preferences</string>
+    <string name="privacy">Privacy</string>
+    <string name="more">More</string>
+    <string name="setting_on">On</string>
+    <string name="setting_off">Off</string>
+
+    <string name="relative_time_mm">%d m</string>
+    <string name="relative_time_hh">%d h</string>
+    <string name="relative_time_dd">%d d</string>
+    <string name="home_room_info_today_format">Today %s</string>
+    <string name="home_room_info_yesterday_format">Yesterday %s</string>
+    <string name="home_room_info_tomorrow_format">Tomorrow %s</string>
+    <string name="title_home">Home</string>
+    <string name="title_cloud_storage">Cloud</string>
+    <string name="title_cloud_pick">Upload</string>
+    <string name="title_cloud_preview">Preview</string>
+    <string name="title_user_info">Personal</string>
+    <string name="title_setting">Settings</string>
+    <string name="title_my_profile">My Profile</string>
+    <string name="title_room_detail">Room Detail</string>
+    <string name="title_room_all">All Room</string>
+    <string name="title_join_room">Join Room</string>
+    <string name="title_feedback">Feedback</string>
+    <string name="title_about_us">About Us</string>
+    <string name="title_language">Language</string>
+    <string name="title_dark_mode">Dark Mode</string>
+    <string name="title_activity_compose_test">ComposeTest</string>
+    <string name="title_call_test" translatable="false">CallTest</string>
+    <string name="title_country_or_area">Country/Area</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="term_of_service">Term of Service</string>
+    <string name="icp_registration_record">ICP编号: 沪ICP备14053584号-25A</string>
+    <string name="info_gathering">Information Gathering</string>
+    <string name="info_third_party">Third-party Information</string>
+    <string name="network_acceleration">Network Acceleration</string>
+    <string name="account_security">Account Security</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="stream_data_analysis">Data Analysis</string>
+
+    <string name="room_type_big_class">Big Class</string>
+    <string name="room_type_small_class">Small Class</string>
+    <string name="room_type_one_to_one">One to One</string>
+
+    <string name="room_type_desc_big_class">large number of students</string>
+    <string name="room_type_desc_small_class">Up to 16 students</string>
+    <string name="room_type_desc_one_to_one">For 1 student</string>
+
+    <string name="create_room">Create Room</string>
+    <string name="room_theme">Theme</string>
+    <string name="create_room_type">Type</string>
+    <string name="create_room_input_theme">Please enter the room theme.</string>
+    <string name="class_room_no_operate_permission">No permission</string>
+    <string name="schedule_room">Subscribe Room</string>
+    <string name="quick_start_room">Quick Start</string>
+    <string name="room_theme_empty_toast">room theme should not be empty</string>
+
+    <string name="join_room">Join Room</string>
+    <string name="enter_room">Enter Room</string>
+    <string name="join_room_toast_empty">room uuid should not be empty</string>
+    <string name="room_id">Room ID</string>
+    <string name="input_room_id_hint">Please enter the room number</string>
+    <string name="room_type">Room Type</string>
+    <string name="nickname">Nickname</string>
+    <string name="input_nickname_hint">Please enter nickname</string>
+    <string name="join">Join In</string>
+    <string name="join_option">Join Option</string>
+    <string name="turn_on_camera">Turn on camera</string>
+    <string name="turn_on_mic">Turn on microphone</string>
+    <string name="join_room_default_time_format">Room created by %1$s</string>
+    <string name="join_room_record_pmi_title">%1$s\'s personal room</string>
+    <string name="room_not_stared">Room not started</string>
+
+    <string name="home_room_list">Room</string>
+    <string name="home_room_history">History</string>
+
+    <string name="home_room_state_idle">Upcoming</string>
+    <string name="home_room_state_started">Running</string>
+    <string name="home_room_state_paused">Paused</string>
+    <string name="home_room_state_end">Ended</string>
+    <string name="home_no_room_tip">No rooms available</string>
+    <string name="home_no_history_room_tip">No records</string>
+    <string name="home_room_start_at_min">In %1$d minutes</string>
+    <string name="setting_check_update">Check for updates</string>
+    <string name="intent_no_browser">Link error or no browser</string>
+    <string name="intent_browser_choose_title">Choose Browser</string>
+    <string name="login_set_auth_uuid_error">Set auth uuid error</string>
+    <string name="login_page_label_1">Interact online to keep ideas in sync</string>
+    <string name="login_page_label_2">Powered by Agora</string>
+    <string name="login_success_and_jump">Successful login, jump…</string>
+    <string name="login_fail">Login failed</string>
+
+    <!-- login -->
+    <string name="login_agreement_message">Have read and agree Privacy Policy and Term of Service</string>
+    <string name="login_agreement_unchecked_hint">Please agree to the terms of service first</string>
+    <string name="login_agreement_dialog_title">Service Agreement and Privacy Protection</string>
+    <string name="login_agreement_dialog_message">In order to better ensure your legal rights and interests, please read and agree to the following agreement Flat Privacy Policy, Flat User Agreement</string>
+
+    <string name="login_phone_input_placeholder">Phone number</string>
+    <string name="login_phone_invalid_tip">Phone number is incorrect</string>
+    <string name="login_email_invalid_tip">Email is incorrect</string>
+    <string name="login_password_invalid_tip">Password at least 8 digits, including letters and numbers</string>
+    <string name="login_code_input_placeholder">Verification code</string>
+    <string name="login_code_invalid_tip">Verification code is incorrect</string>
+    <string name="login_send_sms_code">Send Code</string>
+    <string name="login_code_send">Code Send…</string>
+    <string name="login_others_tip">Others</string>
+    <string name="login_sign_in_or_up">Sign In / Sign Up</string>
+    <string name="login_welcome">Welcome to Flat</string>
+    <string name="login_welcome_slogan">Interact online to keep ideas in sync</string>
+
+    <string name="login_already_bind_phone">Already Bound</string>
+    <string name="login_phone_already_bound">Phone number is bound</string>
+    <string name="login_verification_code_invalid">Invalid Verification Code</string>
+    <string name="wechat">WeChat</string>
+    <string name="github">Github</string>
+    <string name="google">Google</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+
+    <string name="login_sign_in">Sign In</string>
+    <string name="login_sign_up">Sign Up</string>
+    <string name="login_use_sms_login">Via SMS</string>
+    <string name="login_use_password_login">Via Password</string>
+    <string name="login_forgot_pwd">Forgot?</string>
+    <string name="login_password_input_hint">Password</string>
+    <string name="login_email_input_hint">Email</string>
+    <string name="login_phone_or_email_input_hint">Phone or Email</string>
+
+    <!-- bind -->
+    <string name="bind">bind</string>
+    <string name="unbind">unbind</string>
+    <string name="bind_fail">bind fail</string>
+    <string name="bind_success">bind success</string>
+    <string name="user_avatar">User Avatar</string>
+    <string name="bind_info">Bindings</string>
+
+    <string name="bind_phone">Bind Phone</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="verification_code">Verification Code</string>
+
+    <string name="bind_email">Bind Email</string>
+
+    <string name="not_bound">Not bound</string>
+    <string name="check_unbind_title">Unbind</string>
+    <string name="check_unbind_message">Unbinding your account will prevent you from continuing to log in with it</string>
+    <string name="unbind_limit_message">Current login is unique and cannot be unbound</string>
+
+    <!-- register -->
+    <string name="register">Register</string>
+    <string name="register_success">Register Success</string>
+
+    <string name="register_profile_title">Profile</string>
+    <string name="register_profile_avatar_tip">Avatar (optional)</string>
+    <string name="register_profile_username_tip">Nickname (optional)</string>
+
+    <string name="reset_password">Reset Password</string>
+    <string name="new_password">New Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="set_password">Set Password</string>
+
+    <string name="old_password_input_hint">Old Password</string>
+    <string name="new_password_input_hint">New Password</string>
+    <string name="new_password_input_hint_again">New Password Again</string>
+    <string name="password_rule_tips">Password must have at least 8 characters, letters and numbers.</string>
+
+    <string name="merge_account">Merge Account</string>
+    <string name="merge_account_message">Phone number is bound to another account. Do you want to merge? The merge operation will clear all the data of the newly created account</string>
+
+    <string name="agreement_global_dialog_message">Thank you for trusting and using Flat.\n\nWe rely on the Flat User Agreement and Flat Privacy Policy to help you understand how we collect,use,and store your personal information and what rights you have with respect to it.\n\nWhen you use Flat, we collect information about your device, logs and browsing history, and to ensure a positive experience in class, you may grant Flat access to your device\'s camera, microphone, and other information.\n\nYou can read the full Flat User Agreement and Flat Privacy Policy for more information.</string>
+    <string name="agreement_global_recheck_dialog_message">You need to agree to the User Agreement and Privacy Policy before you can use Flat.\n\nIf you do not agree, we regret that we cannot provide you with the Services.\n\nYou can find out more by reading the full Flat User Agreement and Flat Privacy Policy.</string>
+    <string name="agreement_global_privacy">Flat Privacy Policy</string>
+    <string name="agreement_global_service">Flat User Agreement</string>
+    <string name="agreement_global_agree">Agree and continue</string>
+    <string name="agreement_global_disagree">Disagree</string>
+    <string name="agreement_global_disagree_and_exit">Disagree and exit</string>
+
+    <string name="room_class_start_class_success">Start the room successfully</string>
+    <string name="room_class_start_class_fail">Failed to start the room</string>
+    <string name="room_class_stop_class_fail">Failed to end the room</string>
+    <string name="loaded_all">All loaded</string>
+    <string name="loaded_retry">Click to load</string>
+    <string name="loaded_loading">Loading…</string>
+    <string name="modify_room">Modify room</string>
+    <string name="cancel_room">Cancel room</string>
+    <string name="remove_room">Remove room</string>
+    <string name="delete_history">Delete Record</string>
+    <string name="show_all">Show All</string>
+    <string name="say_something">Say something…</string>
+    <string name="message_muted">Muted</string>
+    <string name="message_unmuted">Unmuted</string>
+    <string name="class_room_message_muted">All members are mute</string>
+    <string name="room_class_message_empty_hit">Say something…</string>
+    <string name="room_class_cloud_empty_hint">No files</string>
+    <string name="room_class_teacher_leave">Teacher has left</string>
+    <string name="room_class_student_left">Student has left</string>
+    <string name="room_dialog_exit_title">Close Options</string>
+
+    <string name="user_list">User List</string>
+    <string name="room_class_userlist_state_speaking">(Speaking)</string>
+    <string name="room_class_userlist_state_speaking_left">(Left)</string>
+    <string name="room_class_userlist_state_handup">(Hands raised)</string>
+    <string name="room_class_userlist_state_teacher">(Teacher)</string>
+    <string name="room_class_userlist_state_teacher_left">(Teacher Left)</string>
+    <string name="room_recording_hit">Course recording…</string>
+    <string name="start_room">Classes begin</string>
+    <string name="stop_record">Stop recording</string>
+    <string name="end_room">End of class</string>
+    <string name="settings">Settings</string>
+    <string name="camera">Camera</string>
+    <string name="microphone">Microphone</string>
+    <string name="exit_room">Exit</string>
+    <string name="start_record">Start Record</string>
+    <string name="chat">Chat</string>
+    <string name="class_settings">Class settings</string>
+    <string name="interaction_mode">Interaction</string>
+    <string name="lecture_mode">Lecture</string>
+    <string name="record_started_toast">Record Started</string>
+    <string name="record_stopped_toast">Record Stopped</string>
+
+    <string name="room_class_time_waiting_format">Waiting: %1$s</string>
+    <string name="room_class_time_started_format">Started: %1$s</string>
+    <string name="room_class_time_left_format">Time Left: %1$s</string>
+    <string name="room_class_time_ended">Ended</string>
+
+    <string name="room_class_network_status">Network:</string>
+    <string name="room_class_network_delay">Latency: %1$dms</string>
+
+    <string name="cloud_storage">Cloud Storage</string>
+    <string name="cloud_storage_usage_format">%1$s used</string>
+    <string name="cloud_storage_upload_image">Photos</string>
+    <string name="cloud_storage_upload_video">Videos</string>
+    <string name="cloud_storage_upload_music">Audios</string>
+    <string name="cloud_storage_upload_doc">Files</string>
+    <string name="cloud_storage_upload_list_title">Upload List</string>
+    <string name="cloud_storage_no_files">No data available</string>
+    <string name="cloud_preview_transcoding_hint">Courseware is being transcoded, please wait…</string>
+    <string name="cloud_new_folder_title">New Folder</string>
+    <string name="cloud_new_folder_hint">input name</string>
+    <string name="cloud_rename_hint">file name</string>
+
+    <string name="upload_success">Upload successfully</string>
+    <string name="upload_failure">Upload failed</string>
+    <string name="service_agreement">Service Agreement</string>
+    <string name="privacy_agreement">Privacy Agreement</string>
+    <string name="network_error">Please check the network settings.</string>
+    <string name="copy_success">Copy successfully</string>
+    <string name="invite_text_format">%1$s invites you to join the Flat room\n\nRoom Theme: %2$s\nRoom ID: %3$s\n\nStart Time: %4$s\nJoin Link: %5$s</string>
+    <string name="invite_title_format">%1$s invites you to join the Flat room</string>
+    <string name="invite_pmi_text_format">%1$s invites you to join the Flat pmi room\n\nRoom Theme: %2$s\nRoom ID: %3$s\n\nStart Time: %4$s\nJoin Link: %5$s</string>
+    <string name="invite_pmi_title_format">%1$s invites you to join the Flat pmi room</string>
+    <string name="replay">Replay</string>
+    <string name="exit_replay">Exit playback</string>
+    <string name="exit_replay_tip">Are you sure to exit playback?</string>
+    <string name="camera_has_closed">Camera is off</string>
+    <string name="video_area">Video area</string>
+    <string name="time_start">Start Time</string>
+    <string name="copy_link_to_invite">Copy Invite</string>
+    <string name="hangup_room">Hangup</string>
+    <string name="hangup_room_exit_tip">The class is continuing. Do you leave the suspended room temporarily or end the class?</string>
+    <string name="feedback_input_hint">Enter the content</string>
+    <string name="login_exit">Login Exit</string>
+    <string name="view_all_room_format">View all %1$d rooms</string>
+    <string name="copy_invite">Invite</string>
+    <string name="invite">Invite</string>
+    <string name="exit_room_i_known_format">I know(%1$d)</string>
+    <string name="exit_remote_login_message">You have entered the room at another device</string>
+    <string name="exit_room_stopped_message">The room ends, exiting…</string>
+    <string name="exit_room_title">Exit Room</string>
+
+    <string name="fetcher_room_not_found">room not found.</string>
+    <string name="fetcher_room_is_ended">room has ended.</string>
+    <string name="fetcher_join_room_error">join room error (%1$d)</string>
+    <string name="fetcher_start_room_with_record">Start class and recording…</string>
+
+    <string name="language_follow_system">Auto</string>
+    <string name="language_chinese" translatable="false">简体中文</string>
+    <string name="language_english" translatable="false">English</string>
+
+    <string name="dark_mode_auto">Auto</string>
+    <string name="dark_mode_light">Normal Mode</string>
+    <string name="dark_mode_dark">Dark Mode</string>
+
+    <string name="account_security_cancel_limited_tip">You have %1$d rooms to closed or exited, process them before you cancel the account</string>
+    <string name="account_security_cancel_dialog_title">Important Tips</string>
+    <string name="account_security_cancel_dialog_message">"You are in the process of canceling your Flat account, in order to protect your account and property security, please read and agree to the following matters before you cancel your account, and operate with caution.
+If the Flat account you apply for cancellation also meets the following conditions, the platform will complete the verification and account cancellation for you, and the cancellation will take effect immediately.
+1. The account is in a normal state and is not involved in any dispute (including complaints or reported by complaints);
+2. if there are incomplete courses, in order to avoid affecting your rights or disputes, you are advised to contact the relevant teachers and students to properly handle the incomplete courses before canceling your account;
+3. there are no other outstanding rights and obligations in the account or disputes arising from the cancellation of the account;
+4. there are no other circumstances that may affect the account cancellation.
+
+The cancellation of a Flat account is irreversible. After a successful cancellation of a Flat account, we will stop providing products or services to you and will no longer collect your personal information, and we will delete your personal information or anonymize it.
+After a Flat account is successfully cancelled, you will no longer be able to use the Flat account and will not be able to retrieve any content or information associated with the account (even if you register and use Flat again in the same way), including but not limited to:
+1. all course and session records will be deleted;
+2. All chat data (text, images, video, audio, etc.) will be erased;
+3. Cloud data will be deleted. 4;
+4. All playback will be cleared;
+
+Flat Once your account is cancelled, all data will not be recovered, so please backup all information and data before you cancel your account.
+After you cancel your account, we will stop providing products or services to you and delete or anonymize your personal information, except as otherwise provided by law or regulation.
+By clicking on the button below to proceed with your cancellation, you acknowledge that you fully understand and agree to the above instructions.
+
+Translated with www.DeepL.com/Translator (free version)"</string>
+    <string name="account_cancel_and_exit">Cancel And Exit</string>
+    <string name="account_cancel_agree_tip">Agree</string>
+
+    <string name="stage_off_all">off all</string>
+    <string name="mute_mic_all">mute all</string>
+    <string name="user_list_student_size_format">student (%1$s)</string>
+    <string name="on_or_off_stage">on/off</string>
+    <string name="whiteboard_allow_draw">whiteboard</string>
+    <string name="user_list_handup">Raised</string>
+    <string name="user_list_teacher_name_format">teacher：%1$s</string>
+    <string name="view_all">view all</string>
+
+    <string name="teacher_send_request_device">devices request send</string>
+    <string name="teacher_request_camera">teacher request camera</string>
+    <string name="teacher_request_mic">teacher request mic</string>
+    <string name="refuse_turn_on_camera_format">%1$s refuse camera</string>
+    <string name="refuse_turn_on_mic_format">%1$s refuse mic</string>
+    <string name="turn_off_camera">turn off camera</string>
+    <string name="turn_off_mic">turn off mic</string>
+    <string name="teacher_turn_off_camera">camera turned off</string>
+    <string name="teacher_turn_off_mic">mic turned off</string>
+    <string name="user_offline">Offline</string>
+    <string name="onstage_size_limited">onstage size limited, offstage someone</string>
+    <string name="handup_list_empty">Empty</string>
+    <string name="user_list_empty">Empty</string>
+    <string name="install_permission_description">For your security, your phone currently isn\'t allowed to install unknown apps from this source. You can change this in Settings.</string>
+
+    <string name="app_name_code">Code</string>
+    <string name="app_name_clock">Clock</string>
+    <string name="app_name_dice">Dice</string>
+    <string name="app_name_question">Question</string>
+    <string name="app_name_geometry">Geometry</string>
+    <string name="app_name_rich_text">Text</string>
+    <string name="app_name_mindmap">Mind</string>
+
+    <string name="toast_mute_all_mic">All students muted</string>
+
+    <string name="clear_record">Clear</string>
+
+    <!-- errors -->
+    <string name="error_jwt_sign_failed">Your login session has expired. Please log in again.</string>
+    <string name="error_request_too_frequently">request too frequently</string>
+    <string name="error_request_common_fail">request fail</string>
+    <string name="request_common_success">success</string>
+    <string name="error_string_known_network">known network error (%1$s)</string>
+
+    <string name="error_user_not_found">user not found</string>
+    <string name="error_user_room_list_not_empty">room list not empty</string>
+    <string name="error_user_already_binding">user already binding</string>
+    <string name="error_user_password_incorrect">user password incorrect</string>
+    <string name="error_user_or_password_incorrect">user or password incorrect</string>
+
+    <string name="error_email_verification_code_invalid">verification code invalid</string>
+    <string name="error_email_already_exist">email already exist</string>
+    <string name="error_email_already_binding">email are binding</string>
+    <string name="error_email_failed_to_send_code">send code failed</string>
+
+    <string name="error_params_check_failed">parameter verification failed</string>
+    <!--messages -->
+    <string name="message_code_send_success">Code Send..</string>
+    <string name="message_reset_success">Reset Success</string>
+    <string name="message_set_password_success">Set password success</string>
+
+    <string name="error_verification_code_invalid">code invalid</string>
+    <string name="error_phone_already_binding">phone already binding</string>
+    <string name="error_phone_already_exist">phone already exist</string>
+    <string name="error_send_verification_code">send code fail</string>
+    <string name="error_pmi_not_started">wait for the teacher to join</string>
+
+    <!-- payment -->
+    <string name="pay_room_reached_limit">Free room creation limit reached this month. Upgrade for more benefits.</string>
+    <string name="pay_room_users_limit">Free room capacity reached. Unable to join at the moment. Please contact the teacher for assistance.</string>
+    <string name="pay_room_expired">Room has ended.</string>
+    <string name="room_not_started">Room not started. Join in %1$d minutes before the class begins.</string>
+    <string name="room_not_started_added">Room not started. Join in %1$d minutes before the class begins. The room has been added to your room list.</string>
+    <string name="pay_time_limit_tip">You have joined a free room for %1$d minutes.</string>
+    <string name="pay_room_about_to_end">The room is about to reach duration limit and will end at %1$s (%2$d minutes left)</string>
+</resources>

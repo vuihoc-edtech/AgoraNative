@@ -37,7 +37,7 @@ allprojects {
 //apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
@@ -98,7 +98,7 @@ android {
 
     composeOptions {
         // change compose_version to the latest version of Compose in build.gradle(app)
-        kotlinCompilerExtensionVersion "1.4.7"
+        kotlinCompilerExtensionVersion "1.4.8"
     }
 
     lintOptions {

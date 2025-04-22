@@ -3,11 +3,11 @@ package io.agora.flat.ui.activity.play
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.WindowManager
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.databinding.ActivityRoomPlayBinding
 import io.agora.flat.ui.activity.base.BaseActivity
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class ClassRoomActivity : BaseActivity() {
     private lateinit var binding: ActivityRoomPlayBinding
     private var componentSet: MutableSet<BaseComponent> = mutableSetOf()

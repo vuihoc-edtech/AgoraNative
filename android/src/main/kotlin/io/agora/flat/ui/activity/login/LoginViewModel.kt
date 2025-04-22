@@ -1,7 +1,7 @@
 package io.agora.flat.ui.activity.login
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.android.CallingCodeManager
 import io.agora.flat.common.version.AgreementFetcher
 import io.agora.flat.data.AppEnv
@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
+//@HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val appKVCenter: AppKVCenter,

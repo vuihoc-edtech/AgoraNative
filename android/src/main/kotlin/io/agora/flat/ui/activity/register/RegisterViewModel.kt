@@ -1,7 +1,7 @@
 package io.agora.flat.ui.activity.register
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.android.CallingCodeManager
 import io.agora.flat.data.AppEnv
 import io.agora.flat.data.model.PhoneOrEmailInfo
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
+//@HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val appEnv: AppEnv,

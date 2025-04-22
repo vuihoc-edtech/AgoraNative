@@ -3,7 +3,7 @@ package io.agora.flat.ui.viewmodel
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.android.AndroidDownloader
 import io.agora.flat.common.version.VersionCheckResult
 import io.agora.flat.common.version.VersionChecker
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
+//@HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val appKVCenter: AppKVCenter,

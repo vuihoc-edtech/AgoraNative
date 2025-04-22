@@ -3,8 +3,8 @@ package io.agora.flat.logger
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.migration.DisableInstallInCheck
-import dagger.multibindings.IntoSet
+//import dagger.hilt.migration.DisableInstallInCheck
+//import dagger.multibindings.IntoSet
 import io.agora.flat.di.interfaces.Crashlytics
 import io.agora.flat.di.interfaces.LogReporter
 import io.agora.flat.di.interfaces.Logger
@@ -12,7 +12,7 @@ import io.agora.flat.di.interfaces.StartupInitializer
 import javax.inject.Singleton
 
 @Module
-@DisableInstallInCheck
+//@DisableInstallInCheck
 object LoggerModule {
     @Singleton
     @Provides
@@ -23,18 +23,18 @@ object LoggerModule {
 }
 
 @Module
-@DisableInstallInCheck
+//@DisableInstallInCheck
 abstract class LoggerModuleBinds {
     @Binds
-    @IntoSet
+//    @IntoSet
     abstract fun providerCrashlyticsInitializer(bind: BuglyCrashlytics): StartupInitializer
 
     @Binds
-    @IntoSet
+//    @IntoSet
     abstract fun providerLogReporterInitializer(bind: AliyunLogReporter): StartupInitializer
 
     @Binds
-    @IntoSet
+//    @IntoSet
     abstract fun providerTimberInitializer(bind: TimberInitializer): StartupInitializer
 
     @Binds

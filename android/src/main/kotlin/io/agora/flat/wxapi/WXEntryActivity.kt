@@ -10,7 +10,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.flat.Constants
 import io.agora.flat.common.login.LoginManager
 import io.agora.flat.data.AppEnv
@@ -18,7 +18,7 @@ import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.repository.UserRepository
 import javax.inject.Inject
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class WXEntryActivity : ComponentActivity(), IWXAPIEventHandler {
     companion object {
         @JvmStatic

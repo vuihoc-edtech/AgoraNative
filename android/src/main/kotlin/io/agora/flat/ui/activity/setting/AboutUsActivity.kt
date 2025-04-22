@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.flat.Constants
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.Navigator
@@ -41,7 +41,7 @@ import io.agora.flat.ui.theme.FlatTheme
 import io.agora.flat.util.getAppVersion
 import javax.inject.Inject
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class AboutUsActivity : BaseComposeActivity() {
     @Inject
     lateinit var appEnv: AppEnv;

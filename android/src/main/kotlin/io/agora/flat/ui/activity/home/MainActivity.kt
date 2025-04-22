@@ -27,7 +27,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.flat.AppInitializers
 import io.agora.flat.PostLoginInitializers
 import io.agora.vuihoc.agora_native.R
@@ -44,7 +44,7 @@ import io.agora.flat.ui.util.ShowUiMessageEffect
 import io.agora.flat.util.launchMarket
 import javax.inject.Inject
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class MainActivity : BaseComposeActivity() {
     @Inject
     lateinit var loginManager: LoginManager

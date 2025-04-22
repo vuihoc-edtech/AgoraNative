@@ -11,7 +11,7 @@ import com.herewhite.sdk.domain.Scene
 import com.herewhite.sdk.domain.WindowAppParam
 import com.herewhite.sdk.domain.WindowPrefersColorScheme.Dark
 import com.herewhite.sdk.domain.WindowPrefersColorScheme.Light
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+//import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.board.fast.FastException
 import io.agora.board.fast.FastRoom
 import io.agora.board.fast.FastRoomListener
@@ -43,7 +43,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-@ActivityRetainedScoped
+//@ActivityRetainedScoped
 class AgoraBoardRoom @Inject constructor(
     val userRepository: UserRepository,
     val syncedClassState: SyncedClassState,

@@ -2,7 +2,7 @@ package io.agora.flat.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.upload.UploadManager
 import io.agora.flat.common.upload.UploadRequest
 import io.agora.flat.data.AppEnv
@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
+//@HiltViewModel
 class UserInfoViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val cloudStorageRepository: CloudStorageRepository,

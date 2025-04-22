@@ -1,10 +1,10 @@
 package io.agora.flat.di
 
 import android.app.Application
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
+//import dagger.hilt.EntryPoint
+//import dagger.hilt.InstallIn
+//import dagger.hilt.android.EntryPointAccessors
+//import dagger.hilt.components.SingletonComponent
 import io.agora.flat.data.AppEnv
 import io.agora.flat.data.AppKVCenter
 import io.agora.flat.event.EventBus
@@ -12,8 +12,8 @@ import io.agora.flat.event.EventBus
 
 object GlobalInstanceProvider {
 
-    @EntryPoint
-    @InstallIn(SingletonComponent::class)
+//    @EntryPoint
+//    @InstallIn(SingletonComponent::class)
     interface AppEntryPoint {
         fun appEnv(): AppEnv
         fun appKvCenter(): AppKVCenter

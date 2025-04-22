@@ -48,7 +48,7 @@ import androidx.compose.ui.tooling.preview.Devices.PIXEL_C
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.Navigator
 import io.agora.flat.common.android.LanguageManager
@@ -89,7 +89,7 @@ import io.agora.flat.util.showToast
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class LoginActivity : BaseComposeActivity() {
     private val viewModel: LoginViewModel by viewModels()
 

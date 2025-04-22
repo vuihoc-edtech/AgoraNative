@@ -9,10 +9,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+//import dagger.hilt.EntryPoint
+//import dagger.hilt.InstallIn
+//import dagger.hilt.android.EntryPointAccessors
+//import dagger.hilt.android.components.ActivityComponent
 import io.agora.vuihoc.agora_native.R
 import io.agora.board.fast.R.id.fast_tools_addition_layout
 import io.agora.flat.data.model.WindowAppItem
@@ -28,8 +28,8 @@ class WhiteboardComponent(
     rootView: FrameLayout,
 ) : BaseComponent(activity, rootView) {
 
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
+//    @EntryPoint
+//    @InstallIn(ActivityComponent::class)
     interface BoardComponentEntryPoint {
         fun boardRoom(): BoardRoom
     }

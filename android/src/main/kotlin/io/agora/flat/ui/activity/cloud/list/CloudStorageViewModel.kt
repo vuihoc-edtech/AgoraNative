@@ -10,7 +10,7 @@ import com.herewhite.sdk.converter.ProjectorQuery
 import com.herewhite.sdk.domain.ConversionInfo
 import com.herewhite.sdk.domain.ConvertException
 import com.herewhite.sdk.domain.ConvertedFiles
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
 import io.agora.flat.common.upload.UploadManager
 import io.agora.flat.common.upload.UploadRequest
@@ -29,7 +29,7 @@ import javax.inject.Inject
 /**
  * Here Use StateFlow To Manage State
  */
-@HiltViewModel
+//@HiltViewModel
 class CloudStorageViewModel @Inject constructor(
     private val cloudStorageRepository: CloudStorageRepository,
     private val appEnv: AppEnv

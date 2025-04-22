@@ -1,6 +1,6 @@
 package io.agora.flat.ui.viewmodel
 
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+//import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.flat.common.rtm.Message
 import io.agora.flat.common.rtm.MessageFactory
 import io.agora.flat.data.model.ORDER_ASC
@@ -9,7 +9,7 @@ import io.agora.flat.di.interfaces.RtmApi
 import io.agora.flat.ui.manager.UserQuery
 import javax.inject.Inject
 
-@ActivityRetainedScoped
+//@ActivityRetainedScoped
 class MessageQuery @Inject constructor(
     private val rtmApi: RtmApi,
     private val userQuery: UserQuery,

@@ -3,7 +3,7 @@ package io.agora.flat.ui.activity.playback
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
 import io.agora.flat.data.model.RecordInfo
 import io.agora.flat.data.onFailure
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
+//@HiltViewModel
 class ReplayViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val cloudRecordRepository: CloudRecordRepository,

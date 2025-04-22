@@ -3,7 +3,7 @@ package io.agora.flat.data
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import dagger.hilt.android.qualifiers.ApplicationContext
+//import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.flat.BuildConfig
 
 import io.agora.flat.di.interfaces.LogConfig
@@ -14,7 +14,8 @@ import javax.inject.Singleton
  * 应用内切换配置
  */
 @Singleton
-class AppEnv @Inject constructor(@ApplicationContext context: Context) {
+//class AppEnv @Inject constructor(@ApplicationContext context: Context) {
+class AppEnv @Inject constructor( context: Context) {
     private val store: SharedPreferences = context.getSharedPreferences("flat_env", Context.MODE_PRIVATE)
 
     companion object {

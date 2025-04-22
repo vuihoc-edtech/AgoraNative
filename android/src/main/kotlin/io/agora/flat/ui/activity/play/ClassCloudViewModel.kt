@@ -13,7 +13,7 @@ import com.herewhite.sdk.domain.ConvertException
 import com.herewhite.sdk.domain.ConvertedFiles
 import com.herewhite.sdk.domain.PptPage
 import com.herewhite.sdk.domain.Scene
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
 import io.agora.flat.common.board.AgoraBoardRoom
 import io.agora.flat.common.upload.UploadManager
@@ -46,7 +46,7 @@ import java.net.URL
 import java.util.*
 import javax.inject.Inject
 
-@HiltViewModel
+//@HiltViewModel
 class ClassCloudViewModel @Inject constructor(
     private val cloudStorageRepository: CloudStorageRepository,
     private val boardRoom: AgoraBoardRoom,

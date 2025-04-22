@@ -2,8 +2,8 @@ package io.agora.flat.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+//import dagger.hilt.InstallIn
+//import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import io.agora.flat.data.AppEnv
 import io.agora.flat.data.AppKVCenter
@@ -16,7 +16,7 @@ import java.util.*
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+//@InstallIn(SingletonComponent::class)
 object UserModule {
 
     @Provides

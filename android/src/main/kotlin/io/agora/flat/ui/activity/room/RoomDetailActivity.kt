@@ -29,9 +29,9 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
+//import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.Navigator
 import io.agora.flat.common.android.rememberAndroidClipboardController
@@ -51,7 +51,7 @@ import io.agora.flat.util.showToast
 import io.agora.flat.util.toInviteCodeDisplay
 import java.util.*
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class RoomDetailActivity : BaseComposeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

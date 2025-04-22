@@ -1,13 +1,13 @@
 package io.agora.flat.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.android.LanguageManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-@HiltViewModel
+//@HiltViewModel
 class LanguageViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(LanguageState())
     val state = _state.asStateFlow()

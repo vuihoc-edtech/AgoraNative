@@ -25,10 +25,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.airbnb.lottie.LottieAnimationView
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+//import dagger.hilt.EntryPoint
+//import dagger.hilt.InstallIn
+//import dagger.hilt.android.EntryPointAccessors
+//import dagger.hilt.android.components.ActivityComponent
 import io.agora.flat.Config
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.board.UserWindows
@@ -80,8 +80,8 @@ class RtcComponent(
         }
     }
 
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
+//    @EntryPoint
+//    @InstallIn(ActivityComponent::class)
     interface RtcComponentEntryPoint {
         fun rtcApi(): RtcApi
         fun rtcVideoController(): RtcVideoController

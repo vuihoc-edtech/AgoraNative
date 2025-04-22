@@ -5,7 +5,7 @@ buildscript {
     ext {
         gradle_tool_version = '8.1.0'
         kotlin_version = "1.8.21"
-        hilt_version = '2.44'
+//        hilt_version = '2.44'
         nav_version = "2.5.3"
     }
 
@@ -17,7 +17,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_tool_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+//        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
         classpath "com.google.gms:google-services:4.3.15"
@@ -40,7 +40,7 @@ apply plugin: "kotlin-android"
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
+//apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'kotlin-parcelize'
 apply plugin: "androidx.navigation.safeargs"
 
@@ -211,11 +211,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    kapt "androidx.hilt:hilt-compiler:1.0.0"
+//    implementation "com.google.dagger:hilt-android:$hilt_version"
+//    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+//    kapt "androidx.hilt:hilt-compiler:1.0.0"
     // implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+//    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    implementation "com.google.dagger:dagger:2.44"
+    kapt "com.google.dagger:dagger-compiler:2.44"
 
     // Paging
     def paging_version = "3.0.0"

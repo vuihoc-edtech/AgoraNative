@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.window.layout.WindowMetricsCalculator
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.vuihoc.agora_native.databinding.CameraUiContainerBinding
 import io.agora.vuihoc.agora_native.databinding.FragmentCameraBinding
@@ -38,7 +38,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class CameraFragment : Fragment() {
     private var _fragmentCameraBinding: FragmentCameraBinding? = null
 

@@ -24,8 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
-import dagger.hilt.android.AndroidEntryPoint
+//import androidx.hilt.navigation.compose.hiltViewModel
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.flat.Config
 import io.agora.flat.Constants
 import io.agora.vuihoc.agora_native.R
@@ -48,7 +48,7 @@ import io.agora.flat.ui.viewmodel.AccountSecurityViewModel
 import io.agora.flat.util.getActivity
 import javax.inject.Inject
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class AccountSecurityActivity : BaseComposeActivity() {
     @Inject
     lateinit var bindingHandler: UserBindingHandler

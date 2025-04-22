@@ -6,7 +6,7 @@ import com.google.gson.JsonObject
 import com.herewhite.sdk.SyncedStore
 import com.herewhite.sdk.domain.Promise
 import com.herewhite.sdk.domain.SDKError
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+//import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.board.fast.FastRoom
 import io.agora.flat.di.interfaces.Logger
 import io.agora.flat.di.interfaces.SyncedClassState
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
-@ActivityRetainedScoped
+//@ActivityRetainedScoped
 class WhiteSyncedState @Inject constructor(
     val logger: Logger,
 ) : SyncedClassState {

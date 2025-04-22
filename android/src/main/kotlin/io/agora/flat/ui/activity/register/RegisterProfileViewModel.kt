@@ -2,7 +2,7 @@ package io.agora.flat.ui.activity.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.upload.UploadManager
 import io.agora.flat.common.upload.UploadRequest
 import io.agora.flat.data.AppEnv
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 
-@HiltViewModel
+//@HiltViewModel
 class RegisterProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val cloudStorageRepository: CloudStorageRepository,

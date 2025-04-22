@@ -3,9 +3,9 @@ package io.agora.flat.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+//import dagger.hilt.InstallIn
+//import dagger.hilt.android.qualifiers.ApplicationContext
+//import dagger.hilt.components.SingletonComponent
 
 import io.agora.flat.common.version.AgreementFetcher
 import io.agora.flat.common.version.VersionChecker
@@ -24,7 +24,7 @@ import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+//@InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
@@ -131,7 +131,8 @@ object NetworkModule {
     fun provideVersionChecker(
         @NormalOkHttpClient client: OkHttpClient,
         appKVCenter: AppKVCenter,
-        @ApplicationContext context: Context,
+//        @ApplicationContext context: Context,
+         context: Context,
         appEnv: AppEnv
     ): VersionChecker {
         return VersionChecker(client, appKVCenter, context.getAppVersion(), appEnv.versionCheckUrl)

@@ -1,13 +1,14 @@
 package io.agora.flat.common.android
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
+//import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.vuihoc.agora_native.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class I18NFetcher @Inject constructor(@ApplicationContext context: Context) {
+//class I18NFetcher @Inject constructor(@ApplicationContext context: Context) {
+class I18NFetcher @Inject constructor(context: Context) {
     companion object {
         const val JOIN_ROOM_RECORD_PMI_TITLE = "join_room_record_pmi_title"
 

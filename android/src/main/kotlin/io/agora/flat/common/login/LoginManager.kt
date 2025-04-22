@@ -12,16 +12,19 @@ import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
-import dagger.hilt.android.qualifiers.ApplicationContext
+//import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.flat.Constants
 import io.agora.flat.data.AppEnv
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginManager @Inject constructor(
-    @ApplicationContext val context: Context, val appEnv: AppEnv
-) {
+//class LoginManager @Inject constructor(
+//    @ApplicationContext val context: Context, val appEnv: AppEnv
+//) {
+    class LoginManager @Inject constructor(
+         val context: Context, val appEnv: AppEnv
+    ) {
     private var api: IWXAPI? = null
     private var wechatReceiver: BroadcastReceiver? = null
     var actionClazz: Class<out Activity>? = null

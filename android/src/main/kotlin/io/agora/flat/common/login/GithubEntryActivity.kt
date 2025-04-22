@@ -4,7 +4,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.flat.common.Navigator
 import io.agora.flat.ui.activity.LoginActivity
 import javax.inject.Inject
@@ -12,7 +12,7 @@ import javax.inject.Inject
 /**
  * This activity is the unified Github callback.
  */
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class GithubEntryActivity : ComponentActivity() {
 
     @Inject

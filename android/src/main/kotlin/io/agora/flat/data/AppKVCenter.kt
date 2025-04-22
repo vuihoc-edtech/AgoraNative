@@ -3,7 +3,7 @@ package io.agora.flat.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import dagger.hilt.android.qualifiers.ApplicationContext
+//import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.flat.common.board.DeviceState
 import io.agora.flat.data.model.LoginHistory
 import io.agora.flat.data.model.LoginHistoryItem
@@ -16,7 +16,8 @@ import javax.inject.Singleton
  * 提供App级别的KV存储
  */
 @Singleton
-class AppKVCenter @Inject constructor(@ApplicationContext context: Context) {
+//class AppKVCenter @Inject constructor(@ApplicationContext context: Context) {
+class AppKVCenter @Inject constructor( context: Context) {
     private val store: SharedPreferences = context.getSharedPreferences("flat_kv_data", Context.MODE_PRIVATE)
     private val gson = Gson()
     private val mockData = MockData()

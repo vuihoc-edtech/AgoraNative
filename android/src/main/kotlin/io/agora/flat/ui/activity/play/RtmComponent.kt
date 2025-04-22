@@ -7,10 +7,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+//import dagger.hilt.EntryPoint
+//import dagger.hilt.InstallIn
+//import dagger.hilt.android.EntryPointAccessors
+//import dagger.hilt.android.components.ActivityComponent
 import io.agora.flat.common.FlatException
 import io.agora.vuihoc.agora_native.databinding.ComponentMessageBinding
 import io.agora.flat.di.interfaces.RtmApi
@@ -27,8 +27,8 @@ class RtmComponent(
     rootView: FrameLayout,
 ) : BaseComponent(activity, rootView) {
 
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
+//    @EntryPoint
+//    @InstallIn(ActivityComponent::class)
     interface RtmComponentEntryPoint {
         fun rtmApi(): RtmApi
     }

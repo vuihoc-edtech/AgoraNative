@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+//import dagger.hilt.InstallIn
+//import dagger.hilt.android.qualifiers.ApplicationContext
+//import dagger.hilt.components.SingletonComponent
 import io.agora.flat.common.android.AndroidClipboardController
 import io.agora.flat.common.android.AppCoroutineDispatchers
 import io.agora.flat.common.android.ClipboardController
@@ -24,7 +24,7 @@ import javax.inject.Singleton
  * 全局
  */
 @Module(includes = [LoggerModule::class])
-@InstallIn(SingletonComponent::class)
+//@InstallIn(SingletonComponent::class)
 object AppModule {
     @Provides
     fun provideIoDispatcher() = Dispatchers.IO
@@ -39,13 +39,15 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideKVCenter(@ApplicationContext context: Context): AppKVCenter {
+//    fun provideKVCenter(@ApplicationContext context: Context): AppKVCenter {
+    fun provideKVCenter( context: Context): AppKVCenter {
         return AppKVCenter(context)
     }
 
     @Singleton
     @Provides
-    fun providerAppDatabase(@ApplicationContext context: Context): AppDatabase {
+//    fun providerAppDatabase(@ApplicationContext context: Context): AppDatabase {
+    fun providerAppDatabase( context: Context): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, "flat-database").build()
     }
 
@@ -59,7 +61,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providerAppEnv(@ApplicationContext context: Context): AppEnv {
+//    fun providerAppEnv(@ApplicationContext context: Context): AppEnv {
+    fun providerAppEnv( context: Context): AppEnv {
         return AppEnv(context)
     }
 
@@ -77,13 +80,15 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providerClipboardController(@ApplicationContext context: Context): ClipboardController {
+//    fun providerClipboardController(@ApplicationContext context: Context): ClipboardController {
+    fun providerClipboardController( context: Context): ClipboardController {
         return AndroidClipboardController(context)
     }
 
     @Singleton
     @Provides
-    fun providerLoginManager(@ApplicationContext context: Context, appEnv: AppEnv): LoginManager {
+//    fun providerLoginManager(@ApplicationContext context: Context, appEnv: AppEnv): LoginManager {
+    fun providerLoginManager( context: Context, appEnv: AppEnv): LoginManager {
         return LoginManager(context, appEnv)
     }
 }

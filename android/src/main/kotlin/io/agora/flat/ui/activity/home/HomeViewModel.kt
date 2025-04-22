@@ -2,7 +2,7 @@ package io.agora.flat.ui.activity.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.Failure
 import io.agora.flat.data.Success
@@ -26,7 +26,7 @@ import javax.inject.Inject
 /**
  * Here Use StateFlow To Manage State
  */
-@HiltViewModel
+//@HiltViewModel
 class HomeViewModel @Inject constructor(
     private val roomRepository: RoomRepository,
     private val eventBus: EventBus,

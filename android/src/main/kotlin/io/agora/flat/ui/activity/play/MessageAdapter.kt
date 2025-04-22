@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+//import dagger.hilt.EntryPoint
+//import dagger.hilt.InstallIn
+//import dagger.hilt.android.EntryPointAccessors
+//import dagger.hilt.android.components.ActivityComponent
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.rtm.Message
 import io.agora.flat.common.rtm.NoticeMessageBody
@@ -30,8 +30,8 @@ class MessageAdapter constructor(
     private var userQuery: UserQuery
     private var userUUID: String
 
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
+//    @EntryPoint
+//    @InstallIn(ActivityComponent::class)
     interface MessageAdapterEntryPoint {
         fun userRepository(): UserRepository
         fun userQuery(): UserQuery

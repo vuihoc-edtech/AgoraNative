@@ -6,8 +6,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.scopes.ActivityScoped
+//import dagger.hilt.android.qualifiers.ActivityContext
+//import dagger.hilt.android.scopes.ActivityScoped
 import io.agora.flat.Constants
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.data.AppEnv
@@ -25,9 +25,10 @@ import javax.inject.Inject
 /**
  * bindingHandler -> thirdParty(webview, wechat) -> XXXEntryActivity -> LoginManager -> bindingHandler.handleResult
  */
-@ActivityScoped
+//@ActivityScoped
 class UserBindingHandler @Inject constructor(
-    @ActivityContext val context: Context,
+//    @ActivityContext val context: Context,
+     val context: Context,
     private val loginManager: LoginManager,
     private val userRepository: UserRepository,
     private val appKVCenter: AppKVCenter,

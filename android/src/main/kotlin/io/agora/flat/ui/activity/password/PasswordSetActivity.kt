@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.error.FlatErrorHandler
 import io.agora.flat.data.onFailure
@@ -35,7 +35,7 @@ import io.agora.flat.util.showToast
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class PasswordSetActivity : BaseComposeActivity() {
     @Inject
     lateinit var userRepository: UserRepository

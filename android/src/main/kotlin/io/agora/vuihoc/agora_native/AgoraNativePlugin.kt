@@ -28,7 +28,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler {
     override fun onMethodCall(call: MethodCall, result: Result) {
         if (call.method == "getPlatformVersion") {
             result.success("Android ${android.os.Build.VERSION.RELEASE}")
-        } else if (call.method == "openLoginActivity") {
+        } else if (call.method == "joinClassRoom") {
             openLoginActivity()
             result.success(true)
         } else {

@@ -56,6 +56,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.abs
 import kotlin.math.min
+import io.agora.flat.di.GlobalInstanceProvider
 
 
 class RtcComponent(
@@ -123,12 +124,11 @@ class RtcComponent(
     }
 
     private fun injectApi() {
-        val entryPoint = EntryPointAccessors.fromActivity(activity, RtcComponentEntryPoint::class.java)
-        rtcApi = entryPoint.rtcApi()
-        rtcVideoController = entryPoint.rtcVideoController()
-        windowsDragManager = entryPoint.windowsDragManager()
-        logger = entryPoint.logger()
-        syncedState = entryPoint.syncedState()
+        rtcApi = GlobalInstanceProvider.get(RtcApi::class.java)
+        rtcVideoController = GlobalInstanceProvider.get(RtcVideoController::class.java)
+        windowsDragManager = GlobalInstanceProvider.get(WindowsDragManager::class.java)
+        logger = GlobalInstanceProvider.get(io.agora.flat.di.interfaces.Logger::class.java)
+        syncedState = GlobalInstanceProvider.get(SyncedClassState::class.java)
     }
 
     private fun actionAfterPermission() {

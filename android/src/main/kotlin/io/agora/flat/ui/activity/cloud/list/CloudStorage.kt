@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
+//import io.agora.flat.ui.util.flatViewModel
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.Navigator
 import io.agora.flat.data.model.*
@@ -35,12 +35,13 @@ import io.agora.flat.ui.theme.FlatTheme
 import io.agora.flat.ui.theme.Shapes
 import io.agora.flat.ui.theme.isDarkTheme
 import io.agora.flat.ui.theme.isTabletMode
+import io.agora.flat.ui.util.flatViewModel
 import io.agora.flat.util.*
 
 @Composable
 fun CloudScreen(
     onOpenUploading: () -> Unit,
-    viewModel: CloudStorageViewModel = hiltViewModel(),
+    viewModel: CloudStorageViewModel = flatViewModel(),
 ) {
     val context = LocalContext.current
     val viewState by viewModel.state.collectAsState()

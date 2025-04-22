@@ -12,21 +12,23 @@ import androidx.recyclerview.widget.RecyclerView
 //import dagger.hilt.InstallIn
 //import dagger.hilt.android.EntryPointAccessors
 //import dagger.hilt.android.components.ActivityComponent
-import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.rtm.Message
+import io.agora.flat.common.rtm.MessageBody
 import io.agora.flat.common.rtm.NoticeMessageBody
 import io.agora.flat.common.rtm.TextMessageBody
 import io.agora.flat.data.repository.UserRepository
+import io.agora.flat.di.GlobalInstanceProvider
 import io.agora.flat.ui.manager.UserQuery
+import io.agora.vuihoc.agora_native.R
 
 /**
  * 消息列表适配器
  */
 class MessageAdapter constructor(
     context: Context,
-    private val dataSet: MutableList<Message> = mutableListOf(),
 ) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
 
+    private val dataSet = mutableListOf<Message>()
     private var userQuery: UserQuery
     private var userUUID: String
 
@@ -38,12 +40,10 @@ class MessageAdapter constructor(
     }
 
     init {
-        val entryPoint = EntryPointAccessors.fromActivity(
-            context as Activity,
-            MessageAdapterEntryPoint::class.java
-        )
-        userQuery = entryPoint.userQuery()
-        userUUID = entryPoint.userRepository().getUserUUID()
+        val userRepository = GlobalInstanceProvider.get(UserRepository::class.java)
+        val userQuery = GlobalInstanceProvider.get(UserQuery::class.java)
+        this.userQuery = userQuery
+        this.userUUID = userRepository.getUserUUID()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

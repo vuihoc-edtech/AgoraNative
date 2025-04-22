@@ -25,7 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-//import androidx.hilt.navigation.compose.hiltViewModel
+//import io.agora.flat.ui.util.flatViewModel
 //import dagger.hilt.android.AndroidEntryPoint
 import io.agora.flat.Constants
 import io.agora.vuihoc.agora_native.R
@@ -51,6 +51,7 @@ import io.agora.flat.ui.util.ShowUiMessageEffect
 import io.agora.flat.util.isValidPhone
 import io.agora.flat.util.isValidSmsCode
 import io.agora.flat.util.showToast
+import io.agora.flat.ui.util.flatViewModel
 
 //@AndroidEntryPoint
 class PhoneBindActivity : BaseComposeActivity() {
@@ -118,7 +119,7 @@ fun PhoneBindDialog(
 fun PhoneBindScreen(
     onBindSuccess: () -> Unit,
     onBindClose: () -> Unit,
-    viewModel: PhoneBindViewModel = hiltViewModel(),
+    viewModel: PhoneBindViewModel = flatViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current

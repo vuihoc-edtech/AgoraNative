@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-//import androidx.hilt.navigation.compose.hiltViewModel
+import io.agora.flat.ui.util.flatViewModel
 import androidx.navigation.NavController
 //import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
@@ -66,7 +66,7 @@ class RoomDetailActivity : BaseComposeActivity() {
 @Composable
 fun RoomDetailScreen(
     navController: NavController,
-    viewModel: RoomDetailViewModel = hiltViewModel(),
+    viewModel: RoomDetailViewModel = flatViewModel(),
 ) {
     val context = LocalContext.current
     val viewState by viewModel.state.collectAsState()

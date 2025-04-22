@@ -22,6 +22,7 @@ import io.agora.flat.ui.manager.RoomOverlayManager
 import io.agora.flat.util.getViewRect
 import io.agora.flat.util.isDarkMode
 import io.agora.flat.util.isTabletMode
+import io.agora.flat.di.GlobalInstanceProvider
 
 class WhiteboardComponent(
     activity: ClassRoomActivity,
@@ -46,8 +47,7 @@ class WhiteboardComponent(
     }
 
     private fun injectApi() {
-        val entryPoint = EntryPointAccessors.fromActivity(activity, BoardComponentEntryPoint::class.java)
-        boardRoom = entryPoint.boardRoom()
+        boardRoom = GlobalInstanceProvider.get(BoardRoom::class.java)
     }
 
     private fun initView() {

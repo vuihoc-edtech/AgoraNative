@@ -32,7 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import io.agora.flat.ui.util.flatViewModel
 import androidx.navigation.NavController
 import io.agora.flat.Constants
 import io.agora.vuihoc.agora_native.R
@@ -54,7 +54,7 @@ import io.agora.flat.util.isApkInDebug
 import io.agora.flat.util.launchMarket
 
 @Composable
-fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = flatViewModel()) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 

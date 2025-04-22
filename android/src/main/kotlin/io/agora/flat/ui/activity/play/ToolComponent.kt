@@ -96,7 +96,7 @@ class ToolComponent(
 
     private fun injectApi() {
         ///linhndq: comment code
-//        val entryPoint = EntryPointAccessors.fromActivity(activity, ToolComponentEntryPoint::class.java)
+//        val entryPoint = GlobalInstanceProvider.get(activity, ToolComponentEntryPoint::class.java)
 //        boardRoom = entryPoint.boardRoom()
 //        appEnv = entryPoint.appEnv()
 //        rtcApi = entryPoint.rtcApi()

@@ -24,9 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
+import io.agora.flat.ui.util.flatViewModel
 import androidx.navigation.NavController
-import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.Navigator
 import io.agora.flat.common.board.DeviceState
@@ -46,7 +45,7 @@ import io.agora.flat.util.showToast
 @Composable
 fun CreateRoomScreen(
     navController: NavController,
-    viewModel: CreateRoomViewModel = hiltViewModel(),
+    viewModel: CreateRoomViewModel = flatViewModel(),
 ) {
     val context = LocalContext.current
     val viewState by viewModel.state.collectAsState()

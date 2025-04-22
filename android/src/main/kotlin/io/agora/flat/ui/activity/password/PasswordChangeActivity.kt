@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import io.agora.flat.ui.util.flatViewModel
 //import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.ui.activity.base.BaseComposeActivity
@@ -47,7 +47,7 @@ class PasswordChangeActivity : BaseComposeActivity() {
 }
 
 @Composable
-fun PasswordChangeScreen(onClose: () -> Unit, viewModel: PasswordChangeViewModel = hiltViewModel()) {
+fun PasswordChangeScreen(onClose: () -> Unit, viewModel: PasswordChangeViewModel = flatViewModel()) {
     val context = LocalContext.current
     val viewState by viewModel.state.collectAsState()
 

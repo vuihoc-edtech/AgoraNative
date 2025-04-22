@@ -13,7 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-//import androidx.hilt.navigation.compose.hiltViewModel
+import io.agora.flat.ui.util.flatViewModel
+import io.agora.flat.ui.util.createSavedStateViewModelFactory
 import coil.compose.rememberImagePainter
 //import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
@@ -22,6 +23,9 @@ import io.agora.flat.data.model.CoursewareType
 import io.agora.flat.ui.activity.base.BaseComposeActivity
 import io.agora.flat.ui.activity.setting.ComposeWebView
 import io.agora.flat.ui.compose.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.SavedStateHandle
 
 //@AndroidEntryPoint
 class PreviewActivity : BaseComposeActivity() {
@@ -29,14 +33,21 @@ class PreviewActivity : BaseComposeActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            PreviewPage(onClose = { this.finish() })
+            // Tạo custom ViewModelProvider.Factory
+            val factory = createSavedStateViewModelFactory<PreviewViewModel>()
+            
+            PreviewPage(
+                factory = factory,
+                onClose = { this.finish() }
+            )
         }
     }
 }
 
 @Composable
 private fun PreviewPage(
-    viewModel: PreviewViewModel = hiltViewModel(),
+    factory: ViewModelProvider.Factory,
+    viewModel: PreviewViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = factory),
     onClose: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsState()

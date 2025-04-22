@@ -26,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-//import androidx.hilt.navigation.compose.hiltViewModel
+//import io.agora.flat.ui.util.flatViewModel
 //import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.ui.activity.base.BaseComposeActivity
@@ -40,6 +40,7 @@ import io.agora.flat.ui.util.ShowUiMessageEffect
 import io.agora.flat.ui.viewmodel.EditNameUiState
 import io.agora.flat.ui.viewmodel.EditNameViewModel
 import io.agora.flat.util.showToast
+import io.agora.flat.ui.util.flatViewModel
 
 //@AndroidEntryPoint
 class EditNameActivity : BaseComposeActivity() {
@@ -53,7 +54,7 @@ class EditNameActivity : BaseComposeActivity() {
 }
 
 @Composable
-private fun EditNameScreen(onFinish: () -> Unit, viewModel: EditNameViewModel = hiltViewModel()) {
+private fun EditNameScreen(onFinish: () -> Unit, viewModel: EditNameViewModel = flatViewModel()) {
     val state by viewModel.state.collectAsState()
     val activity = LocalContext.current as Activity
 

@@ -21,6 +21,7 @@ import io.agora.flat.ui.viewmodel.MessagesUpdate
 import io.agora.flat.util.KeyboardHeightProvider
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.runBlocking
+import io.agora.flat.di.GlobalInstanceProvider
 
 class RtmComponent(
     activity: ClassRoomActivity,
@@ -47,8 +48,7 @@ class RtmComponent(
     }
 
     private fun injectApi() {
-        val entryPoint = EntryPointAccessors.fromActivity(activity, RtmComponentEntryPoint::class.java)
-        rtmApi = entryPoint.rtmApi()
+        rtmApi = GlobalInstanceProvider.get(RtmApi::class.java)
     }
 
     private fun initView() {

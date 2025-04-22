@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
+import io.agora.flat.ui.util.flatViewModel
 import androidx.navigation.NavController
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.FlatErrorCode
@@ -83,7 +83,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun JoinRoomScreen(
     navController: NavController,
-    viewModel: JoinRoomViewModel = hiltViewModel(),
+    viewModel: JoinRoomViewModel = flatViewModel(),
 ) {
     val viewState by viewModel.state.collectAsState()
     val context = LocalContext.current

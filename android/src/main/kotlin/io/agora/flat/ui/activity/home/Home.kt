@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+// import io.agora.flat.ui.util.flatViewModel
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.Navigator
 import io.agora.flat.data.model.RoomInfo
@@ -29,6 +29,7 @@ import io.agora.flat.ui.theme.Red_1
 import io.agora.flat.ui.theme.Red_3
 import io.agora.flat.ui.theme.isDarkTheme
 import io.agora.flat.ui.theme.isTabletMode
+import io.agora.flat.ui.util.flatViewModel
 
 @Composable
 fun HomeScreen(
@@ -38,7 +39,7 @@ fun HomeScreen(
     onOpenSetting: () -> Unit,
     onOpenUserProfile: () -> Unit,
     onOpenHistory: () -> Unit,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = flatViewModel(),
 ) {
     val context = LocalContext.current
     val viewState by viewModel.state.collectAsState()

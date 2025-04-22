@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-//import androidx.hilt.navigation.compose.hiltViewModel
+//import io.agora.flat.ui.util.flatViewModel
 //import dagger.hilt.android.AndroidEntryPoint
 import io.agora.flat.Config
 import io.agora.flat.Constants
@@ -47,6 +47,7 @@ import io.agora.flat.ui.viewmodel.AccountSecurityUiState
 import io.agora.flat.ui.viewmodel.AccountSecurityViewModel
 import io.agora.flat.util.getActivity
 import javax.inject.Inject
+import io.agora.flat.ui.util.flatViewModel
 
 //@AndroidEntryPoint
 class AccountSecurityActivity : BaseComposeActivity() {
@@ -88,7 +89,7 @@ private fun AccountSecurityScreen(
     onBindGoogle: () -> Unit,
     onBindPhone: () -> Unit,
     onBindEmail: () -> Unit,
-    viewModel: AccountSecurityViewModel = hiltViewModel()
+    viewModel: AccountSecurityViewModel = flatViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
@@ -302,7 +303,7 @@ fun BindingItems(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun CancelAccountDialog(onDismissRequest: () -> Unit, viewModel: AccountSecurityViewModel = hiltViewModel()) {
+private fun CancelAccountDialog(onDismissRequest: () -> Unit, viewModel: AccountSecurityViewModel = flatViewModel()) {
     val scrollState = rememberScrollState()
 
     FlatTheme {

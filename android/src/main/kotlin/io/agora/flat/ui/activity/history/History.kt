@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import io.agora.flat.ui.util.flatViewModel
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.data.model.RoomInfo
 import io.agora.flat.ui.compose.EmptyView
@@ -24,7 +24,7 @@ import io.agora.flat.ui.theme.isDarkTheme
 fun HistoryScreen(
     onBackPressed: () -> Unit,
     onOpenRoomDetail: (rUUID: String, pUUID: String?) -> Unit,
-    viewModel: HistoryViewModel = hiltViewModel(),
+    viewModel: HistoryViewModel = flatViewModel(),
 ) {
     val viewState by viewModel.state.collectAsState()
 

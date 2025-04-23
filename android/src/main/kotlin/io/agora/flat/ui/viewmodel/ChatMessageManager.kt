@@ -1,6 +1,6 @@
 package io.agora.flat.ui.viewmodel
 
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+// import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.flat.common.rtm.Message
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,8 +9,8 @@ import javax.inject.Inject
 /**
  * a class to manage chat messages in classroom.
  */
-@ActivityRetainedScoped
-class ChatMessageManager @Inject constructor() {
+
+class ChatMessageManager() {
     private var _messages = MutableStateFlow<List<Message>>(emptyList())
     val messages = _messages.asStateFlow()
 

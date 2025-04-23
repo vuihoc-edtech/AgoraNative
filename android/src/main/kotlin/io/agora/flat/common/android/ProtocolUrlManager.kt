@@ -15,7 +15,7 @@ object ProtocolUrlManager {
 
     private lateinit var application: Context
 
-    private val appEnv by lazy { AppEnv(application) }
+    private val appEnv = AppEnv.getInstance()
 
     private val urls: Map<String, Map<String, Map<String, String>>> = mapOf(
         PRIVACY to mapOf(

@@ -24,9 +24,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
+// import androidx.hilt.navigation.compose.hiltViewModel
 import io.agora.vuihoc.agora_native.R
-import io.agora.flat.common.Navigator
 import io.agora.flat.data.model.*
 import io.agora.flat.ui.compose.EmptyView
 import io.agora.flat.ui.compose.*
@@ -40,7 +39,7 @@ import io.agora.flat.util.*
 @Composable
 fun CloudScreen(
     onOpenUploading: () -> Unit,
-    viewModel: CloudStorageViewModel = hiltViewModel(),
+    viewModel: CloudStorageViewModel,
 ) {
     val context = LocalContext.current
     val viewState by viewModel.state.collectAsState()
@@ -60,11 +59,12 @@ fun CloudScreen(
             if (file.resourceType == ResourceType.Directory) {
                 viewModel.enterFolder(file.fileName)
             } else {
-                Navigator.launchPreviewActivity(context, file)
+//                Navigator.launchPreviewActivity(context, file)
             }
         },
         onItemDelete = { viewModel.delete(it.fileUUID) },
-        onItemPreview = { Navigator.launchPreviewActivity(context, it) },
+//        onItemPreview = { Navigator.launchPreviewActivity(context, it) },
+        onItemPreview = { },
         onItemRename = viewModel::rename,
         onPreviewRestrict = { context.showToast(R.string.cloud_preview_transcoding_hint) },
         onNewFolder = viewModel::createFolder,

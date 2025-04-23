@@ -32,7 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+// import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import io.agora.flat.Constants
 import io.agora.vuihoc.agora_native.R
@@ -45,7 +45,7 @@ import io.agora.flat.ui.compose.FlatHighlightTextButton
 import io.agora.flat.ui.compose.FlatTextBodyOne
 import io.agora.flat.ui.compose.FlatTextCaption
 import io.agora.flat.ui.compose.StreamCollectDialog
-import io.agora.flat.ui.compose.UpdateDialog
+//import io.agora.flat.ui.compose.UpdateDialog
 import io.agora.flat.ui.theme.FlatTheme
 import io.agora.flat.ui.viewmodel.SettingsUiState
 import io.agora.flat.ui.viewmodel.SettingsViewModel
@@ -54,7 +54,7 @@ import io.agora.flat.util.isApkInDebug
 import io.agora.flat.util.launchMarket
 
 @Composable
-fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 
@@ -160,9 +160,9 @@ private fun SettingsList(state: SettingsUiState, onDownload: suspend () -> Uri, 
                 tip = stringResource(R.string.setting_check_update),
                 desc = context.getAppVersion(),
                 onClick = {
-                    if (state.versionCheckResult.showUpdate) {
-                        showUpdate = true
-                    }
+//                    if (state.versionCheckResult.showUpdate) {
+//                        showUpdate = true
+//                    }
                 }
             )
             SettingItemDivider()
@@ -188,17 +188,17 @@ private fun SettingsList(state: SettingsUiState, onDownload: suspend () -> Uri, 
     }
 
     if (showUpdate) {
-        UpdateDialog(
-            versionCheckResult = state.versionCheckResult,
-            downloadApp = onDownload,
-            onCancel = {
-                showUpdate = false
-            },
-            onGotoMarket = {
-                showUpdate = false
-                context.launchMarket()
-            }
-        )
+//        UpdateDialog(
+////            versionCheckResult = state.versionCheckResult,
+//            downloadApp = onDownload,
+//            onCancel = {
+//                showUpdate = false
+//            },
+//            onGotoMarket = {
+//                showUpdate = false
+//                context.launchMarket()
+//            }
+//        )
     }
 
     if (showCollect) {

@@ -1,22 +1,28 @@
 package io.agora.flat.common.android
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.vuihoc.agora_native.R
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class I18NFetcher @Inject constructor(@ApplicationContext context: Context) {
+class I18NFetcher private constructor(context: Context) {
+
+    private val resources = context.applicationContext.resources
+
     companion object {
         const val JOIN_ROOM_RECORD_PMI_TITLE = "join_room_record_pmi_title"
 
-        val map = mapOf(
+        private val map = mapOf(
             JOIN_ROOM_RECORD_PMI_TITLE to R.string.join_room_record_pmi_title
         )
-    }
 
-    private val resources = context.resources
+        @Volatile
+        private var INSTANCE: I18NFetcher? = null
+
+        fun getInstance(context: Context): I18NFetcher {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: I18NFetcher(context).also { INSTANCE = it }
+            }
+        }
+    }
 
     fun getString(key: String): String {
         val resId = map[key] ?: return ""

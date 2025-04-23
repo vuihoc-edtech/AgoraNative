@@ -3,7 +3,7 @@ package io.agora.flat.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
 import io.agora.flat.common.rtm.Message
 import io.agora.flat.common.rtm.MessageFactory
@@ -22,8 +22,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class MessageViewModel @Inject constructor(
+
+class MessageViewModel(
     savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
     private val miscRepository: MiscRepository,

@@ -5,6 +5,7 @@ import io.agora.flat.common.android.LanguageManager
 import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.Failure
 import io.agora.flat.data.Result
+import io.agora.flat.data.ServiceFetcher
 import io.agora.flat.data.Success
 import io.agora.flat.data.model.AuthUUIDReq
 import io.agora.flat.data.model.EmailBindReq
@@ -27,23 +28,27 @@ import io.agora.flat.data.model.UserInfoWithToken
 import io.agora.flat.data.model.UserRenameReq
 import io.agora.flat.data.onSuccess
 import io.agora.flat.data.toResult
-import io.agora.flat.di.interfaces.Logger
 import io.agora.flat.http.api.UserService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class UserRepository @Inject constructor(
-    private val userService: UserService,
-    private val appKVCenter: AppKVCenter,
-    private val logger: Logger,
+class UserRepository(
+    private val userService: UserService = ServiceFetcher.getInstance().fetchUserService(),
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
 ) {
     private var bindings: UserBindings? = null
+    companion object {
+        @Volatile
+        private var INSTANCE: UserRepository? = null
 
+        fun getInstance(): UserRepository {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: UserRepository().also { INSTANCE = it }
+            }
+        }
+    }
     suspend fun loginCheck(): Result<Boolean> {
         if (AppKVCenter.MockData.mockEnable) {
             return Success(true)
@@ -55,7 +60,6 @@ class UserRepository @Inject constructor(
             is Success -> {
                 updateUserAndToken(result)
                 appKVCenter.updateSessionId(UUID.randomUUID().toString())
-                logger.setUserId(result.data.uuid)
                 Success(true)
             }
 
@@ -407,7 +411,7 @@ class UserRepository @Inject constructor(
         }
     }
 
-    private fun updateUserAndToken(result: Success<UserInfoWithToken>) {
+    fun updateUserAndToken(result: Success<UserInfoWithToken>) {
         appKVCenter.setToken(result.data.token)
         appKVCenter.setUserInfo(result.data.toUserInfo())
     }

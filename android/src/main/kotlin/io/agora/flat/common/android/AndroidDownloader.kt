@@ -11,14 +11,13 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
-import javax.inject.Inject
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class AndroidDownloader @Inject constructor(@ApplicationContext val context: Context) {
+class AndroidDownloader(val context: Context) {
     init {
         val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         val receiver: BroadcastReceiver = object : BroadcastReceiver() {

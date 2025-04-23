@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+// import androidx.hilt.navigation.compose.hiltViewModel
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.upload.UploadFile
 import io.agora.flat.common.upload.UploadState
@@ -24,7 +24,7 @@ import io.agora.flat.util.FlatFormatter
 import io.agora.flat.util.fileExtension
 
 @Composable
-internal fun Uploading(onCloseUploading: () -> Unit, viewModel: UploadingViewModel = hiltViewModel()) {
+internal fun Uploading(onCloseUploading: () -> Unit, viewModel: UploadingViewModel) {
     val viewState by viewModel.state.collectAsState()
 
     Uploading(viewState, onCloseUploading, viewModel::retryUpload)

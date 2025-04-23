@@ -3,23 +3,23 @@ package io.agora.flat.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.flat.common.board.DeviceState
-import io.agora.flat.data.model.LoginHistory
 import io.agora.flat.data.model.LoginHistoryItem
 import io.agora.flat.data.model.UserInfo
 import io.agora.flat.data.model.UserInfoWithToken
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 提供App级别的KV存储
  */
-@Singleton
-class AppKVCenter @Inject constructor(@ApplicationContext context: Context) {
-    private val store: SharedPreferences = context.getSharedPreferences("flat_kv_data", Context.MODE_PRIVATE)
+class AppKVCenter {
+    private lateinit var store: SharedPreferences
     private val gson = Gson()
     private val mockData = MockData()
+
+    fun initStore(context: Context) {
+        store = context.getSharedPreferences("flat_kv_data", Context.MODE_PRIVATE)
+    }
 
     // region user
     fun setLogout() {
@@ -66,20 +66,20 @@ class AppKVCenter @Inject constructor(@ApplicationContext context: Context) {
     }
 
     fun addLoginHistoryItem(item: LoginHistoryItem) {
-        val updatedItems = (listOf(item) + getLoginHistory().items).take(5)
-        store.edit().apply {
-            putString(KEY_LOGIN_HISTORY, gson.toJson(LoginHistory(updatedItems)))
-        }.apply()
+//        val updatedItems = (listOf(item) + getLoginHistory().items).take(5)
+//        store.edit().apply {
+//            putString(KEY_LOGIN_HISTORY, gson.toJson(LoginHistory(updatedItems)))
+//        }.apply()
     }
 
-    fun getLastLoginHistoryItem(): LoginHistoryItem? {
-        return getLoginHistory().items.firstOrNull()
-    }
-
-    private fun getLoginHistory(): LoginHistory {
-        val json = store.getString(KEY_LOGIN_HISTORY, null) ?: return LoginHistory()
-        return gson.fromJson(json, LoginHistory::class.java)
-    }
+//    fun getLastLoginHistoryItem(): LoginHistoryItem? {
+//        return getLoginHistory().items.firstOrNull()
+//    }
+//
+//    private fun getLoginHistory(): LoginHistory {
+////        val json = store.getString(KEY_LOGIN_HISTORY, null) ?: return LoginHistory()
+////        return gson.fromJson(json, LoginHistory::class.java)
+//    }
 
     // endregion
 
@@ -122,10 +122,12 @@ class AppKVCenter @Inject constructor(@ApplicationContext context: Context) {
     }
 
     fun useProjectorConvertor(): Boolean {
+//        return true
         return store.getBoolean(KEY_PROJECTOR_CONVERTOR, true)
     }
 
     fun getLastCancelUpdate(): Long {
+//        return 0
         return store.getLong(KEY_LAST_CANCEL_UPDATE, 0)
     }
 
@@ -152,6 +154,7 @@ class AppKVCenter @Inject constructor(@ApplicationContext context: Context) {
         } else {
             gson.fromJson(preferenceJson, DeviceState::class.java)
         }
+//        return DeviceState(camera = true, mic = true)
     }
 
     fun setDeviceStatePreference(deviceState: DeviceState) {
@@ -161,6 +164,7 @@ class AppKVCenter @Inject constructor(@ApplicationContext context: Context) {
     }
 
     fun getJoinEarly(): Int {
+//        return 0
         return store.getInt(KEY_SERVER_JOIN_EARLY, 5)
     }
 
@@ -192,6 +196,15 @@ class AppKVCenter @Inject constructor(@ApplicationContext context: Context) {
         const val KEY_LOGIN_HISTORY = "key_login_history"
 
         const val KEY_SERVER_JOIN_EARLY = "key_server_join_early"
+
+        @Volatile
+        private var INSTANCE: AppKVCenter? = null
+
+        fun getInstance(): AppKVCenter {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: AppKVCenter().also { INSTANCE = it }
+            }
+        }
     }
 
     class MockData {

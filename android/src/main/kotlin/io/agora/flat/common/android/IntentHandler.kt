@@ -5,12 +5,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.vuihoc.agora_native.R
 import java.io.File
 import javax.inject.Inject
 
-class IntentHandler @Inject constructor(@ApplicationContext val context: Context) {
+class IntentHandler(val context: Context) {
 
     fun launchUrl(url: String) {
         val intent = Intent().apply {

@@ -3,7 +3,7 @@ package io.agora.flat.ui.manager
 import android.app.Activity
 import android.graphics.Rect
 import android.widget.FrameLayout
-import dagger.hilt.android.scopes.ActivityScoped
+// import dagger.hilt.android.scopes.ActivityScoped
 import io.agora.flat.common.board.WhiteSyncedState
 import io.agora.flat.common.board.WindowInfo
 import io.agora.flat.ui.activity.play.UserWindowUiState
@@ -16,8 +16,7 @@ import javax.inject.Inject
 import kotlin.math.ceil
 import kotlin.math.sqrt
 
-@ActivityScoped
-class WindowsDragManager @Inject constructor(
+class WindowsDragManager(
     val activity: Activity,
     val rtcVideoController: RtcVideoController,
     val syncedState: WhiteSyncedState,

@@ -25,14 +25,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.airbnb.lottie.LottieAnimationView
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+// import dagger.hilt.EntryPoint
+// import dagger.hilt.InstallIn
+// import dagger.hilt.android.EntryPointAccessors
+// import dagger.hilt.android.components.ActivityComponent
 import io.agora.flat.Config
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.board.UserWindows
+import io.agora.flat.common.board.WhiteSyncedState
 import io.agora.flat.common.board.WindowInfo
+import io.agora.flat.common.rtc.AgoraRtc
 import io.agora.flat.common.rtc.RtcEvent
 import io.agora.flat.data.model.RoomUser
 import io.agora.vuihoc.agora_native.databinding.ComponentFullscreenBinding
@@ -80,24 +82,13 @@ class RtcComponent(
         }
     }
 
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
-    interface RtcComponentEntryPoint {
-        fun rtcApi(): RtcApi
-        fun rtcVideoController(): RtcVideoController
-        fun windowsDragManager(): WindowsDragManager
-        fun logger(): Logger
-        fun syncedState(): SyncedClassState
-    }
-
     private lateinit var fullScreenBinding: ComponentFullscreenBinding
     private lateinit var videoListBinding: ComponentVideoListBinding
 
     private lateinit var rtcApi: RtcApi
     private lateinit var rtcVideoController: RtcVideoController
     private lateinit var windowsDragManager: WindowsDragManager
-    private lateinit var logger: Logger
-    private lateinit var syncedState: SyncedClassState
+    private lateinit var syncedState: WhiteSyncedState
     private val viewModel: ClassRoomViewModel by activity.viewModels()
 
     private lateinit var adapter: UserVideoAdapter
@@ -123,12 +114,11 @@ class RtcComponent(
     }
 
     private fun injectApi() {
-        val entryPoint = EntryPointAccessors.fromActivity(activity, RtcComponentEntryPoint::class.java)
-        rtcApi = entryPoint.rtcApi()
-        rtcVideoController = entryPoint.rtcVideoController()
-        windowsDragManager = entryPoint.windowsDragManager()
-        logger = entryPoint.logger()
-        syncedState = entryPoint.syncedState()
+        rtcApi = AgoraRtc()
+        rtcVideoController = RtcVideoController(rtcApi)
+        syncedState = WhiteSyncedState()
+        windowsDragManager = WindowsDragManager(activity, rtcVideoController = rtcVideoController, syncedState = syncedState)
+
     }
 
     private fun actionAfterPermission() {
@@ -141,7 +131,7 @@ class RtcComponent(
     private fun observeState() {
         lifecycleScope.launchWhenResumed {
             viewModel.videoUsers.collect { users ->
-                logger.i("[RTC] videoUsers changed to ${users.size}")
+                // logger.i("[RTC] videoUsers changed to ${users.size}")
                 adapter.updateUsers(users)
                 updateUserWindows(users)
                 // 处理用户进出时的显示
@@ -189,7 +179,7 @@ class RtcComponent(
 
         lifecycleScope.launchWhenResumed {
             rtcApi.observeRtcEvent().collect { event ->
-                logger.i("[RTC] event: $event")
+                // logger.i("[RTC] event: $event")
 
                 when (event) {
                     is RtcEvent.UserJoined -> lifecycleScope.launch {
@@ -554,7 +544,7 @@ class RtcComponent(
         val right = start.right + (end.right - start.right) * value
         val top = start.top + (end.top - start.top) * value
         val bottom = start.bottom + (end.bottom - start.bottom) * value
-        logger.d("left:$left,right:$right,top:$top,bottom:$bottom")
+        // logger.d("left:$left,right:$right,top:$top,bottom:$bottom")
 
         fullScreenBinding.fullVideoView.run {
             val lp = layoutParams as ViewGroup.MarginLayoutParams
@@ -599,7 +589,7 @@ class RtcComponent(
             return
         }
 
-        logger.d("[RTC] checkPermission request $permissions")
+        // logger.d("[RTC] checkPermission request $permissions")
 
         activity.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { it ->
             val allGranted = it.mapNotNull { it.key }.size == it.size
@@ -621,7 +611,7 @@ class RtcComponent(
     private val atomIndex = AtomicInteger(0)
 
     private val onDragListener = View.OnDragListener { _, event ->
-        logger.i("RtcComponent", "onDragListener ${event.action}")
+        // logger.i("RtcComponent", "onDragListener ${event.action}")
         when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
                 val user = adapter.findUserByUuid(windowsDragManager.currentUUID()) ?: return@OnDragListener false

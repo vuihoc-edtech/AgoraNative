@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dagger.hilt.android.AndroidEntryPoint
+// import dagger.hilt.android.AndroidEntryPoint
 import io.agora.flat.Config
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.data.AppEnv
@@ -53,7 +53,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
-@AndroidEntryPoint
+
 class DevToolsActivity : BaseComposeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,7 +110,7 @@ fun ResumeCheckVersion() {
 @Composable
 private fun EnvSwitch() {
     val context = LocalContext.current
-    val appEnv = AppEnv(context)
+    val appEnv = AppEnv.getInstance()
     val curEnv = appEnv.getEnv()
     val flatServiceUrl = appEnv.flatServiceUrl
     val userViewModel: UserViewModel = viewModel()
@@ -266,7 +266,7 @@ fun MockEnableFlag() {
 @Composable
 fun ProjectorEnableFlag() {
     val context = LocalContext.current
-    val appKVCenter = AppKVCenter(context)
+    val appKVCenter = AppKVCenter.getInstance()
     var useProjector by remember { mutableStateOf(appKVCenter.useProjectorConvertor()) }
 
     Row(
@@ -289,7 +289,7 @@ fun ProjectorEnableFlag() {
 @Composable
 fun ClearLastCancelUpdate() {
     val context = LocalContext.current
-    val appKVCenter = AppKVCenter(context)
+    val appKVCenter = AppKVCenter.getInstance()
     var lastCancelUpdate by remember { mutableStateOf(appKVCenter.getLastCancelUpdate()) }
 
     Row(

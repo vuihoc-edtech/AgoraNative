@@ -11,7 +11,7 @@ import com.herewhite.sdk.domain.Scene
 import com.herewhite.sdk.domain.WindowAppParam
 import com.herewhite.sdk.domain.WindowPrefersColorScheme.Dark
 import com.herewhite.sdk.domain.WindowPrefersColorScheme.Light
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+// import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.board.fast.FastException
 import io.agora.board.fast.FastRoom
 import io.agora.board.fast.FastRoomListener
@@ -43,14 +43,13 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-@ActivityRetainedScoped
-class AgoraBoardRoom @Inject constructor(
-    val userRepository: UserRepository,
-    val syncedClassState: SyncedClassState,
-    val appKVCenter: AppKVCenter,
-    val appEnv: AppEnv,
-    val logger: Logger,
-) : BoardRoom {
+
+class AgoraBoardRoom(
+    val userRepository: UserRepository = UserRepository.getInstance(),
+    val syncedClassState: SyncedClassState = WhiteSyncedState(),
+    val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
+    val appEnv: AppEnv = AppEnv.getInstance(),
+    ) : BoardRoom {
     private lateinit var fastboard: Fastboard
     private lateinit var fastboardView: FastboardView
 
@@ -112,7 +111,7 @@ class AgoraBoardRoom @Inject constructor(
 
         fastRoom?.addListener(object : FastRoomListener {
             override fun onRoomPhaseChanged(phase: RoomPhase) {
-                logger.i("[BOARD] room phase change to ${phase.name}")
+                // logger.i("[BOARD] room phase change to ${phase.name}")
                 when (phase) {
                     RoomPhase.connecting -> boardPhase.value = BoardPhase.Connecting
                     RoomPhase.connected -> boardPhase.value = BoardPhase.Connected
@@ -122,7 +121,7 @@ class AgoraBoardRoom @Inject constructor(
             }
 
             override fun onRoomReadyChanged(fastRoom: FastRoom) {
-                logger.i("[BOARD] room ready changed ${fastRoom.isReady}")
+                // logger.i("[BOARD] room ready changed ${fastRoom.isReady}")
                 if (syncedClassState is WhiteSyncedState && fastRoom.isReady) {
                     syncedClassState.resetRoom(fastRoom)
                 }
@@ -143,7 +142,7 @@ class AgoraBoardRoom @Inject constructor(
         }
 
         fastRoom?.setErrorHandler {
-            logger.e("[BOARD] error ${it.message}")
+            // logger.e("[BOARD] error ${it.message}")
         }
 
         val fastResource = object : FastResource() {
@@ -189,7 +188,7 @@ class AgoraBoardRoom @Inject constructor(
     }
 
     override fun setDarkMode(dark: Boolean) {
-        logger.i("[BOARD] set dark mode $dark, fastboard ${::fastboard.isInitialized}")
+        // logger.i("[BOARD] set dark mode $dark, fastboard ${::fastboard.isInitialized}")
         this.darkMode = dark
         if (::fastboard.isInitialized) {
             val fastStyle = fastboard.fastStyle.apply { isDarkMode = dark }
@@ -203,26 +202,26 @@ class AgoraBoardRoom @Inject constructor(
     }
 
     override suspend fun setWritable(writable: Boolean): Boolean = suspendCoroutine {
-        logger.i("[BoardRoom] set writable $writable, when isWritable ${fastRoom?.isWritable}")
+        // logger.i("[BoardRoom] set writable $writable, when isWritable ${fastRoom?.isWritable}")
         if (fastRoom?.isWritable == writable) {
             it.resume(writable)
             return@suspendCoroutine
         }
         fastRoom?.room?.setWritable(writable, object : Promise<Boolean> {
             override fun then(success: Boolean) {
-                logger.i("[BoardRoom] set writable result $success")
+                // logger.i("[BoardRoom] set writable result $success")
                 it.resume(success)
             }
 
             override fun catchEx(t: SDKError) {
-                logger.w("[BoardRoom] set writable error ${t.jsStack}")
+                // logger.w("[BoardRoom] set writable error ${t.jsStack}")
                 it.resumeWithException(t)
             }
         }) ?: it.resumeWithException(FlatBoardException("[BoardRoom] room not ready"))
     }
 
     override suspend fun setAllowDraw(allow: Boolean) {
-        logger.i("[BoardRoom] set allow draw $allow, when isWritable ${fastRoom?.isWritable}")
+        // logger.i("[BoardRoom] set allow draw $allow, when isWritable ${fastRoom?.isWritable}")
         if (fastRoom?.isWritable == true) {
             fastRoom?.room?.disableOperations(!allow)
             fastRoom?.room?.disableWindowOperation(!allow)

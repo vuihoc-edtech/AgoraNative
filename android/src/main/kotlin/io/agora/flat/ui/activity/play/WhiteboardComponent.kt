@@ -9,12 +9,13 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+// import dagger.hilt.EntryPoint
+// import dagger.hilt.InstallIn
+// import dagger.hilt.android.EntryPointAccessors
+// import dagger.hilt.android.components.ActivityComponent
 import io.agora.vuihoc.agora_native.R
 import io.agora.board.fast.R.id.fast_tools_addition_layout
+import io.agora.flat.common.board.AgoraBoardRoom
 import io.agora.flat.data.model.WindowAppItem
 import io.agora.vuihoc.agora_native.databinding.ComponentWhiteboardBinding
 import io.agora.flat.di.interfaces.BoardRoom
@@ -28,12 +29,6 @@ class WhiteboardComponent(
     rootView: FrameLayout,
 ) : BaseComponent(activity, rootView) {
 
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
-    interface BoardComponentEntryPoint {
-        fun boardRoom(): BoardRoom
-    }
-
     private lateinit var binding: ComponentWhiteboardBinding
     private lateinit var boardRoom: BoardRoom
 
@@ -46,8 +41,7 @@ class WhiteboardComponent(
     }
 
     private fun injectApi() {
-        val entryPoint = EntryPointAccessors.fromActivity(activity, BoardComponentEntryPoint::class.java)
-        boardRoom = entryPoint.boardRoom()
+        boardRoom = AgoraBoardRoom()
     }
 
     private fun initView() {

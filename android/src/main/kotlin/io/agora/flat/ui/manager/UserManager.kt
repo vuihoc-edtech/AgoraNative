@@ -1,6 +1,6 @@
 package io.agora.flat.ui.manager
 
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+// import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.flat.common.board.DeviceState
 import io.agora.flat.data.model.NetworkRoomUser
 import io.agora.flat.data.model.RoomUser
@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
-@ActivityRetainedScoped
-class UserManager @Inject constructor(
+
+class UserManager(
     private val userQuery: UserQuery,
 ) {
     private var _users = MutableStateFlow<List<RoomUser>>(emptyList())

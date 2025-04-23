@@ -2,7 +2,7 @@ package io.agora.flat.ui.activity.cloud.uploading
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
 import io.agora.flat.common.upload.UploadManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class UploadingViewModel @Inject constructor() : ViewModel() {
+
+class UploadingViewModel() : ViewModel() {
     private val _state = MutableStateFlow(UploadingUIState())
     val state: StateFlow<UploadingUIState>
         get() = _state

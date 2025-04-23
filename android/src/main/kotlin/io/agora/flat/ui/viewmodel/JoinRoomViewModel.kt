@@ -2,7 +2,7 @@ package io.agora.flat.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.board.DeviceState
 import io.agora.flat.data.AppEnv.Companion.DEFAULT_JOIN_EARLY_MINUTES
 import io.agora.flat.data.AppKVCenter
@@ -22,11 +22,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class JoinRoomViewModel @Inject constructor(
+
+class JoinRoomViewModel(
     userRepository: UserRepository,
     private val roomRepository: RoomRepository,
-    private val appKVCenter: AppKVCenter,
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
     private val joinRoomRecordManager: JoinRoomRecordManager,
     private val eventBus: EventBus
 ) : ViewModel() {

@@ -3,7 +3,7 @@ package io.agora.flat.ui.activity.dev
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.data.Success
 import io.agora.flat.data.model.UserInfo
 import io.agora.flat.data.repository.RoomRepository
@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class DevToolViewModel @Inject constructor(
+
+class DevToolViewModel(
     private val roomRepository: RoomRepository,
     private val userRepository: UserRepository,
 ) : ViewModel() {

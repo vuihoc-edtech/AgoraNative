@@ -8,43 +8,30 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+import io.agora.flat.common.android.I18NFetcher
+// import dagger.hilt.EntryPoint
+// import dagger.hilt.InstallIn
+// import dagger.hilt.android.EntryPointAccessors
+// import dagger.hilt.android.components.ActivityComponent
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.rtm.Message
 import io.agora.flat.common.rtm.NoticeMessageBody
 import io.agora.flat.common.rtm.TextMessageBody
+import io.agora.flat.data.manager.JoinRoomRecordManager
+import io.agora.flat.data.repository.RoomRepository
 import io.agora.flat.data.repository.UserRepository
 import io.agora.flat.ui.manager.UserQuery
 
 /**
  * 消息列表适配器
  */
-class MessageAdapter constructor(
+class MessageAdapter (
     context: Context,
     private val dataSet: MutableList<Message> = mutableListOf(),
 ) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
-
-    private var userQuery: UserQuery
-    private var userUUID: String
-
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
-    interface MessageAdapterEntryPoint {
-        fun userRepository(): UserRepository
-        fun userQuery(): UserQuery
-    }
-
-    init {
-        val entryPoint = EntryPointAccessors.fromActivity(
-            context as Activity,
-            MessageAdapterEntryPoint::class.java
-        )
-        userQuery = entryPoint.userQuery()
-        userUUID = entryPoint.userRepository().getUserUUID()
-    }
+    private var userQuery: UserQuery = UserQuery(RoomRepository.getInstance(joinRoomRecordManager = JoinRoomRecordManager.getInstance(context = context.applicationContext),
+        I18NFetcher.getInstance(context = context.applicationContext)))
+    private var userUUID: String = UserRepository.getInstance().getUserUUID()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)

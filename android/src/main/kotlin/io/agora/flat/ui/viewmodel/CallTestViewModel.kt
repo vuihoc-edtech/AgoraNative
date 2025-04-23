@@ -1,7 +1,7 @@
 package io.agora.flat.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.rtc.AgoraRtc
 import io.agora.flat.di.interfaces.RtcApi
 import io.agora.rtc2.IRtcEngineEventHandler
@@ -15,8 +15,8 @@ import javax.inject.Inject
 /**
  * RTC Test
  */
-@HiltViewModel
-class CallTestViewModel @Inject constructor(
+
+class CallTestViewModel(
     rtcApi: RtcApi,
 ) : ViewModel() {
     private val _state = MutableStateFlow(CallTestState())

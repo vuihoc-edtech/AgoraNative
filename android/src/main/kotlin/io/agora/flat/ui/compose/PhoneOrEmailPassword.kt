@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import io.agora.flat.Constants
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.data.model.Country
-import io.agora.flat.ui.activity.CallingCodeActivity
+//import io.agora.flat.ui.activity.CallingCodeActivity
 import io.agora.flat.ui.theme.Red_6
 import io.agora.flat.util.isValidEmail
 import io.agora.flat.util.isValidPassword
@@ -195,8 +195,8 @@ fun PhoneOrEmailInput(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
                         onClick = {
-                            val intent = Intent(context, CallingCodeActivity::class.java)
-                            callingCodeLauncher.launch(intent)
+//                            val intent = Intent(context, CallingCodeActivity::class.java)
+//                            callingCodeLauncher.launch(intent)
                         }
                     ),
                 verticalAlignment = Alignment.CenterVertically
@@ -321,8 +321,8 @@ fun PhoneInput(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
                     onClick = {
-                        val intent = Intent(context, CallingCodeActivity::class.java)
-                        callingCodeLauncher.launch(intent)
+//                        val intent = Intent(context, CallingCodeActivity::class.java)
+//                        callingCodeLauncher.launch(intent)
                     },
                     enabled = enabled,
                 ),

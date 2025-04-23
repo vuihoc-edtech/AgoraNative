@@ -41,12 +41,10 @@ import kotlin.coroutines.suspendCoroutine
  * TODO messageEvent.publisherId == "flat-server"
  */
 @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
-@Singleton
-class AgoraRtm @Inject constructor(
+class AgoraRtm(
     private val messageRepository: MessageRepository,
-    private val appEnv: AppEnv,
-    private val appKVCenter: AppKVCenter,
-    private val logger: Logger
+    private val appEnv: AppEnv = AppEnv.getInstance(),
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
 ) : RtmApi, PostLoginInitializer, RtmEventListener {
     private lateinit var rtmClient: RtmClient
     private var currentChannel: String? = null
@@ -60,14 +58,14 @@ class AgoraRtm @Inject constructor(
                 .build()
             rtmClient = RtmClient.create(config)
         } catch (e: Exception) {
-            logger.e(e, "[RTM] agora rtm SDK init fatal error!")
+            // logger.e(e, "[RTM] agora rtm SDK init fatal error!")
         }
     }
 
     override fun onMessageEvent(messageEvent: MessageEvent) {
         val publisherId = messageEvent.publisherId
         val messageData = messageEvent.message.data
-        logger.d("[RTM] message received from $publisherId message:$messageData")
+        // logger.d("[RTM] message received from $publisherId message:$messageData")
         val parseAndNotify: (String) -> Unit = { parsedMessage ->
             rtmListeners.forEach { it.onClassEvent(ClassRtmEvent.parse(parsedMessage, publisherId)) }
         }
@@ -93,7 +91,7 @@ class AgoraRtm @Inject constructor(
     }
 
     override fun onPresenceEvent(event: PresenceEvent) {
-        logger.d("[RTM] presence event $event")
+        // logger.d("[RTM] presence event $event")
         if (currentChannel != event.channelName) return
 
         val channelName = event.channelName
@@ -121,15 +119,15 @@ class AgoraRtm @Inject constructor(
             RtmConstants.RtmPresenceEventType.REMOTE_TIMEOUT -> notifyLeft(publisherId)
 
             RtmConstants.RtmPresenceEventType.REMOTE_STATE_CHANGED -> {
-                logger.i("[RTM] presence event remote state changed")
+                // logger.i("[RTM] presence event remote state changed")
             }
 
             RtmConstants.RtmPresenceEventType.ERROR_OUT_OF_SERVICE -> {
-                logger.w("[RTM] presence event error out of service")
+                // logger.w("[RTM] presence event error out of service")
             }
 
             RtmConstants.RtmPresenceEventType.NONE -> {
-                logger.w("[RTM] presence event none")
+                // logger.w("[RTM] presence event none")
             }
         }
     }
@@ -139,14 +137,14 @@ class AgoraRtm @Inject constructor(
         state: RtmConstants.RtmConnectionState,
         reason: RtmConstants.RtmConnectionChangeReason
     ) {
-        logger.i("[RTM] connection state changes to $state reason:$reason")
+        // logger.i("[RTM] connection state changes to $state reason:$reason")
         if (reason == RtmConstants.RtmConnectionChangeReason.SAME_UID_LOGIN) {
             rtmListeners.forEach { it.onRemoteLogin() }
         }
     }
 
     override fun onTokenPrivilegeWillExpire(channelName: String) {
-        logger.w("[RTM] token privilege will expire $channelName")
+        // logger.w("[RTM] token privilege will expire $channelName")
     }
 
     override suspend fun login(rtmToken: String, channelId: String, userUUID: String): Boolean {
@@ -198,7 +196,7 @@ class AgoraRtm @Inject constructor(
                 nextPage = result.nextPage
             } while (!nextPage.isNullOrEmpty())
         } catch (e: Exception) {
-            logger.e(e, "[RTM] getMembers error")
+            // logger.e(e, "[RTM] getMembers error")
         }
 
         return users.map { RtmMember(it.userId, channelName) }
@@ -225,7 +223,7 @@ class AgoraRtm @Inject constructor(
     }
 
     override suspend fun sendChannelMessage(msg: String): Boolean = suspendCoroutine { cont ->
-        logger.d("[RTM] sendChannelMessage $msg")
+        // logger.d("[RTM] sendChannelMessage $msg")
         val options = PublishOptions().apply {
             customType = "CHANNEL_CHAT"
         }
@@ -241,7 +239,7 @@ class AgoraRtm @Inject constructor(
     }
 
     override suspend fun sendChannelCommand(event: ClassRtmEvent) = suspendCoroutine { cont ->
-        logger.d("[RTM] sendChannelCommand ${ClassRtmEvent.toText(event)}")
+        // logger.d("[RTM] sendChannelCommand ${ClassRtmEvent.toText(event)}")
         val options = PublishOptions().apply {
             customType = "CHANNEL_COMMAND"
         }
@@ -258,7 +256,7 @@ class AgoraRtm @Inject constructor(
     }
 
     override suspend fun sendPeerCommand(event: ClassRtmEvent, peerId: String) = suspendCoroutine { cont ->
-        logger.d("[RTM] sendPeerCommand ${ClassRtmEvent.toText(event)}")
+        // logger.d("[RTM] sendPeerCommand ${ClassRtmEvent.toText(event)}")
         val message = ClassRtmEvent.toText(event).toByteArray()
         val options = PublishOptions().apply {
             setChannelType(RtmChannelType.USER)
@@ -331,7 +329,7 @@ class AgoraRtm @Inject constructor(
         }
         rtmListeners.add(listener)
         awaitClose {
-            logger.d("[RTM] rtm event flow closed")
+            // logger.d("[RTM] rtm event flow closed")
             rtmListeners.remove(listener)
         }
     }

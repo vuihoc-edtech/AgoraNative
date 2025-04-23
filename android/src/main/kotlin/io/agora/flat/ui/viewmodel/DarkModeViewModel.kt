@@ -1,14 +1,14 @@
 package io.agora.flat.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.android.DarkModeManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-@HiltViewModel
-class DarkModeViewModel @Inject constructor() : ViewModel() {
+
+class DarkModeViewModel() : ViewModel() {
     private var _state = MutableStateFlow(obtainInitState())
     val state = _state.asStateFlow()
 

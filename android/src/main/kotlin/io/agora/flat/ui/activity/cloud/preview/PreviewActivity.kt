@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.webkit.WebSettings
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+// import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
-import dagger.hilt.android.AndroidEntryPoint
+// import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.data.model.CloudFile
 import io.agora.flat.data.model.CoursewareType
@@ -23,20 +24,20 @@ import io.agora.flat.ui.activity.base.BaseComposeActivity
 import io.agora.flat.ui.activity.setting.ComposeWebView
 import io.agora.flat.ui.compose.*
 
-@AndroidEntryPoint
+
 class PreviewActivity : BaseComposeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val viewModel: PreviewViewModel by viewModels()
         setContent {
-            PreviewPage(onClose = { this.finish() })
+            PreviewPage(onClose = { this.finish() }, viewModel = viewModel )
         }
     }
 }
 
 @Composable
 private fun PreviewPage(
-    viewModel: PreviewViewModel = hiltViewModel(),
+    viewModel: PreviewViewModel,
     onClose: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsState()

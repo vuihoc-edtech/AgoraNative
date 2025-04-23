@@ -28,16 +28,31 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class RoomRepository @Inject constructor(
-    private val roomService: RoomService,
-    private val serviceFetcher: ServiceFetcher,
+class RoomRepository(
+    private val roomService: RoomService = ServiceFetcher.getInstance().fetchRoomService(),
+    private val serviceFetcher: ServiceFetcher = ServiceFetcher.getInstance(),
     private val joinRoomRecordManager: JoinRoomRecordManager,
-    private val appKVCenter: AppKVCenter,
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
     private val i18NFetcher: I18NFetcher,
 ) {
+    companion object {
+        @Volatile
+        private var INSTANCE: RoomRepository? = null
+
+        fun getInstance(
+            joinRoomRecordManager: JoinRoomRecordManager,
+            i18NFetcher: I18NFetcher,
+        ): RoomRepository {
+            return INSTANCE ?: synchronized(this) {
+                val instance = RoomRepository(joinRoomRecordManager = joinRoomRecordManager, i18NFetcher=  i18NFetcher)
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+
     private fun fetchService(uuid: String): RoomService {
-        return serviceFetcher.fetchRoomService(uuid)
+        return serviceFetcher.fetchRoomService()
     }
 
     suspend fun getRoomListAll(page: Int): Result<List<RoomInfo>> {

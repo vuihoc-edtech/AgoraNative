@@ -1,9 +1,11 @@
 package io.agora.flat.ui.activity.play
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
 import io.agora.flat.common.FlatException
 import io.agora.flat.common.android.ClipboardController
@@ -38,7 +40,6 @@ import io.agora.flat.data.model.RoomUser
 import io.agora.flat.data.model.RtcShareScreen
 import io.agora.flat.data.repository.RoomRepository
 import io.agora.flat.data.repository.UserRepository
-import io.agora.flat.di.interfaces.Logger
 import io.agora.flat.di.interfaces.RtcApi
 import io.agora.flat.di.interfaces.RtmApi
 import io.agora.flat.di.interfaces.SyncedClassState
@@ -77,11 +78,11 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class ClassRoomViewModel @Inject constructor(
+
+class ClassRoomViewModel(
     savedStateHandle: SavedStateHandle,
     private val roomRepository: RoomRepository,
-    private val userRepository: UserRepository,
+    private val userRepository: UserRepository = UserRepository.getInstance(),
     private val userManager: UserManager,
     private val recordManager: RecordManager,
     private val messageManager: ChatMessageManager,
@@ -93,9 +94,8 @@ class ClassRoomViewModel @Inject constructor(
     private val syncedClassState: SyncedClassState,
     private val eventbus: EventBus,
     private val clipboard: ClipboardController,
-    private val appEnv: AppEnv,
-    private val appKVCenter: AppKVCenter,
-    private val logger: Logger,
+    private val appEnv: AppEnv = AppEnv.getInstance(),
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
 ) : ViewModel() {
     private var _state = MutableStateFlow<ClassRoomState?>(null)
     val state = _state.asStateFlow()
@@ -142,7 +142,7 @@ class ClassRoomViewModel @Inject constructor(
             try {
                 loadAndInitRoomState()
             } catch (e: Exception) {
-                logger.e(e, "fetch class room state error")
+                // logger.e(e, "fetch class room state error")
                 roomErrorManager.notifyError("fetch class room state error", e)
             }
         }
@@ -234,18 +234,18 @@ class ClassRoomViewModel @Inject constructor(
 
         _state.value = initState
 
-        logger.i("[ROOM] init room state: $initState")
+        // logger.i("[ROOM] init room state: $initState")
     }
 
     private suspend fun joinBoard() {
-        logger.i("[BOARD] start joining board room")
+        // logger.i("[BOARD] start joining board room")
         state.value?.let {
             boardRoom.join(it.boardUUID, it.boardToken, it.region, it.isOwner)
         }
     }
 
     private suspend fun joinRtm() {
-        logger.i("[RTM] start join channel")
+        // logger.i("[RTM] start join channel")
         state.value?.run {
             try {
                 rtmApi.login(rtmToken = rtmToken, channelId = roomUUID, userUUID = userUUID)
@@ -256,14 +256,14 @@ class ClassRoomViewModel @Inject constructor(
                 userManager.initUsers(filterIds)
                 sendEnterRoomEvent()
             } catch (e: FlatException) {
-                logger.e(e, "rtm join exception")
+                // logger.e(e, "rtm join exception")
                 roomErrorManager.notifyError("rtm join exception", e)
             }
         }
     }
 
     private fun joinRtc() {
-        logger.i("[RTC] start join rtc")
+        // logger.i("[RTC] start join rtc")
         state.value?.run {
             val rtcJoinOptions = RtcJoinOptions(
                 token = rtcToken,
@@ -275,8 +275,8 @@ class ClassRoomViewModel @Inject constructor(
             rtcVideoController.setupUid(uid = rtcUID, ssUid = rtcShareScreen.uid)
             rtcApi.joinChannel(rtcJoinOptions).also { result ->
                 when (result) {
-                    0 -> logger.i("[RTC] join rtc successful")
-                    else -> logger.w("[RTC] join rtc error: $result")
+                    0 -> Log.d( "ClassRoomViewModel","\"[RTC] join rtc successful\"") // logger.i("[RTC] join rtc successful")
+                    else -> Log.d("ClassRoomViewModel", "\"[RTC] join rtc successful\"") // logger.w("[RTC] join rtc error: $result")
                 }
             }
         }
@@ -325,7 +325,7 @@ class ClassRoomViewModel @Inject constructor(
     }
 
     private suspend fun handleRtmEvent(event: ClassRtmEvent) {
-        logger.i("[RTM] handle event $event")
+        // logger.i("[RTM] handle event $event")
 
         when (event) {
             is RaiseHandEvent -> {
@@ -415,7 +415,7 @@ class ClassRoomViewModel @Inject constructor(
             }
 
             else -> {
-                logger.w("[RTM] event not handled: $event")
+                // logger.w("[RTM] event not handled: $event")
             }
         }
     }
@@ -438,7 +438,7 @@ class ClassRoomViewModel @Inject constructor(
     private fun observerUserState() {
         viewModelScope.launch {
             userManager.observeSelf().filterNotNull().collect {
-                logger.i("[USERS] current user state changed $it, state: ${_state.value}")
+                // logger.i("[USERS] current user state changed $it, state: ${_state.value}")
 
                 val state = _state.value ?: return@collect
                 try {
@@ -461,14 +461,14 @@ class ClassRoomViewModel @Inject constructor(
                         audioOpen = it.audioOpen,
                     )
                 } catch (e: Exception) {
-                    logger.e(e, "[USERS] self change error")
+                    // logger.e(e, "[USERS] self change error")
                 }
             }
         }
 
         viewModelScope.launch {
             userManager.observeUsers().collect {
-                logger.d("[USERS] users changed $it")
+                // logger.d("[USERS] users changed $it")
                 val users = it.filter { user -> user.isOwner || user.isOnStage }.toMutableList()
                 val devicesMap = getUpdateDevices(videoUsers.value, users)
                 devicesMap.forEach { (rtcUID, state) ->
@@ -487,7 +487,7 @@ class ClassRoomViewModel @Inject constructor(
                     if (ready) users else null
                 }.filterNotNull()
                     .onCompletion {
-                        logger.i("[USERS] one to one observeUsers done")
+                        // logger.i("[USERS] one to one observeUsers done")
                     }
                     .collect {
                         val users = it.filter { user -> user.isJoined && !user.isOwner }
@@ -508,7 +508,7 @@ class ClassRoomViewModel @Inject constructor(
             if (!autoStageOn && !userManager.isOwner() && state.value!!.roomType == RoomType.SmallClass) {
                 syncedClassState.observeOnStage()
                     .onCompletion {
-                        logger.i("[USERS] small class observeOnStage done")
+                        // logger.i("[USERS] small class observeOnStage done")
                     }
                     .collect { onStageUsers ->
                         if (onStageUsers.keys.size < onStageLimit && onStageUsers[currentUserUUID] != true) {
@@ -638,7 +638,7 @@ class ClassRoomViewModel @Inject constructor(
                 rtmApi.sendChannelCommand(RoomStateEvent(roomUUID = roomUUID, status = RoomStatus.Started))
                 _state.value = state.copy(roomStatus = RoomStatus.Started)
             } else {
-                logger.e("start class error")
+                // logger.e("start class error")
             }
         }
     }
@@ -897,3 +897,38 @@ data class ClassRoomState(
 )
 
 data class ImageInfo(val width: Int, val height: Int, val orientation: Int)
+
+class ClassRoomViewModelFactory(
+    private val savedStateHandle: SavedStateHandle,
+    private val userManager: UserManager,
+    private val recordManager: RecordManager,
+    private val messageManager: ChatMessageManager,
+    private val roomErrorManager: RoomErrorManager,
+    private val rtmApi: RtmApi,
+    private val rtcApi: RtcApi,
+    private val rtcVideoController: RtcVideoController,
+    private val boardRoom: AgoraBoardRoom,
+    private val syncedClassState: SyncedClassState,
+    private val eventbus: EventBus,
+    private val clipboard: ClipboardController,
+    private val roomRepository: RoomRepository
+) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ClassRoomViewModel(
+            savedStateHandle = savedStateHandle,
+            userManager = userManager,
+            recordManager = recordManager,
+            messageManager = messageManager,
+            roomErrorManager = roomErrorManager,
+            rtmApi = rtmApi,
+            rtcApi = rtcApi,
+            rtcVideoController = rtcVideoController,
+            boardRoom = boardRoom,
+            syncedClassState = syncedClassState,
+            eventbus = eventbus,
+            clipboard = clipboard,
+            roomRepository = roomRepository
+        ) as T
+    }
+}

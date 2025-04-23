@@ -14,7 +14,6 @@ import coil.decode.ImageDecoderDecoder
 import coil.load
 import io.agora.flat.Constants
 import io.agora.vuihoc.agora_native.R
-import io.agora.flat.common.error.FlatErrorHandler
 import io.agora.flat.common.rtc.NetworkQuality
 import io.agora.flat.common.rtc.RtcEvent
 import io.agora.flat.data.model.RoomStatus
@@ -137,7 +136,7 @@ class ExtComponent(
         if (error.exception == null) {
             activity.showToast(error.text)
         } else {
-            showRoomExitDialog(FlatErrorHandler.getErrorStr(activity, error.exception))
+            showRoomExitDialog("FlatErrorHandler.getErrorStr(activity, error.exception)")
         }
     }
 

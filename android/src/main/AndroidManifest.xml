@@ -1,3 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="io.agora.vuihoc.agora_native">
+    <application>
+        <activity
+            android:name="io.agora.flat.ui.activity.play.ClassRoomActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/Theme.FlatAndroid.Fullscreen"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+    </application>
 </manifest>

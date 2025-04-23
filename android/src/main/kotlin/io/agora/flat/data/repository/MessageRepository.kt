@@ -14,14 +14,26 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class MessageRepository @Inject constructor(
-    private val messageService: MessageService,
-    private val miscService: MiscService,
-    private val userRepository: UserRepository,
-    private val appEnv: AppEnv,
+class MessageRepository(
+    private val messageService: MessageService = ServiceFetcher.getInstance().fetchMessageService(),
+    private val miscService: MiscService = ServiceFetcher.getInstance().fetchMiscService(),
+    private val userRepository: UserRepository = UserRepository.getInstance(),
+    private val appEnv: AppEnv = AppEnv.getInstance(),
 ) {
     private var rtmToken: String? = null
+
+    companion object {
+        @Volatile
+        private var INSTANCE: MessageRepository? = null
+
+        fun getInstance(): MessageRepository {
+            return INSTANCE ?: synchronized(this) {
+                val instance = MessageRepository()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 
     private val dateFormat: ThreadLocal<SimpleDateFormat> = object : ThreadLocal<SimpleDateFormat>() {
         override fun initialValue(): SimpleDateFormat {

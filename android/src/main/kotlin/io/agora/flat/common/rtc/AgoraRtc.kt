@@ -18,8 +18,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class AgoraRtc @Inject constructor(val appEnv: AppEnv, val logger: Logger) : RtcApi, StartupInitializer {
+class AgoraRtc(val appEnv: AppEnv = AppEnv.getInstance()) : RtcApi, StartupInitializer {
     private lateinit var rtcEngine: RtcEngine
     private val eventHandler: RTCEventHandler = RTCEventHandler()
     private var currentUid = 0
@@ -60,7 +59,7 @@ class AgoraRtc @Inject constructor(val appEnv: AppEnv, val logger: Logger) : Rtc
 
     override fun joinChannel(options: RtcJoinOptions): Int {
         currentUid = options.uid
-        logger.i("[RTC] create media options by state: video=${options.videoOpen}, audio=${options.audioOpen}")
+        // logger.i("[RTC] create media options by state: video=${options.videoOpen}, audio=${options.audioOpen}")
         val mediaOptions = ChannelMediaOptions().apply {
             clientRoleType =
                 if (options.videoOpen || options.audioOpen) Constants.CLIENT_ROLE_BROADCASTER else Constants.CLIENT_ROLE_AUDIENCE
@@ -137,28 +136,28 @@ class AgoraRtc @Inject constructor(val appEnv: AppEnv, val logger: Logger) : Rtc
             }
 
             override fun onPermissionError(permission: Int) {
-                logger.e("[RTC] permission error: $permission")
+                // logger.e("[RTC] permission error: $permission")
             }
 
             override fun onRemoteAudioStateChanged(uid: Int, state: Int, reason: Int, elapsed: Int) {
-                logger.i("[RTC] remote audio state changed: $uid, $state, $reason, $elapsed")
+                // logger.i("[RTC] remote audio state changed: $uid, $state, $reason, $elapsed")
             }
 
             override fun onRemoteVideoStateChanged(uid: Int, state: Int, reason: Int, elapsed: Int) {
-                logger.i("[RTC] remote video state changed: $uid, $state, $reason, $elapsed")
+                // logger.i("[RTC] remote video state changed: $uid, $state, $reason, $elapsed")
             }
 
             override fun onUserMuteAudio(uid: Int, muted: Boolean) {
-                logger.i("[RTC] user mute audio: $uid, $muted")
+                // logger.i("[RTC] user mute audio: $uid, $muted")
             }
 
             override fun onUserMuteVideo(uid: Int, muted: Boolean) {
-                logger.i("[RTC] user mute video: $uid, $muted")
+                // logger.i("[RTC] user mute video: $uid, $muted")
             }
         }
         eventHandler.addListener(listener)
         awaitClose {
-            logger.i("[RTC] rtc event flow closed")
+            // logger.i("[RTC] rtc event flow closed")
             eventHandler.removeListener(listener)
         }
     }
@@ -170,6 +169,15 @@ class AgoraRtc @Inject constructor(val appEnv: AppEnv, val logger: Logger) : Rtc
                 Constants.QUALITY_EXCELLENT -> NetworkQuality.Excellent
                 Constants.QUALITY_GOOD -> NetworkQuality.Good
                 else -> NetworkQuality.Bad
+            }
+        }
+
+        @Volatile
+        private var INSTANCE: AgoraRtc? = null
+
+        fun getInstance(logger: Logger): AgoraRtc {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: AgoraRtc().also { INSTANCE = it }
             }
         }
     }

@@ -89,7 +89,7 @@ fun RoomItem(
 
 @Composable
 private fun RoomItemRightBox(roomInfo: RoomInfo, modifier: Modifier, onStartClick: () -> Unit = {}) {
-    val appKVCenter = LocalAppKVCenter.current ?: AppKVCenter(LocalContext.current)
+    val appKVCenter = AppKVCenter.getInstance()
     val joinEarly = appKVCenter.getJoinEarly()
     val text = stringResource(R.string.enter)
 

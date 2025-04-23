@@ -3,10 +3,10 @@ package io.agora.flat.ui.viewmodel
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.android.AndroidDownloader
-import io.agora.flat.common.version.VersionCheckResult
-import io.agora.flat.common.version.VersionChecker
+//import io.agora.flat.common.version.VersionCheckResult
+//import io.agora.flat.common.version.VersionChecker
 import io.agora.flat.data.AppEnv
 import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.repository.MiscRepository
@@ -17,11 +17,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
+
+class SettingsViewModel(
     private val userRepository: UserRepository,
-    private val appKVCenter: AppKVCenter,
-    private val versionChecker: VersionChecker,
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
     private val downloader: AndroidDownloader,
     private val miscRepository: MiscRepository,
     env: AppEnv
@@ -34,12 +33,12 @@ class SettingsViewModel @Inject constructor(
         get() = _state
 
     init {
-        viewModelScope.launch {
-            val checkResult = versionChecker.forceCheck()
-            _state.update {
-                it.copy(versionCheckResult = checkResult)
-            }
-        }
+//        viewModelScope.launch {
+//            val checkResult = versionChecker.forceCheck()
+//            _state.update {
+//                it.copy(versionCheckResult = checkResult)
+//            }
+//        }
 
         if (env.showStreamAgreement) {
             _state.update {
@@ -55,13 +54,13 @@ class SettingsViewModel @Inject constructor(
     }
 
     suspend fun downloadApp(): Uri {
-        val result = _state.value.versionCheckResult
-        return downloader.download(result.appUrl!!, "${result.appVersion}.apk")
+//        val result = _state.value.versionCheckResult
+        return downloader.download("", "")
     }
 
     fun cancelUpdate() {
-        versionChecker.cancelUpdate()
-        _state.value = _state.value.copy(versionCheckResult = VersionCheckResult.Empty)
+//        versionChecker.cancelUpdate()
+//        _state.value = _state.value.copy(versionCheckResult = VersionCheckResult.Empty)
     }
 
     fun setAgreeStream(isAgree: Boolean) {
@@ -78,6 +77,6 @@ class SettingsViewModel @Inject constructor(
 
 data class SettingsUiState(
     val infoUrl: String = "",
-    val versionCheckResult: VersionCheckResult = VersionCheckResult.Empty,
+//    val versionCheckResult: VersionCheckResult = VersionCheckResult.Empty,
     val isAgreeStream: Boolean? = null
 )

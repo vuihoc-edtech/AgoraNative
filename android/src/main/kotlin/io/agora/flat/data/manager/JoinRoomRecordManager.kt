@@ -3,14 +3,13 @@ package io.agora.flat.data.manager
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.flat.data.model.JoinRoomRecord
 import io.agora.flat.data.model.JoinRoomRecordList
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class JoinRoomRecordManager @Inject constructor(@ApplicationContext context: Context) {
+class JoinRoomRecordManager(context: Context) {
     private val store = context.getSharedPreferences("flat_join_room_record", Context.MODE_PRIVATE)
     private val gson by lazy { Gson() }
 
@@ -37,5 +36,15 @@ class JoinRoomRecordManager @Inject constructor(@ApplicationContext context: Con
     companion object {
         private const val KEY_JOIN_ROOM_RECORD = "join_room_record_key"
         private const val MAX_RECORD_SIZE = 10
+        @Volatile
+        private var INSTANCE: JoinRoomRecordManager? = null
+
+        fun getInstance(context: Context): JoinRoomRecordManager {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: JoinRoomRecordManager(context.applicationContext).also {
+                    INSTANCE = it
+                }
+            }
+        }
     }
 }

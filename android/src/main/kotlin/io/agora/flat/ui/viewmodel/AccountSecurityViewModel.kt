@@ -2,7 +2,7 @@ package io.agora.flat.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.data.AppEnv
 import io.agora.flat.data.Failure
 import io.agora.flat.data.LoginConfig
@@ -25,8 +25,8 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class AccountSecurityViewModel @Inject constructor(
+
+class AccountSecurityViewModel(
     private val userRepository: UserRepository,
     private val eventBus: EventBus,
     appEnv: AppEnv,

@@ -10,11 +10,24 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class CloudRecordRepository @Inject constructor(
-    private val cloudRecordService: CloudRecordService,
-    private val serviceFetcher: ServiceFetcher,
+class CloudRecordRepository(
+    private val cloudRecordService: CloudRecordService = ServiceFetcher.getInstance().fetchCloudRecordService(),
+    private val serviceFetcher: ServiceFetcher = ServiceFetcher.getInstance(),
 ) {
+
+    companion object {
+        @Volatile
+        private var INSTANCE: CloudRecordRepository? = null
+
+        fun getInstance(): CloudRecordRepository {
+            return INSTANCE ?: synchronized(this) {
+                val instance = CloudRecordRepository()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+
     suspend fun acquireRecord(roomUUID: String, expiredHour: Int = 24): Result<RecordAcquireRespData> {
         return withContext(Dispatchers.IO) {
             cloudRecordService.acquireRecord(
@@ -107,6 +120,6 @@ class CloudRecordRepository @Inject constructor(
     }
 
     private fun fetchService(roomUUID: String): CloudRecordService {
-        return serviceFetcher.fetchCloudRecordService(roomUUID)
+        return serviceFetcher.fetchCloudRecordService()
     }
 }

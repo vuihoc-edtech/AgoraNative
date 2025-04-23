@@ -14,11 +14,25 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class MiscRepository @Inject constructor(
+class MiscRepository(
     private val miscService: MiscService,
-    private val appKVCenter: AppKVCenter,
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
 ) {
+
+    companion object {
+        @Volatile
+        private var INSTANCE: MiscRepository? = null
+
+        fun getInstance(
+            miscService: MiscService,
+        ): MiscRepository {
+            return INSTANCE ?: synchronized(this) {
+                val instance = MiscRepository(miscService)
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
     suspend fun generateRtcToken(roomUUID: String): Result<PureToken> {
         return withContext(Dispatchers.IO) {
             miscService.generateRtcToken(PureRoomReq(roomUUID)).toResult()

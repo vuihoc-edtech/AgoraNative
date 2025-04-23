@@ -17,11 +17,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+// import dagger.hilt.EntryPoint
+// import dagger.hilt.InstallIn
+// import dagger.hilt.android.EntryPointAccessors
+// import dagger.hilt.android.components.ActivityComponent
 import io.agora.flat.Constants
+import io.agora.flat.common.board.AgoraBoardRoom
+import io.agora.flat.common.rtc.AgoraRtc
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.data.AppEnv
 import io.agora.flat.data.model.RoomStatus
@@ -46,14 +48,6 @@ class ToolComponent(
     activity: ClassRoomActivity,
     rootView: FrameLayout,
 ) : BaseComponent(activity, rootView) {
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
-    interface ToolComponentEntryPoint {
-        fun boardRoom(): BoardRoom
-        fun rtcApi(): RtcApi
-        fun appEnv(): AppEnv
-        fun eventBus(): EventBus
-    }
 
     private lateinit var takePhotoLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ComponentToolBinding
@@ -95,11 +89,10 @@ class ToolComponent(
     }
 
     private fun injectApi() {
-        val entryPoint = EntryPointAccessors.fromActivity(activity, ToolComponentEntryPoint::class.java)
-        boardRoom = entryPoint.boardRoom()
-        appEnv = entryPoint.appEnv()
-        rtcApi = entryPoint.rtcApi()
-        eventBus = entryPoint.eventBus()
+        appEnv = AppEnv.getInstance()
+        rtcApi = AgoraRtc()
+        eventBus = EventBus()
+        boardRoom = AgoraBoardRoom()
     }
 
     private fun observeState() {

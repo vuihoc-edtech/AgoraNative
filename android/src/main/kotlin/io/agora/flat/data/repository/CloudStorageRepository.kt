@@ -9,16 +9,22 @@ import io.agora.flat.http.api.CloudStorageServiceV2
 import io.agora.flat.http.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class CloudStorageRepository @Inject constructor(
+class CloudStorageRepository(
     private val cloudStorageService: CloudStorageServiceV2,
-    private val appKVCenter: AppKVCenter,
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
 ) {
     private var avatarUrl: String? = null
+    companion object {
+        @Volatile
+        private var INSTANCE: CloudStorageRepository? = null
 
+        fun getInstance(cloudStorageService: CloudStorageServiceV2): CloudStorageRepository {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: CloudStorageRepository(cloudStorageService).also { INSTANCE = it }
+            }
+        }
+    }
     suspend fun createDirectory(dir: String, name: String): Result<RespNoData> {
         return withContext(Dispatchers.IO) {
             cloudStorageService.createDirectory(

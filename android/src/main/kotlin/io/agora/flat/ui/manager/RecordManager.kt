@@ -1,6 +1,6 @@
 package io.agora.flat.ui.manager
 
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+// import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.flat.data.Success
 import io.agora.flat.data.dao.RecordHistoryDao
 import io.agora.flat.data.model.BackgroundConfig
@@ -20,8 +20,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@ActivityRetainedScoped
-class RecordManager @Inject constructor(
+
+class RecordManager(
     private val cloudRecordRepository: CloudRecordRepository,
     private val userManager: UserManager,
     private val recordHistoryDao: RecordHistoryDao,

@@ -12,31 +12,38 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
+class FlatNetworkObserver private constructor() : StartupInitializer, NetworkObserver {
 
-@Singleton
-class FlatNetworkObserver @Inject constructor() : StartupInitializer, NetworkObserver {
     companion object {
         const val TAG = "FlatNetworkObserver"
+
+        @Volatile
+        private var INSTANCE: FlatNetworkObserver? = null
+
+        fun getInstance(): FlatNetworkObserver {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: FlatNetworkObserver().also { INSTANCE = it }
+            }
+        }
     }
 
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var state: MutableStateFlow<Boolean>
 
     override fun init(context: Context) {
-        connectivityManager = context.getSystemService()!!
+        connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         state = MutableStateFlow(connectivityManager.allNetworks.any { it.isOnline() })
 
         val request = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
+
         connectivityManager.registerNetworkCallback(request, networkCallback)
     }
 
     override fun observeNetworkActive(): Flow<Boolean> = state.asStateFlow()
 
-    override fun isOnline(): Boolean {
-        return state.value
-    }
+    override fun isOnline(): Boolean = state.value
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) = onConnectivityChange(network, true)
@@ -45,12 +52,7 @@ class FlatNetworkObserver @Inject constructor() : StartupInitializer, NetworkObs
 
     private fun onConnectivityChange(network: Network, isOnline: Boolean) {
         val isAnyOnline = connectivityManager.allNetworks.any {
-            if (it == network) {
-                // Don't trust the network capabilities for the network that just changed.
-                isOnline
-            } else {
-                it.isOnline()
-            }
+            if (it == network) isOnline else it.isOnline()
         }
         state.value = isAnyOnline
         Log.d(TAG, "onConnectivityChange $isAnyOnline")
@@ -58,9 +60,10 @@ class FlatNetworkObserver @Inject constructor() : StartupInitializer, NetworkObs
 
     private fun Network.isOnline(): Boolean {
         val capabilities: NetworkCapabilities? = connectivityManager.getNetworkCapabilities(this)
-        return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
     }
 }
+
 
 interface NetworkObserver {
     fun observeNetworkActive(): Flow<Boolean>

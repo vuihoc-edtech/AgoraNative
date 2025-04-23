@@ -2,7 +2,7 @@ package io.agora.flat.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.upload.UploadManager
 import io.agora.flat.common.upload.UploadRequest
 import io.agora.flat.data.AppEnv
@@ -26,11 +26,11 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class UserInfoViewModel @Inject constructor(
+
+class UserInfoViewModel(
     private val userRepository: UserRepository,
     private val cloudStorageRepository: CloudStorageRepository,
-    private val appEnv: AppEnv,
+    private val appEnv: AppEnv = AppEnv.getInstance(),
     private val eventBus: EventBus,
 ) : ViewModel() {
     private val userInfo = MutableStateFlow(userRepository.getUserInfo())

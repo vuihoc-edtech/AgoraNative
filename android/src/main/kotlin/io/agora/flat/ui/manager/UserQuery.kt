@@ -1,15 +1,15 @@
 package io.agora.flat.ui.manager
 
 import android.util.Log
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+// import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.flat.data.Failure
 import io.agora.flat.data.Success
 import io.agora.flat.data.model.NetworkRoomUser
 import io.agora.flat.data.repository.RoomRepository
 import javax.inject.Inject
 
-@ActivityRetainedScoped
-class UserQuery @Inject constructor(
+
+class UserQuery(
     private val roomRepository: RoomRepository,
 ) {
     private lateinit var roomUUID: String

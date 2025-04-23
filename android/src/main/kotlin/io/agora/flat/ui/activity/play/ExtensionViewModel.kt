@@ -2,7 +2,7 @@ package io.agora.flat.ui.activity.play
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.board.AgoraBoardRoom
 import io.agora.flat.common.board.BoardError
 import io.agora.flat.common.board.BoardPhase
@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class ExtensionViewModel @Inject constructor(
+
+class ExtensionViewModel(
     private val errorManager: RoomErrorManager,
     private val boardRoom: AgoraBoardRoom,
     private val eventBus: EventBus,

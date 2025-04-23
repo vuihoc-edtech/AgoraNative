@@ -1,12 +1,13 @@
 package io.agora.flat.data
 
-import io.agora.flat.di.NetworkModule
 import io.agora.flat.http.api.CloudRecordService
+import io.agora.flat.http.api.MessageService
+import io.agora.flat.http.api.MiscService
 import io.agora.flat.http.api.RoomService
+import io.agora.flat.http.api.UserService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Inject
 import javax.inject.Singleton
 
 
@@ -15,12 +16,20 @@ import javax.inject.Singleton
  *
  * For joining rooms between different regions
  */
-@Singleton
-class ServiceFetcher @Inject constructor(
-    @NetworkModule.NormalOkHttpClient private val client: OkHttpClient,
-    private val appEnv: AppEnv
+class ServiceFetcher(
+    private val client: OkHttpClient = OkHttpClient(),
+    private val appEnv: AppEnv = AppEnv.getInstance()
 ) {
     companion object {
+
+        @Volatile
+        private var INSTANCE: ServiceFetcher? = null
+
+        fun getInstance(): ServiceFetcher {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: ServiceFetcher().also { INSTANCE = it }
+            }
+        }
         private val regions = listOf(
             "CN",
             "SG",
@@ -52,16 +61,28 @@ class ServiceFetcher @Inject constructor(
 
     private val allCache = mutableMapOf<Pair<String, String>, Any>()
 
-    fun fetchRoomService(uuid: String): RoomService {
-        return getApiService<RoomService>(uuid)
+    fun fetchRoomService(): RoomService {
+        return getApiService<RoomService>()
     }
 
-    fun fetchCloudRecordService(uuid: String): CloudRecordService {
-        return getApiService<CloudRecordService>(uuid)
+    fun fetchUserService(): UserService {
+        return getApiService<UserService>()
     }
 
-    private inline fun <reified T> getApiService(uuid: String): T {
-        val env = fetchEnv(uuid, appEnv.getEnv())
+    fun fetchCloudRecordService(): CloudRecordService {
+        return getApiService<CloudRecordService>()
+    }
+
+    fun fetchMessageService(): MessageService {
+        return getApiService<MessageService>()
+    }
+
+    fun fetchMiscService(): MiscService {
+        return getApiService<MiscService>()
+    }
+
+    private inline fun <reified T> getApiService(): T {
+        val env = AppEnv.getInstance().getEnv()
         val name = T::class.java.simpleName
         return allCache.getOrPut(env to name) {
             val serviceUrl = appEnv.getEnvServiceUrl(env)

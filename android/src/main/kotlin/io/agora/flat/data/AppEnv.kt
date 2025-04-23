@@ -3,7 +3,7 @@ package io.agora.flat.data
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.flat.BuildConfig
 
 import io.agora.flat.di.interfaces.LogConfig
@@ -13,10 +13,7 @@ import javax.inject.Singleton
 /**
  * 应用内切换配置
  */
-@Singleton
-class AppEnv @Inject constructor(@ApplicationContext context: Context) {
-    private val store: SharedPreferences = context.getSharedPreferences("flat_env", Context.MODE_PRIVATE)
-
+class AppEnv {
     companion object {
         const val ENV_CN_PROD = "cn_prod"
         const val ENV_CN_DEV = "cn_dev"
@@ -33,10 +30,19 @@ class AppEnv @Inject constructor(@ApplicationContext context: Context) {
             "https://web.flat.apprtc.cn",
             "https://web.flat.agora.io",
         )
+
+        @Volatile
+        private var INSTANCE: AppEnv? = null
+
+        fun getInstance(): AppEnv {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: AppEnv().also { INSTANCE = it }
+            }
+        }
     }
 
     val envMap = mutableMapOf<String, EnvItem>()
-    private var defaultEnv = ENV_CN_PROD
+    private var defaultEnv = ENV_SG_PROD
 
     init {
         envMap[ENV_CN_DEV] = EnvItem(
@@ -136,11 +142,11 @@ class AppEnv @Inject constructor(@ApplicationContext context: Context) {
     }
 
     fun setEnv(env: String) {
-        store.edit(commit = true) { putString(STORE_KEY_ENV, env) }
+        defaultEnv = env
     }
 
     fun getEnv(): String {
-        return store.getString(STORE_KEY_ENV, defaultEnv)!!
+        return defaultEnv
     }
 
     fun getEnvServiceUrl(env: String): String {

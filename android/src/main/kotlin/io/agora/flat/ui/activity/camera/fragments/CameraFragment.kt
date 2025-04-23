@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.window.layout.WindowMetricsCalculator
-import dagger.hilt.android.AndroidEntryPoint
+// import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.vuihoc.agora_native.databinding.CameraUiContainerBinding
 import io.agora.vuihoc.agora_native.databinding.FragmentCameraBinding
@@ -38,7 +38,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-@AndroidEntryPoint
+
 class CameraFragment : Fragment() {
     private var _fragmentCameraBinding: FragmentCameraBinding? = null
 
@@ -53,9 +53,6 @@ class CameraFragment : Fragment() {
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-
-    @Inject
-    lateinit var logger: Logger
 
     private val displayManager by lazy {
         requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -73,7 +70,7 @@ class CameraFragment : Fragment() {
         override fun onDisplayRemoved(displayId: Int) = Unit
         override fun onDisplayChanged(displayId: Int) = view?.let { view ->
             if (displayId == this@CameraFragment.displayId) {
-                logger.d("[$TAG] Rotation changed: ${view.display.rotation}")
+                // logger.d("[$TAG] Rotation changed: ${view.display.rotation}")
                 imageCapture?.targetRotation = view.display.rotation
                 imageAnalyzer?.targetRotation = view.display.rotation
             }
@@ -184,10 +181,10 @@ class CameraFragment : Fragment() {
 
         // Get screen metrics used to setup camera for full screen resolution
         val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity()).bounds
-        logger.d("[$TAG] Screen metrics: ${metrics.width()} x ${metrics.height()}")
+        // logger.d("[$TAG] Screen metrics: ${metrics.width()} x ${metrics.height()}")
 
         val screenAspectRatio = aspectRatio(metrics.width(), metrics.height())
-        logger.d("[$TAG] Preview aspect ratio: $screenAspectRatio")
+        // logger.d("[$TAG] Preview aspect ratio: $screenAspectRatio")
 
         val rotation = fragmentCameraBinding.viewFinder.display.rotation
 
@@ -227,7 +224,7 @@ class CameraFragment : Fragment() {
             observeCameraState(camera?.cameraInfo!!)
         } catch (exc: Exception) {
             activity?.showToast("Use case binding failed")
-            logger.e("Use case binding failed", exc)
+            // logger.e("Use case binding failed", exc)
         }
     }
 
@@ -237,10 +234,10 @@ class CameraFragment : Fragment() {
 
     private fun observeCameraState(cameraInfo: CameraInfo) {
         cameraInfo.cameraState.observe(viewLifecycleOwner) { cameraState ->
-            logger.i("camera state updated: $cameraState")
+            // logger.i("camera state updated: $cameraState")
             cameraState.error?.let { error ->
                 activity?.showToast("camera encounters an error")
-                logger.e("camera encounters an error: $error")
+                // logger.e("camera encounters an error: $error")
             }
         }
     }
@@ -305,7 +302,7 @@ class CameraFragment : Fragment() {
                             post { isEnabled = true }
                         }
 
-                        logger.e("[$TAG] Photo capture failed: ${exc.message}", exc)
+                        // logger.e("[$TAG] Photo capture failed: ${exc.message}", exc)
                     }
 
                     override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -314,7 +311,7 @@ class CameraFragment : Fragment() {
                         }
 
                         val savedUri = output.savedUri ?: return
-                        logger.d("[$TAG] Photo capture succeeded: $savedUri")
+                        // logger.d("[$TAG] Photo capture succeeded: $savedUri")
 
                         // Implicit broadcasts will be ignored for devices running API level >= 24
                         // so if you only target API level 24+ you can remove this statement

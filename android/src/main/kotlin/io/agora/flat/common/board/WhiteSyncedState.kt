@@ -6,7 +6,7 @@ import com.google.gson.JsonObject
 import com.herewhite.sdk.SyncedStore
 import com.herewhite.sdk.domain.Promise
 import com.herewhite.sdk.domain.SDKError
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+// import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.board.fast.FastRoom
 import io.agora.flat.di.interfaces.Logger
 import io.agora.flat.di.interfaces.SyncedClassState
@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
-@ActivityRetainedScoped
-class WhiteSyncedState @Inject constructor(
-    val logger: Logger,
+
+class WhiteSyncedState(
+
 ) : SyncedClassState {
     companion object {
         const val DEVICE_STATE_STORAGE = "deviceState"
@@ -47,7 +47,7 @@ class WhiteSyncedState @Inject constructor(
     private var inited = false
 
     fun resetRoom(fastRoom: FastRoom) {
-        logger.i("[SyncedState] resetRoom, inited: $inited")
+        // logger.i("[SyncedState] resetRoom, inited: $inited")
         if (inited) {
             clean()
         }
@@ -101,21 +101,21 @@ class WhiteSyncedState @Inject constructor(
     private fun connectUserWindowsStorage() {
         syncedStore.connectStorage(USER_WINDOWS, "{\"grid\": []}", object : Promise<String> {
             override fun then(value: String) {
-                logger.i("[SyncedState] $USER_WINDOWS initial state: $value")
+                // logger.i("[SyncedState] $USER_WINDOWS initial state: $value")
                 try {
                     _userWindowsFlow.value = parseUserWindowsState(value)
                 } catch (e: Exception) {
-                    logger.e("[SyncedState] $USER_WINDOWS initial error: $e")
+                    // logger.e("[SyncedState] $USER_WINDOWS initial error: $e")
                 }
             }
 
             override fun catchEx(t: SDKError) {
-                logger.e("[SyncedState] $USER_WINDOWS catchEx error: $t")
+                // logger.e("[SyncedState] $USER_WINDOWS catchEx error: $t")
             }
         })
 
         syncedStore.addOnStateChangedListener(USER_WINDOWS) { value, diff ->
-            logger.i("[SyncedState] $USER_WINDOWS updated: value: $value diff: $diff")
+            // logger.i("[SyncedState] $USER_WINDOWS updated: value: $value diff: $diff")
             _userWindowsFlow.value = parseUserWindowsState(value)
         }
     }
@@ -128,17 +128,17 @@ class WhiteSyncedState @Inject constructor(
     ) {
         syncedStore.connectStorage(storage, defaultJson, object : Promise<String> {
             override fun then(value: String) {
-                logger.i("[SyncedState] $storage initial state: $value")
+                // logger.i("[SyncedState] $storage initial state: $value")
                 block(gson.fromJson(value, type))
             }
 
             override fun catchEx(t: SDKError) {
-                logger.e("[SyncedState] $storage catchEx error: $t")
+                // logger.e("[SyncedState] $storage catchEx error: $t")
             }
         })
 
         syncedStore.addOnStateChangedListener(storage) { value, diff ->
-            logger.i("[SyncedState] $storage updated: value: $value diff: $diff")
+            // logger.i("[SyncedState] $storage updated: value: $value diff: $diff")
             block(gson.fromJson(value, type))
         }
     }
@@ -151,17 +151,17 @@ class WhiteSyncedState @Inject constructor(
     ) {
         syncedStore.connectStorage(storage, defaultJson, object : Promise<String> {
             override fun then(state: String) {
-                logger.i("[SyncedState] $storage initial state: $state")
+                // logger.i("[SyncedState] $storage initial state: $state")
                 block(getMapState(state, itemType))
             }
 
             override fun catchEx(t: SDKError) {
-                logger.e("[SyncedState] $storage catchEx error: $t")
+                // logger.e("[SyncedState] $storage catchEx error: $t")
             }
         })
 
         syncedStore.addOnStateChangedListener(storage) { value, diff ->
-            logger.i("[SyncedState] $storage updated: value: $value diff: $diff")
+            // logger.i("[SyncedState] $storage updated: value: $value diff: $diff")
             block(getMapState(value, itemType))
         }
     }
@@ -176,7 +176,7 @@ class WhiteSyncedState @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            logger.e(e, "[SyncedState] onStage users parse error!")
+            // logger.e(e, "[SyncedState] onStage users parse error!")
         }
         return onStageUsers
     }

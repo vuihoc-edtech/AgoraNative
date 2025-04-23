@@ -3,6 +3,7 @@ package io.agora.flat.ui.activity.setting
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,10 +26,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import dagger.hilt.android.AndroidEntryPoint
+// import androidx.hilt.navigation.compose.hiltViewModel
+// import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
-import io.agora.flat.common.Navigator
 import io.agora.flat.data.model.UserInfo
 import io.agora.flat.ui.activity.base.BaseComposeActivity
 import io.agora.flat.ui.compose.BackTopAppBar
@@ -43,14 +43,16 @@ import io.agora.flat.ui.viewmodel.UserInfoUiState
 import io.agora.flat.ui.viewmodel.UserInfoViewModel
 import io.agora.flat.util.ContentInfo
 
-@AndroidEntryPoint
+
 class UserInfoActivity : BaseComposeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel: UserInfoViewModel by viewModels()
         setContent {
             UserInfoScreen(
-                onBackPressed = { finish() }
+                onBackPressed = { finish() },
+                viewModel = viewModel
             )
         }
     }
@@ -65,7 +67,7 @@ class UserInfoActivity : BaseComposeActivity() {
 @Composable
 internal fun UserInfoScreen(
     onBackPressed: () -> Unit,
-    viewModel: UserInfoViewModel = hiltViewModel(),
+    viewModel: UserInfoViewModel,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -124,7 +126,7 @@ private fun SettingList(
                 id = R.drawable.ic_user_profile_head,
                 tip = stringResource(R.string.username),
                 desc = state.userInfo?.name ?: "",
-                onClick = { Navigator.launchEditNameActivity(context) }
+                onClick = {  }
             )
         }
     }

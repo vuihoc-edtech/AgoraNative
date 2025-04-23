@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dagger.hilt.android.AndroidEntryPoint
+// import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.ui.activity.base.BaseComposeActivity
 import io.agora.flat.ui.compose.BackTopAppBar
@@ -21,7 +21,7 @@ import io.agora.flat.ui.compose.FlatPrimaryTextButton
 import io.agora.flat.ui.viewmodel.CallTestState
 import io.agora.flat.ui.viewmodel.CallTestViewModel
 
-@AndroidEntryPoint
+
 class CallTestActivity : BaseComposeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -2,7 +2,7 @@ package io.agora.flat.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+// import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.board.DeviceState
 import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.Failure
@@ -20,11 +20,11 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class CreateRoomViewModel @Inject constructor(
+
+class CreateRoomViewModel(
     private val roomRepository: RoomRepository,
     private val userRepository: UserRepository,
-    private val appKVCenter: AppKVCenter,
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
     private val eventBus: EventBus,
 ) : ViewModel() {
     private val roomUUID = MutableStateFlow("")

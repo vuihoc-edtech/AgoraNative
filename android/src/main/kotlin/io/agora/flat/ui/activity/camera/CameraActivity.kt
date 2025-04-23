@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import dagger.hilt.android.AndroidEntryPoint
+// import dagger.hilt.android.AndroidEntryPoint
 import io.agora.vuihoc.agora_native.databinding.ActivityCameraBinding
 
-@AndroidEntryPoint
+
 class CameraActivity : AppCompatActivity() {
 
     private lateinit var activityMainBinding: ActivityCameraBinding

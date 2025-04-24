@@ -28,6 +28,24 @@ class AndroidClipboardController(context: Context) : ClipboardController {
             return ""
         return clipboard.primaryClip?.getItemAt(0)?.text ?: ""
     }
+    companion object {
+        @Volatile
+        private var INSTANCE: AndroidClipboardController? = null
+
+        fun init(context: Context) {
+            if (INSTANCE == null) {
+                synchronized(this) {
+                    if (INSTANCE == null) {
+                        INSTANCE = AndroidClipboardController(context)
+                    }
+                }
+            }
+        }
+
+        fun getInstance(): AndroidClipboardController {
+            return INSTANCE ?: throw IllegalStateException("AndroidClipboardController is not initialized. Call init(context) first.")
+        }
+    }
 }
 
 interface ClipboardController {

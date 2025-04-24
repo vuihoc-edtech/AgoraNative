@@ -2,6 +2,7 @@ package io.agora.flat.ui.activity.play
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
@@ -30,80 +31,44 @@ import io.agora.flat.ui.manager.UserManager
 import io.agora.flat.ui.manager.UserQuery
 import io.agora.flat.ui.manager.WindowsDragManager
 import io.agora.flat.ui.viewmodel.ChatMessageManager
+import io.agora.flat.ui.viewmodel.MessageQuery
+import io.agora.flat.ui.viewmodel.MessageViewModel
+import io.agora.flat.ui.viewmodel.MessageViewModelFactory
 
 
 class ClassRoomActivity : BaseActivity() {
     private lateinit var binding: ActivityRoomPlayBinding
     private var componentSet: MutableSet<BaseComponent> = mutableSetOf()
-    private lateinit var viewModel: ClassRoomViewModel
+    private lateinit var classRoomViewModel: ClassRoomViewModel
+    private lateinit var messageViewModel: MessageViewModel
+    private lateinit var classCloudViewModel: ClassCloudViewModel
+    private val syncedClassState = WhiteSyncedState()
+    private val boardRoom = AgoraBoardRoom(syncedClassState = syncedClassState)
+    private val rtcVideoController = RtcVideoController(AgoraRtc.getInstance())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityRoomPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        componentSet.add(WhiteboardComponent(this, binding.whiteboardContainer))
+        componentSet.add(WhiteboardComponent(this, binding.whiteboardContainer, boardRoom))
         componentSet.add(
             RtcComponent(
                 this,
                 binding.videoListContainer,
                 binding.fullVideoContainer,
                 binding.shareScreenContainer,
-                binding.userWindowsContainer
+                binding.userWindowsContainer,
+                syncedClassState,
+                rtcVideoController
             )
         )
         componentSet.add(RtmComponent(this, binding.messageContainer))
-        componentSet.add(ToolComponent(this, binding.toolContainer))
+        componentSet.add(ToolComponent(this, binding.toolContainer, boardRoom = boardRoom))
         componentSet.add(ClassCloudComponent(this, binding.cloudStorageContainer))
         componentSet.add(ExtComponent(this, binding.extensionContainer, binding.roomStateContainer))
         componentSet.forEach { lifecycle.addObserver(it) }
-        val joinRoomRecordManager = JoinRoomRecordManager.getInstance(context = this)
-        val i18NFetcher = I18NFetcher.getInstance(this)
-        val roomRepository = RoomRepository.getInstance(
-            joinRoomRecordManager,
-            i18NFetcher
-        )
-        val userManager = UserManager(UserQuery(roomRepository = roomRepository))
-        val database = Room.databaseBuilder(this, AppDatabase::class.java, "flat-database").build()
-        val recordManager = RecordManager(
-            cloudRecordRepository = CloudRecordRepository.getInstance(),
-            userManager = userManager,
-            recordHistoryDao = database.recordHistoryDao(),
-        )
-        val messageManager = ChatMessageManager()
-        val roomErrorManager = RoomErrorManager()
-        val rtmApi = AgoraRtm(messageRepository = MessageRepository.getInstance())
-        val rtcApi = AgoraRtc()
-        val rtcVideoController = RtcVideoController(rtcApi)
-        val boardRoom = AgoraBoardRoom()
-        val syncedClassState = WhiteSyncedState()
-        val eventBus = EventBus()
-        val clipboard = AndroidClipboardController(this)
-        val savedStateHandle = SavedStateHandle() //
-        val roomUUID = intent.getStringExtra(Constants.IntentKey.ROOM_UUID)
-        val periodicUUID = intent.getStringExtra(Constants.IntentKey.PERIODIC_UUID)
-        val quickStart = intent.getBooleanExtra(Constants.IntentKey.ROOM_QUICK_START, false)
-
-        savedStateHandle[Constants.IntentKey.ROOM_UUID] = roomUUID
-        savedStateHandle[Constants.IntentKey.PERIODIC_UUID] = periodicUUID
-        savedStateHandle[Constants.IntentKey.ROOM_QUICK_START] = quickStart
-        // Use factory
-        val factory = ClassRoomViewModelFactory(
-            savedStateHandle,
-            userManager,
-            recordManager,
-            messageManager,
-            roomErrorManager,
-            rtmApi,
-            rtcApi,
-            rtcVideoController,
-            boardRoom,
-            syncedClassState,
-            eventBus,
-            clipboard,
-            roomRepository = roomRepository
-        )
-
-        viewModel = ViewModelProvider(this, factory)[ClassRoomViewModel::class.java]
+        Log.d("ClassRoomActivity", "==============onCreate")
+        createViewModels()
     }
 
     override fun onResume() {
@@ -120,5 +85,56 @@ class ClassRoomActivity : BaseActivity() {
     override fun onPause() {
         super.onPause()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    private fun createViewModels() {
+        val userQuery = UserQuery()
+        val userManager = UserManager(userQuery)
+        val recordManager = RecordManager(userManager = userManager)
+        val messageManager = ChatMessageManager()
+        val roomErrorManager = RoomErrorManager()
+
+        val messageQuery = MessageQuery(
+            rtmApi = AgoraRtm.getInstance(),
+            userQuery = userQuery
+        )
+//        val roomUUID = intent.getStringExtra(Constants.IntentKey.ROOM_UUID)
+//        val periodicUUID = intent.getStringExtra(Constants.IntentKey.PERIODIC_UUID)
+//        val quickStart = intent.getBooleanExtra(Constants.IntentKey.ROOM_QUICK_START, false)
+//
+////        savedStateHandle[Constants.IntentKey.ROOM_UUID] = roomUUID
+////        savedStateHandle[Constants.IntentKey.PERIODIC_UUID] = periodicUUID
+////        savedStateHandle[Constants.IntentKey.ROOM_QUICK_START] = quickStart
+
+        val classRoomViewModelFactory = ClassRoomViewModelFactory(
+            userManager = userManager,
+            recordManager = recordManager,
+            messageManager = messageManager,
+            roomErrorManager = roomErrorManager,
+            rtcVideoController = rtcVideoController,
+            boardRoom = boardRoom,
+            syncedClassState = syncedClassState
+        )
+
+        val messageViewModelFactory = MessageViewModelFactory(
+            userManager = userManager,
+            syncedClassState = syncedClassState,
+            messageManager = messageManager,
+            messageQuery = messageQuery
+        )
+
+        val classCloudViewModelFactory = ClassCloudViewModelFactory(
+            boardRoom, roomErrorManager
+        )
+
+        val extensionViewModelFactory = ExtensionViewModelFactory(
+            roomErrorManager = roomErrorManager,
+            boardRoom = boardRoom
+        )
+
+        classRoomViewModel = ViewModelProvider(this, classRoomViewModelFactory)[ClassRoomViewModel::class.java]
+        messageViewModel = ViewModelProvider(this, messageViewModelFactory)[MessageViewModel::class.java]
+        classCloudViewModel = ViewModelProvider(this, classCloudViewModelFactory)[ClassCloudViewModel::class.java]
+        ViewModelProvider(this, extensionViewModelFactory)[ExtensionViewModel::class.java]
     }
 }

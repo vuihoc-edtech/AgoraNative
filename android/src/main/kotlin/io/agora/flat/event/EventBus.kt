@@ -13,6 +13,17 @@ class EventBus {
     suspend fun produceEvent(event: Event) {
         _events.emit(event)
     }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: EventBus? = null
+
+        fun getInstance(): EventBus {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: EventBus().also { INSTANCE = it }
+            }
+        }
+    }
 }
 
 abstract class Event

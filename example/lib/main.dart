@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   final _agoraNativePlugin = AgoraNative();
   bool saved = false;
-  String roomId = '';
+  String roomId = 'SG-8a1060e4-5e8a-40c2-b77e-815a682c5abe';
   @override
   void initState() {
     super.initState();

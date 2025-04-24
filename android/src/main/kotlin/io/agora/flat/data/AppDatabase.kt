@@ -1,7 +1,9 @@
 package io.agora.flat.data
 
+import android.content.Context
 import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import io.agora.flat.data.dao.RecordHistoryDao
 import io.agora.flat.data.dao.RoomConfigDao
@@ -17,4 +19,25 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun roomConfigDao(): RoomConfigDao
 
     abstract fun recordHistoryDao(): RecordHistoryDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun init(context: Context) {
+            if (INSTANCE == null) {
+                synchronized(this) {
+                    if (INSTANCE == null) {
+                        INSTANCE = Room.databaseBuilder(context, AppDatabase::class.java, "flat-database").build()
+                    }
+                }
+            }
+        }
+
+        fun getInstance(): AppDatabase {
+            return INSTANCE ?: throw IllegalStateException(
+                "AppDatabase is not initialized. Call AppDatabase.init(context) in Application class."
+            )
+        }
+    }
 }

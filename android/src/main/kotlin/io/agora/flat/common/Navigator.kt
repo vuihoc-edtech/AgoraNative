@@ -64,24 +64,24 @@ object Navigator {
         roomUUID: String,
         periodicUUID: String? = null,
         quickStart: Boolean = false,
+
     ) {
          val intent = Intent(context, ClassRoomActivity::class.java).apply {
             putExtra(Constants.IntentKey.ROOM_UUID, roomUUID)
             putExtra(Constants.IntentKey.PERIODIC_UUID, periodicUUID)
             putExtra(Constants.IntentKey.ROOM_QUICK_START, quickStart)
-             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
         context.startActivity(intent)
     }
 //
-//    fun launchRoomPlayActivity(context: Context, roomPlayInfo: RoomPlayInfo) {
-//        // val intent = Intent(context, ClassRoomActivity::class.java).apply {
-//            putExtra(Constants.IntentKey.ROOM_UUID, roomPlayInfo.roomUUID)
-//            putExtra(Constants.IntentKey.ROOM_PLAY_INFO, roomPlayInfo)
-//        }
-//        //context.startActivity(intent)
-//    }
+    fun launchRoomPlayActivity(context: Context, roomPlayInfo: RoomPlayInfo) {
+        val intent = Intent(context, ClassRoomActivity::class.java).apply {
+            putExtra(Constants.IntentKey.ROOM_UUID, roomPlayInfo.roomUUID)
+            putExtra(Constants.IntentKey.ROOM_PLAY_INFO, roomPlayInfo)
+        }
+        context.startActivity(intent)
+    }
 
     fun launchDevToolsActivity(context: Context) {
         // val intent = Intent(context, DevToolsActivity::class.java)

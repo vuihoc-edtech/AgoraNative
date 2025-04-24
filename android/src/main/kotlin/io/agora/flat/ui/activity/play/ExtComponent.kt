@@ -16,6 +16,7 @@ import io.agora.flat.Constants
 import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.rtc.NetworkQuality
 import io.agora.flat.common.rtc.RtcEvent
+import io.agora.flat.data.error.FlatErrorHandler
 import io.agora.flat.data.model.RoomStatus
 import io.agora.vuihoc.agora_native.databinding.ComponentExtensionBinding
 import io.agora.vuihoc.agora_native.databinding.ComponentRoomStateBinding
@@ -29,7 +30,6 @@ import io.agora.flat.util.delayAndFinish
 import io.agora.flat.util.isDarkMode
 import io.agora.flat.util.showToast
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 
 /**
  * display common loading, toast, dialog, global layout change.
@@ -136,7 +136,7 @@ class ExtComponent(
         if (error.exception == null) {
             activity.showToast(error.text)
         } else {
-            showRoomExitDialog("FlatErrorHandler.getErrorStr(activity, error.exception)")
+            showRoomExitDialog(FlatErrorHandler.getErrorStr(activity, error.exception))
         }
     }
 

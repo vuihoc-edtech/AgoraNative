@@ -2,6 +2,7 @@ package io.agora.flat.data.repository
 
 import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.Result
+import io.agora.flat.data.ServiceFetcher
 import io.agora.flat.data.Success
 import io.agora.flat.data.model.RespNoData
 import io.agora.flat.data.toResult
@@ -11,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class CloudStorageRepository(
-    private val cloudStorageService: CloudStorageServiceV2,
+    private val cloudStorageService: CloudStorageServiceV2 = ServiceFetcher.getInstance().fetchCloudStorageServiceV2(),
     private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
 ) {
     private var avatarUrl: String? = null
@@ -19,9 +20,9 @@ class CloudStorageRepository(
         @Volatile
         private var INSTANCE: CloudStorageRepository? = null
 
-        fun getInstance(cloudStorageService: CloudStorageServiceV2): CloudStorageRepository {
+        fun getInstance(): CloudStorageRepository {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: CloudStorageRepository(cloudStorageService).also { INSTANCE = it }
+                INSTANCE ?: CloudStorageRepository().also { INSTANCE = it }
             }
         }
     }

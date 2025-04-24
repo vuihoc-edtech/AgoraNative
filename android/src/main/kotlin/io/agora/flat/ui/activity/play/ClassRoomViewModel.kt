@@ -1,6 +1,7 @@
 package io.agora.flat.ui.activity.play
 
 import android.util.Log
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,9 +9,11 @@ import androidx.lifecycle.viewModelScope
 // import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
 import io.agora.flat.common.FlatException
+import io.agora.flat.common.android.AndroidClipboardController
 import io.agora.flat.common.android.ClipboardController
 import io.agora.flat.common.board.AgoraBoardRoom
 import io.agora.flat.common.board.DeviceState
+import io.agora.flat.common.rtc.AgoraRtc
 import io.agora.flat.common.rtc.RtcJoinOptions
 import io.agora.flat.common.rtm.ChatMessage
 import io.agora.flat.common.rtm.ClassRtmEvent
@@ -61,6 +64,7 @@ import io.agora.flat.ui.manager.RoomErrorManager
 import io.agora.flat.ui.manager.UserManager
 import io.agora.flat.ui.viewmodel.ChatMessageManager
 import io.agora.flat.common.rtc.RtcVideoController
+import io.agora.flat.common.rtm.AgoraRtm
 import io.agora.flat.util.toInviteCodeDisplay
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -76,27 +80,30 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-
 
 class ClassRoomViewModel(
     savedStateHandle: SavedStateHandle,
-    private val roomRepository: RoomRepository,
-    private val userRepository: UserRepository = UserRepository.getInstance(),
     private val userManager: UserManager,
     private val recordManager: RecordManager,
     private val messageManager: ChatMessageManager,
     private val roomErrorManager: RoomErrorManager,
-    private val rtmApi: RtmApi,
-    private val rtcApi: RtcApi,
     private val rtcVideoController: RtcVideoController,
     private val boardRoom: AgoraBoardRoom,
-    private val syncedClassState: SyncedClassState,
-    private val eventbus: EventBus,
-    private val clipboard: ClipboardController,
-    private val appEnv: AppEnv = AppEnv.getInstance(),
-    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
+    private val syncedClassState: SyncedClassState
 ) : ViewModel() {
+
+    //Init
+    private val roomRepository: RoomRepository = RoomRepository.getInstance()
+    private val userRepository: UserRepository = UserRepository.getInstance()
+    private val rtmApi: RtmApi = AgoraRtm.getInstance()
+    private val rtcApi: RtcApi = AgoraRtc.getInstance()
+    private val eventbus: EventBus = EventBus.getInstance()
+    private val clipboard: ClipboardController = AndroidClipboardController.getInstance()
+    private val appEnv: AppEnv = AppEnv.getInstance()
+    private val appKVCenter: AppKVCenter = AppKVCenter.getInstance()
+    //end init
+
+
     private var _state = MutableStateFlow<ClassRoomState?>(null)
     val state = _state.asStateFlow()
 
@@ -239,6 +246,7 @@ class ClassRoomViewModel(
 
     private suspend fun joinBoard() {
         // logger.i("[BOARD] start joining board room")
+        Log.d("ClassRoomViewModel", "==============[BOARD] start joining board room")
         state.value?.let {
             boardRoom.join(it.boardUUID, it.boardToken, it.region, it.isOwner)
         }
@@ -899,36 +907,30 @@ data class ClassRoomState(
 data class ImageInfo(val width: Int, val height: Int, val orientation: Int)
 
 class ClassRoomViewModelFactory(
-    private val savedStateHandle: SavedStateHandle,
     private val userManager: UserManager,
     private val recordManager: RecordManager,
     private val messageManager: ChatMessageManager,
     private val roomErrorManager: RoomErrorManager,
-    private val rtmApi: RtmApi,
-    private val rtcApi: RtcApi,
     private val rtcVideoController: RtcVideoController,
     private val boardRoom: AgoraBoardRoom,
     private val syncedClassState: SyncedClassState,
-    private val eventbus: EventBus,
-    private val clipboard: ClipboardController,
-    private val roomRepository: RoomRepository
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+) : AbstractSavedStateViewModelFactory() {
+    override fun <T : ViewModel> create(
+        key: String,
+        modelClass: Class<T>,
+        handle: SavedStateHandle
+    ): T {
         return ClassRoomViewModel(
-            savedStateHandle = savedStateHandle,
+            handle,
             userManager = userManager,
             recordManager = recordManager,
             messageManager = messageManager,
             roomErrorManager = roomErrorManager,
-            rtmApi = rtmApi,
-            rtcApi = rtcApi,
             rtcVideoController = rtcVideoController,
             boardRoom = boardRoom,
             syncedClassState = syncedClassState,
-            eventbus = eventbus,
-            clipboard = clipboard,
-            roomRepository = roomRepository
         ) as T
     }
+
+
 }

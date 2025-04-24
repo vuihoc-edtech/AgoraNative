@@ -2,6 +2,7 @@ package io.agora.flat.data.repository
 
 import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.Result
+import io.agora.flat.data.ServiceFetcher
 import io.agora.flat.data.model.PureRoomReq
 import io.agora.flat.data.model.PureToken
 import io.agora.flat.data.model.RespNoData
@@ -15,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 class MiscRepository(
-    private val miscService: MiscService,
+    private val miscService: MiscService = ServiceFetcher.getInstance().fetchMiscService(),
     private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
 ) {
 
@@ -24,10 +25,9 @@ class MiscRepository(
         private var INSTANCE: MiscRepository? = null
 
         fun getInstance(
-            miscService: MiscService,
         ): MiscRepository {
             return INSTANCE ?: synchronized(this) {
-                val instance = MiscRepository(miscService)
+                val instance = MiscRepository()
                 INSTANCE = instance
                 instance
             }

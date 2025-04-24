@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.herewhite.sdk.WhiteboardView
 // import dagger.hilt.EntryPoint
 // import dagger.hilt.InstallIn
 // import dagger.hilt.android.EntryPointAccessors
@@ -27,21 +28,14 @@ import io.agora.flat.util.isTabletMode
 class WhiteboardComponent(
     activity: ClassRoomActivity,
     rootView: FrameLayout,
+    private val boardRoom: BoardRoom
 ) : BaseComponent(activity, rootView) {
-
     private lateinit var binding: ComponentWhiteboardBinding
-    private lateinit var boardRoom: BoardRoom
-
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
-        injectApi()
         initView()
         initWhiteboard()
         observeState()
-    }
-
-    private fun injectApi() {
-        boardRoom = AgoraBoardRoom()
     }
 
     private fun initView() {
@@ -70,6 +64,7 @@ class WhiteboardComponent(
     }
 
     private fun initWhiteboard() {
+        //TODO: remove this when the whiteboard sdk is ready
         boardRoom.setupView(binding.fastboardView)
         boardRoom.setRoomController(FlatControllerGroup(binding.flatControllerLayout))
         boardRoom.setDarkMode(activity.isDarkMode())

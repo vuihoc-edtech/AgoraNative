@@ -31,20 +31,17 @@ import javax.inject.Singleton
 class RoomRepository(
     private val roomService: RoomService = ServiceFetcher.getInstance().fetchRoomService(),
     private val serviceFetcher: ServiceFetcher = ServiceFetcher.getInstance(),
-    private val joinRoomRecordManager: JoinRoomRecordManager,
+    private val joinRoomRecordManager: JoinRoomRecordManager = JoinRoomRecordManager.getInstance(),
     private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
-    private val i18NFetcher: I18NFetcher,
+    private val i18NFetcher: I18NFetcher = I18NFetcher.getInstance(),
 ) {
     companion object {
         @Volatile
         private var INSTANCE: RoomRepository? = null
 
-        fun getInstance(
-            joinRoomRecordManager: JoinRoomRecordManager,
-            i18NFetcher: I18NFetcher,
-        ): RoomRepository {
+        fun getInstance(): RoomRepository {
             return INSTANCE ?: synchronized(this) {
-                val instance = RoomRepository(joinRoomRecordManager = joinRoomRecordManager, i18NFetcher=  i18NFetcher)
+                val instance = RoomRepository()
                 INSTANCE = instance
                 instance
             }

@@ -1,6 +1,7 @@
 package io.agora.flat.ui.manager
 
 // import dagger.hilt.android.scopes.ActivityRetainedScoped
+import io.agora.flat.data.AppDatabase
 import io.agora.flat.data.Success
 import io.agora.flat.data.dao.RecordHistoryDao
 import io.agora.flat.data.model.BackgroundConfig
@@ -22,9 +23,9 @@ import javax.inject.Inject
 
 
 class RecordManager(
-    private val cloudRecordRepository: CloudRecordRepository,
+    private val cloudRecordRepository: CloudRecordRepository = CloudRecordRepository.getInstance(),
     private val userManager: UserManager,
-    private val recordHistoryDao: RecordHistoryDao,
+    private val recordHistoryDao: RecordHistoryDao = AppDatabase.getInstance().recordHistoryDao(),
 ) {
     lateinit var viewModelScope: CoroutineScope
     lateinit var roomUUID: String

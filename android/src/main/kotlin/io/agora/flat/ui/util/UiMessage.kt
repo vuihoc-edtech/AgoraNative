@@ -18,6 +18,7 @@ package io.agora.flat.ui.util
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import io.agora.flat.data.error.FlatErrorHandler
 import io.agora.flat.util.showToast
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -86,7 +87,7 @@ fun ShowUiMessageEffect(
     uiMessage?.let { message ->
         LaunchedEffect(message) {
             val errorMessage = errorStr(message.exception)
-                ?: "FlatErrorHandler.getErrorStr(context = context,error = message.exception,defaultValue = message.text)"
+                ?: FlatErrorHandler.getErrorStr(context = context,error = message.exception,defaultValue = message.text)
             context.showToast(errorMessage)
             onMessageShown(message.id)
         }

@@ -3,6 +3,7 @@ package io.agora.flat.common.board
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.herewhite.sdk.domain.Promise
 import com.herewhite.sdk.domain.RoomPhase
@@ -107,6 +108,7 @@ class AgoraBoardRoom(
 
             disableEraseImage = true
         }
+
         fastRoom = fastboard.createFastRoom(fastRoomOptions)
 
         fastRoom?.addListener(object : FastRoomListener {

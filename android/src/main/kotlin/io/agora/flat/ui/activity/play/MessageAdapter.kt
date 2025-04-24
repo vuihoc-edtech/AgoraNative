@@ -29,8 +29,7 @@ class MessageAdapter (
     context: Context,
     private val dataSet: MutableList<Message> = mutableListOf(),
 ) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
-    private var userQuery: UserQuery = UserQuery(RoomRepository.getInstance(joinRoomRecordManager = JoinRoomRecordManager.getInstance(context = context.applicationContext),
-        I18NFetcher.getInstance(context = context.applicationContext)))
+    private var userQuery: UserQuery = UserQuery(RoomRepository.getInstance())
     private var userUUID: String = UserRepository.getInstance().getUserUUID()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

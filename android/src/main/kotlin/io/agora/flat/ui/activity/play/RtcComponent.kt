@@ -66,6 +66,8 @@ class RtcComponent(
     private val fullScreenLayout: FrameLayout,
     private val shareScreenContainer: FrameLayout,
     private val userWindowsLayout: FrameLayout,
+    private val syncedState: WhiteSyncedState,
+    private val rtcVideoController: RtcVideoController
 ) : BaseComponent(activity, rootView) {
     companion object {
         fun getRequiredPermissions(): Array<String> {
@@ -86,9 +88,7 @@ class RtcComponent(
     private lateinit var videoListBinding: ComponentVideoListBinding
 
     private lateinit var rtcApi: RtcApi
-    private lateinit var rtcVideoController: RtcVideoController
     private lateinit var windowsDragManager: WindowsDragManager
-    private lateinit var syncedState: WhiteSyncedState
     private val viewModel: ClassRoomViewModel by activity.viewModels()
 
     private lateinit var adapter: UserVideoAdapter
@@ -114,9 +114,7 @@ class RtcComponent(
     }
 
     private fun injectApi() {
-        rtcApi = AgoraRtc()
-        rtcVideoController = RtcVideoController(rtcApi)
-        syncedState = WhiteSyncedState()
+        rtcApi = AgoraRtc.getInstance()
         windowsDragManager = WindowsDragManager(activity, rtcVideoController = rtcVideoController, syncedState = syncedState)
 
     }

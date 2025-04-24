@@ -43,7 +43,7 @@ class RtmComponent(
     }
 
     private fun injectApi() {
-        rtmApi = AgoraRtm(messageRepository = MessageRepository.getInstance())
+        rtmApi = AgoraRtm.getInstance()
     }
 
     private fun initView() {

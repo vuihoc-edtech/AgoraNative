@@ -27,5 +27,5 @@ public final class BuildConfig {
   // Field from product flavor: flat
   public static final String DEFAULT_CALLING_CODE = "+86";
   // Field from product flavor: flat
-  public static final String DEFAULT_ENV = "cn_prod";
+  public static final String DEFAULT_ENV = "sg_prod";
 }

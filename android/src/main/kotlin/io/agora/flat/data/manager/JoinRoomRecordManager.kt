@@ -3,6 +3,8 @@ package io.agora.flat.data.manager
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import io.agora.flat.data.AppDatabase
+import io.agora.flat.data.AppDatabase.Companion
 // import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.flat.data.model.JoinRoomRecord
 import io.agora.flat.data.model.JoinRoomRecordList
@@ -39,12 +41,20 @@ class JoinRoomRecordManager(context: Context) {
         @Volatile
         private var INSTANCE: JoinRoomRecordManager? = null
 
-        fun getInstance(context: Context): JoinRoomRecordManager {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: JoinRoomRecordManager(context.applicationContext).also {
-                    INSTANCE = it
+        fun init(context: Context) {
+            if (INSTANCE == null) {
+                synchronized(JoinRoomRecordManager::class.java) {
+                    if (INSTANCE == null) {
+                        INSTANCE = JoinRoomRecordManager(context.applicationContext)
+                    }
                 }
             }
+        }
+
+        fun getInstance(): JoinRoomRecordManager {
+            return INSTANCE ?: throw IllegalStateException(
+                "AppDatabase is not initialized. Call AppDatabase.init(context) in Application class."
+            )
         }
     }
 }

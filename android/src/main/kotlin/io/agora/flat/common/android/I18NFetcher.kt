@@ -17,10 +17,20 @@ class I18NFetcher private constructor(context: Context) {
         @Volatile
         private var INSTANCE: I18NFetcher? = null
 
-        fun getInstance(context: Context): I18NFetcher {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: I18NFetcher(context).also { INSTANCE = it }
+        fun init(context: Context) {
+            if (INSTANCE == null) {
+                synchronized(I18NFetcher::class.java) {
+                    if (INSTANCE == null) {
+                        INSTANCE = I18NFetcher(context.applicationContext)
+                    }
+                }
             }
+        }
+
+        fun getInstance(): I18NFetcher {
+            return INSTANCE ?: throw IllegalStateException(
+                "AppDatabase is not initialized. Call AppDatabase.init(context) in Application class."
+            )
         }
     }
 

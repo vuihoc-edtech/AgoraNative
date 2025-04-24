@@ -50,6 +50,21 @@ class AgoraRtm(
     private var currentChannel: String? = null
     private var rtmListeners = mutableListOf<RtmListener>()
 
+    companion object {
+        @Volatile
+        private var INSTANCE: AgoraRtm? = null
+
+        fun getInstance(): AgoraRtm {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: AgoraRtm(
+                    MessageRepository.getInstance(), // You should ensure this is a singleton too
+                    AppEnv.getInstance(),
+                    AppKVCenter.getInstance()
+                ).also { INSTANCE = it }
+            }
+        }
+    }
+
     override fun init(context: Context) {
         RtmClient.release()
         try {

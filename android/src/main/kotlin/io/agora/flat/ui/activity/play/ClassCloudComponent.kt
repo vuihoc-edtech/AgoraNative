@@ -31,13 +31,8 @@ class ClassCloudComponent(
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
-        injectApi()
         initView()
         observeState()
-    }
-
-    private fun injectApi() {
-
     }
 
     private fun observeState() {

@@ -47,6 +47,7 @@ import kotlinx.coroutines.launch
 class ToolComponent(
     activity: ClassRoomActivity,
     rootView: FrameLayout,
+    private var boardRoom: BoardRoom
 ) : BaseComponent(activity, rootView) {
 
     private lateinit var takePhotoLauncher: ActivityResultLauncher<Intent>
@@ -54,7 +55,6 @@ class ToolComponent(
     private lateinit var toolAnimator: SimpleAnimator
 
     private val viewModel: ClassRoomViewModel by activity.viewModels()
-    private lateinit var boardRoom: BoardRoom
     private lateinit var appEnv: AppEnv
     private lateinit var rtcApi: RtcApi
     private lateinit var eventBus: EventBus
@@ -90,9 +90,8 @@ class ToolComponent(
 
     private fun injectApi() {
         appEnv = AppEnv.getInstance()
-        rtcApi = AgoraRtc()
-        eventBus = EventBus()
-        boardRoom = AgoraBoardRoom()
+        rtcApi = AgoraRtc.getInstance()
+        eventBus = EventBus.getInstance()
     }
 
     private fun observeState() {
@@ -145,8 +144,7 @@ class ToolComponent(
             viewModel.teacher.collect {
                 binding.layoutUserList.teacherAvatar.load(it?.avatarURL) {
                     crossfade(true)
-                    placeholder(R.drawable.ic_class_room_user_avatar)
-                }
+                    placeholder(R.drawable.ic_class_room_user_avatar) }
             }
         }
 

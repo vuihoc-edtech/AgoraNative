@@ -3,6 +3,7 @@ package io.agora.flat.ui.activity.play
 import android.graphics.BitmapFactory
 import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.herewhite.sdk.ConverterCallbacks
 import com.herewhite.sdk.converter.ConvertType
@@ -48,17 +49,17 @@ import javax.inject.Inject
 
 
 class ClassCloudViewModel(
-    private val cloudStorageRepository: CloudStorageRepository,
     private val boardRoom: AgoraBoardRoom,
-    private val eventbus: EventBus,
     private val roomErrorManager: RoomErrorManager,
-    private val appEnv: AppEnv = AppEnv.getInstance(),
 ) : ViewModel() {
     private val dirPath = MutableStateFlow(CLOUD_ROOT_DIR)
     private val loadUiState = MutableStateFlow(LoadUiState.Init)
     private val loadedFiles = MutableStateFlow(listOf<CloudFile>())
+    private val cloudStorageRepository: CloudStorageRepository = CloudStorageRepository.getInstance()
 
     private val uploadingFiles = mutableMapOf<String, CloudUploadStartResp>()
+    private val appEnv: AppEnv = AppEnv.getInstance()
+    private val eventbus: EventBus = EventBus.getInstance()
 
     val state = combine(
         loadUiState,
@@ -364,3 +365,12 @@ data class ClassCloudUiState(
     val files: List<CloudFile> = emptyList(),
     val dirPath: String = CLOUD_ROOT_DIR,
 )
+
+class ClassCloudViewModelFactory(
+    private val boardRoom: AgoraBoardRoom,
+    private val roomErrorManager: RoomErrorManager,
+): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ClassCloudViewModel(boardRoom, roomErrorManager) as T
+    }
+}

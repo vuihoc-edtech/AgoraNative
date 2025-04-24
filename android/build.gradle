@@ -173,7 +173,6 @@ android {
     }
 }
 
-
 dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -281,6 +280,7 @@ dependencies {
     implementation ("com.github.netless-io:sync-player-android:1.2.1") {
         exclude group: "androidx.test.ext", module: "junit-ktx"
         exclude group: "androidx.test", module: "monitor"
+        exclude group: "com.github.netless-io", module: "whiteboard-android"
     }
 
     implementation 'io.agora.rtc:full-sdk:4.3.0'
@@ -304,11 +304,4 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.5.0')
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
-}
-
-
-configurations.all {
-    resolutionStrategy {
-        force("com.github.netless-io:whiteboard-android:nl_2.17.0-alpha.15")
-    }
 }

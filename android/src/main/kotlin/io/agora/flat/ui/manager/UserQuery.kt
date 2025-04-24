@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 class UserQuery(
-    private val roomRepository: RoomRepository,
+    private val roomRepository: RoomRepository = RoomRepository.getInstance(),
 ) {
     private lateinit var roomUUID: String
     private var userMap = mutableMapOf<String, NetworkRoomUser>()

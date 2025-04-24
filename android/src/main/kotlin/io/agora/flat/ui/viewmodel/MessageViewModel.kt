@@ -1,10 +1,13 @@
 package io.agora.flat.ui.viewmodel
 
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 // import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
+import io.agora.flat.common.rtm.AgoraRtm
 import io.agora.flat.common.rtm.Message
 import io.agora.flat.common.rtm.MessageFactory
 import io.agora.flat.common.rtm.RoomBanEvent
@@ -25,20 +28,19 @@ import javax.inject.Inject
 
 class MessageViewModel(
     savedStateHandle: SavedStateHandle,
-    private val userRepository: UserRepository,
-    private val miscRepository: MiscRepository,
     private val messageManager: ChatMessageManager,
     private val syncedClassState: SyncedClassState,
     private val userManager: UserManager,
     private val messageQuery: MessageQuery,
-    private val rtmApi: RtmApi,
-    private val eventbus: EventBus,
+
 ) : ViewModel() {
     val roomUUID: String = savedStateHandle[Constants.IntentKey.ROOM_UUID]!!
-
+    private val rtmApi: RtmApi = AgoraRtm.getInstance()
+    private val eventbus: EventBus = EventBus.getInstance()
     private val _messageUpdate = MutableStateFlow(MessagesUpdate())
     val messageUpdate = _messageUpdate.asStateFlow()
-
+    private val userRepository: UserRepository = UserRepository.getInstance()
+    private val miscRepository: MiscRepository = MiscRepository.getInstance()
     private val messageLoading = ObservableLoadingCounter()
 
     val messageUiState = combine(
@@ -143,3 +145,25 @@ data class MessageUiState(
     val isOwner: Boolean = false,
     val loading: Boolean = false,
 )
+
+class MessageViewModelFactory(
+    private val messageManager: ChatMessageManager,
+    private val syncedClassState: SyncedClassState,
+    private val userManager: UserManager,
+    private val messageQuery: MessageQuery,
+) : AbstractSavedStateViewModelFactory() {
+    override fun <T : ViewModel> create(
+        key: String,
+        modelClass: Class<T>,
+        handle: SavedStateHandle
+    ): T {
+        return MessageViewModel(
+            savedStateHandle = handle,
+            messageManager = messageManager,
+            syncedClassState = syncedClassState,
+            userManager = userManager,
+            messageQuery = messageQuery
+        ) as T
+    }
+
+}

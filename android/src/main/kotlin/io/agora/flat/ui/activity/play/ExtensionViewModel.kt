@@ -1,6 +1,7 @@
 package io.agora.flat.ui.activity.play
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 // import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.common.board.AgoraBoardRoom
@@ -15,15 +16,22 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+class ExtensionViewModelFactory(
+    private val boardRoom: AgoraBoardRoom,
+    private val roomErrorManager: RoomErrorManager,
+): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ExtensionViewModel(roomErrorManager, boardRoom) as T
+    }
+}
 
 class ExtensionViewModel(
     private val errorManager: RoomErrorManager,
     private val boardRoom: AgoraBoardRoom,
-    private val eventBus: EventBus,
 ) : ViewModel() {
     private val _state = MutableStateFlow(ExtensionState())
     val state = _state.asStateFlow()
-
+    private val eventBus: EventBus = EventBus.getInstance()
     init {
         viewModelScope.launch {
             boardRoom.observeRoomPhase().collect { phase ->

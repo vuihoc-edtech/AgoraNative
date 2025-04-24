@@ -175,7 +175,7 @@ class AgoraRtc(val appEnv: AppEnv = AppEnv.getInstance()) : RtcApi, StartupIniti
         @Volatile
         private var INSTANCE: AgoraRtc? = null
 
-        fun getInstance(logger: Logger): AgoraRtc {
+        fun getInstance(): AgoraRtc {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: AgoraRtc().also { INSTANCE = it }
             }

@@ -81,8 +81,15 @@ class ClassroomStatusBar: UIView {
         addSubview(timeCountLabel)
         addSubview(onStageStatusButton)
         addSubview(title)
-        latencyLabel.snp.makeConstraints { make in
+        title.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(90)
+            make.height.equalTo(24)
+            make.top.bottom.equalToSuperview().inset(2)
+        }
+        latencyLabel.snp.makeConstraints { make in
+            make.left.equalTo(title.snp.right).offset(15)
             make.centerY.equalToSuperview()
         }
         latencyCountLabel.snp.makeConstraints { make in
@@ -111,13 +118,9 @@ class ClassroomStatusBar: UIView {
             make.left.greaterThanOrEqualTo(timeCountLabel.snp.right)
             make.width.greaterThanOrEqualTo(100)
         }
-        title.snp.makeConstraints { make in
-            make.left.equalTo(timeCountLabel.snp.right).offset(15)
-            make.centerY.equalToSuperview()
-        }
         addLine(direction: .bottom, color: .borderColor)
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -171,15 +174,12 @@ class ClassroomStatusBar: UIView {
         return btn
     }()
     
-    lazy var title: UILabel = {
-        let label = UILabel()
-        label.text = "RinoEdu"
-        label.tintColor = .color(type: .primary)
-        label.font = UIFont.boldSystemFont(ofSize: 20.0)
-        label.textColor = .red
-        return label
+    lazy var title: UIImageView = {
+        let iconView = UIImageView(image: UIImage.fromPlugin(named: "logo_rino"))
+        iconView.contentMode = .scaleAspectFit
+        return iconView
     }()
-    
+
     @objc func onTimer() {
         guard let beginTime else { return }
         let duration = Int(Date().timeIntervalSince(beginTime))

@@ -34,6 +34,7 @@ import io.agora.flat.event.*
 import io.agora.flat.ui.activity.camera.CameraActivity
 import io.agora.flat.ui.animator.SimpleAnimator
 import io.agora.flat.ui.manager.RoomOverlayManager
+import io.agora.flat.ui.view.AidienceExitDialog
 import io.agora.flat.ui.view.InviteDialog
 import io.agora.flat.ui.view.OwnerExitDialog
 import io.agora.flat.ui.view.RequestDeviceDialog
@@ -448,8 +449,7 @@ class ToolComponent(
         if (state.isOwner && RoomStatus.Idle != state.roomStatus) {
             showOwnerExitDialog()
         } else {
-            updateRoomsAndFinish()
-            // showAudienceExitDialog()
+             showAudienceExitDialog()
         }
     }
 
@@ -492,7 +492,27 @@ class ToolComponent(
     }
 
     private fun showAudienceExitDialog() {
+        val dialog = AidienceExitDialog()
+        dialog.setListener(object : AidienceExitDialog.Listener {
+            override fun onClose() {
+            }
 
+            // 挂起房间
+            override fun onLeftButtonClick() {
+//                updateRoomsAndFinish()
+            }
+
+            // 结束房间
+            override fun onRightButtonClick() {
+            updateRoomsAndFinish()
+            }
+
+            override fun onDismiss() {
+                RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_AUDIENCE_EXIT_DIALOG, false)
+            }
+        })
+        RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_AUDIENCE_EXIT_DIALOG, true)
+        dialog.show(activity.supportFragmentManager, "AidienceExitDialog")
     }
 
     private fun showRequestDeviceDialog(

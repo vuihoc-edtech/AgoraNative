@@ -7,7 +7,7 @@ import io.agora.flat.data.model.ORDER_ASC
 import io.agora.flat.data.model.ORDER_DESC
 import io.agora.flat.di.interfaces.RtmApi
 import io.agora.flat.ui.manager.UserQuery
-import javax.inject.Inject
+
 
 
 class MessageQuery(

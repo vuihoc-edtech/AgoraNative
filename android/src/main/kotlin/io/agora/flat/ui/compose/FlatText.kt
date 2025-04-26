@@ -43,22 +43,6 @@ fun FlatRoomStatusText(roomStatus: RoomStatus, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun FlatTextLargeTitle(
-    text: String,
-    modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified,
-) {
-    Text(
-        text = text,
-        modifier = modifier,
-        color = color,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        style = MaterialTheme.typography.h5,
-    )
-}
-
-@Composable
 fun FlatTextTitle(
     text: String,
     modifier: Modifier = Modifier,

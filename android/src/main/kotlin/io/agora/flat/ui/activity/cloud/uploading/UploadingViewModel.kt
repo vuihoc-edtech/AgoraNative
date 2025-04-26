@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
-class UploadingViewModel() : ViewModel() {
+
+class UploadingViewModel : ViewModel() {
     private val _state = MutableStateFlow(UploadingUIState())
     val state: StateFlow<UploadingUIState>
         get() = _state

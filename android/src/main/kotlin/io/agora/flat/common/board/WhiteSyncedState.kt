@@ -14,12 +14,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import javax.inject.Inject
 
 
-class WhiteSyncedState(
-
-) : SyncedClassState {
+class WhiteSyncedState : SyncedClassState {
     companion object {
         const val DEVICE_STATE_STORAGE = "deviceState"
         const val CLASSROOM_STORAGE = "classroom"

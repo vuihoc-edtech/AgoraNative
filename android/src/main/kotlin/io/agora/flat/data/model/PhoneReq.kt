@@ -1,5 +1,5 @@
 package io.agora.flat.data.model
 
-data class PhoneReq constructor(
+data class PhoneReq(
     val phone: String,
 )

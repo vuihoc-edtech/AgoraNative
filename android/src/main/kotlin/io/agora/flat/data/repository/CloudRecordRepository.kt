@@ -2,17 +2,32 @@ package io.agora.flat.data.repository
 
 import io.agora.flat.data.Result
 import io.agora.flat.data.ServiceFetcher
-import io.agora.flat.data.model.*
+import io.agora.flat.data.model.AgoraRecordMode
+import io.agora.flat.data.model.AgoraRecordParams
+import io.agora.flat.data.model.AgoraRecordStartedData
+import io.agora.flat.data.model.AgoraRecordUpdateLayoutData
+import io.agora.flat.data.model.ClientRequest
+import io.agora.flat.data.model.RecordAcquireReq
+import io.agora.flat.data.model.RecordAcquireReqData
+import io.agora.flat.data.model.RecordAcquireReqDataClientRequest
+import io.agora.flat.data.model.RecordAcquireRespData
+import io.agora.flat.data.model.RecordQueryRespData
+import io.agora.flat.data.model.RecordReq
+import io.agora.flat.data.model.RecordStartReq
+import io.agora.flat.data.model.RecordStartRespData
+import io.agora.flat.data.model.RecordStopRespData
+import io.agora.flat.data.model.RecordUpdateLayoutReq
+import io.agora.flat.data.model.RecordingConfig
+import io.agora.flat.data.model.TranscodingConfig
+import io.agora.flat.data.model.UpdateLayoutClientRequest
 import io.agora.flat.data.toResult
 import io.agora.flat.http.api.CloudRecordService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 class CloudRecordRepository(
-    private val cloudRecordService: CloudRecordService = ServiceFetcher.getInstance().fetchCloudRecordService(),
-    private val serviceFetcher: ServiceFetcher = ServiceFetcher.getInstance(),
+    private val cloudRecordService: CloudRecordService = ServiceFetcher.getInstance()
+        .fetchCloudRecordService(),
 ) {
 
     companion object {
@@ -111,15 +126,5 @@ class CloudRecordRepository(
                 )
             ).toResult()
         }
-    }
-
-    suspend fun getRecordInfo(roomUUID: String): Result<RecordInfo> {
-        return withContext(Dispatchers.IO) {
-            fetchService(roomUUID).getRecordInfo(PureRoomReq(roomUUID)).toResult()
-        }
-    }
-
-    private fun fetchService(roomUUID: String): CloudRecordService {
-        return serviceFetcher.fetchCloudRecordService()
     }
 }

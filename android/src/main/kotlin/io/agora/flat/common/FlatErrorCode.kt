@@ -96,7 +96,5 @@ class FlatErrorCode {
         const val RTM_LOGOUT_ERROR_START = 0x12000
     }
 
-    object RTC {
-
-    }
+    object RTC
 }

@@ -15,17 +15,6 @@
  */
 package io.agora.flat.ui.util
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
-import io.agora.flat.data.error.FlatErrorHandler
-import io.agora.flat.util.showToast
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import java.util.*
 
 enum class UiMessageType {
@@ -46,50 +35,3 @@ class UiMessage(
         get() = type == UiMessageType.Info
 }
 
-fun UiInfoMessage(
-    text: String,
-): UiMessage = UiMessage(text = text, type = UiMessageType.Info)
-
-fun UiErrorMessage(
-    exception: Throwable,
-): UiMessage = UiMessage(exception = exception, type = UiMessageType.Error)
-
-class UiMessageManager {
-    private val mutex = Mutex()
-
-    private val _messages = MutableStateFlow(emptyList<UiMessage>())
-
-    /**
-     * A flow emitting the current message to display.
-     */
-    val message: Flow<UiMessage?> = _messages.map { it.firstOrNull() }.distinctUntilChanged()
-
-    suspend fun emitMessage(message: UiMessage) {
-        mutex.withLock {
-            _messages.value = _messages.value + message
-        }
-    }
-
-    suspend fun clearMessage(id: Long) {
-        mutex.withLock {
-            _messages.value = _messages.value.filterNot { it.id == id }
-        }
-    }
-}
-
-@Composable
-fun ShowUiMessageEffect(
-    uiMessage: UiMessage?,
-    errorStr: (Throwable?) -> String? = { null },
-    onMessageShown: (Long) -> Unit = {}
-) {
-    val context = LocalContext.current
-    uiMessage?.let { message ->
-        LaunchedEffect(message) {
-            val errorMessage = errorStr(message.exception)
-                ?: FlatErrorHandler.getErrorStr(context = context,error = message.exception,defaultValue = message.text)
-            context.showToast(errorMessage)
-            onMessageShown(message.id)
-        }
-    }
-}

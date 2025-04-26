@@ -79,11 +79,3 @@ private fun DrawScope.drawCircularIndicator(
         style = stroke
     )
 }
-
-@Composable
-@Preview
-private fun FlatCircularProgressIndicatorPreview() {
-    FlatPage {
-        FlatCircularProgressIndicator(0.32f)
-    }
-}

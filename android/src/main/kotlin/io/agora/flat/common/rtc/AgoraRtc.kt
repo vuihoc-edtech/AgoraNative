@@ -2,7 +2,6 @@ package io.agora.flat.common.rtc
 
 import android.content.Context
 import io.agora.flat.data.AppEnv
-import io.agora.flat.di.interfaces.Logger
 import io.agora.flat.di.interfaces.RtcApi
 import io.agora.flat.di.interfaces.StartupInitializer
 import io.agora.rtc2.ChannelMediaOptions
@@ -15,8 +14,6 @@ import io.agora.rtc2.video.VideoEncoderConfiguration
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 class AgoraRtc(val appEnv: AppEnv = AppEnv.getInstance()) : RtcApi, StartupInitializer {
     private lateinit var rtcEngine: RtcEngine

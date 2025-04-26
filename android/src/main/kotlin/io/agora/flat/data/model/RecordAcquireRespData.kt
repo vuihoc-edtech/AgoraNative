@@ -1,5 +1,5 @@
 package io.agora.flat.data.model
 
-data class RecordAcquireRespData constructor(
+data class RecordAcquireRespData(
     val resourceId: String,
 )

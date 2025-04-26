@@ -8,11 +8,9 @@ import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.Success
 import io.agora.flat.data.model.RtmQueryMessage
 import io.agora.flat.data.repository.MessageRepository
-import io.agora.flat.di.interfaces.Logger
 import io.agora.flat.di.interfaces.PostLoginInitializer
 import io.agora.flat.di.interfaces.RtmApi
 import io.agora.rtm.ErrorInfo
-import io.agora.rtm.LinkStateEvent
 import io.agora.rtm.MessageEvent
 import io.agora.rtm.PresenceEvent
 import io.agora.rtm.PresenceOptions
@@ -30,8 +28,6 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine

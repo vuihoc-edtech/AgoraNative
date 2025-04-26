@@ -1,6 +1,6 @@
 package io.agora.flat.common.rtm
 
-data class Message constructor(
+data class Message(
     // 消息类型
     var type: MessageType,
     // 消息体
@@ -21,8 +21,8 @@ data class Message constructor(
 }
 
 sealed class MessageBody
-data class NoticeMessageBody constructor(val ban: Boolean) : MessageBody()
-data class TextMessageBody constructor(val message: String) : MessageBody()
+data class NoticeMessageBody(val ban: Boolean) : MessageBody()
+data class TextMessageBody(val message: String) : MessageBody()
 
 enum class MessageType {
     Notice,

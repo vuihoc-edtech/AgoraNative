@@ -11,8 +11,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
-
 
 /**
  * Fetch room service by uuid
@@ -105,7 +103,6 @@ class ServiceFetcher(
     }
 
     private inline fun <reified T> createService(serviceUrl: String): T {
-
         return Retrofit.Builder()
             .baseUrl(serviceUrl)
             .client(client)

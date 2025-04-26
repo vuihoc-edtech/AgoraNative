@@ -1,5 +1,5 @@
 package io.agora.flat.http.model
 
-data class CloudConvertFinishReq constructor(
+data class CloudConvertFinishReq(
     val fileUUID: String,
 )

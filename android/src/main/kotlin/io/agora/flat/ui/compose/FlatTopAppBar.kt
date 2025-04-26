@@ -111,15 +111,5 @@ fun CloseTopAppBar(
     )
 }
 
-
-@Preview
-@Composable
-fun DefaultPreview() {
-    FlatColumnPage {
-        BackTopAppBar("Long Long Long Long Long Long Long Long Title", {})
-        CloseTopAppBar("Foo Title", {})
-    }
-}
-
 private val TitleInsetWithoutIcon = Modifier.width(16.dp)
 private val TitleIconModifier = Modifier.fillMaxHeight()

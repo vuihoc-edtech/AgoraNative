@@ -45,7 +45,7 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.net.URL
 import java.util.*
-import javax.inject.Inject
+
 
 
 class ClassCloudViewModel(

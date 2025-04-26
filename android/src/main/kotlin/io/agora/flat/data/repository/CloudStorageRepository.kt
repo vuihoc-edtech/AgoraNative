@@ -113,28 +113,4 @@ class CloudStorageRepository(
             cloudStorageService.convertFinish(CloudConvertFinishReq(fileUUID)).toResult()
         }
     }
-
-    suspend fun updateAvatarStart(fileName: String, fileSize: Long): Result<CloudUploadStartResp> {
-        return withContext(Dispatchers.IO) {
-            val result = cloudStorageService.updateAvatarStart(CloudUploadTempFileStartReq(fileName, fileSize)).toResult()
-            if (result is Success) {
-                avatarUrl = result.data.run { "$ossDomain/$ossFilePath" }
-            }
-            result
-        }
-    }
-
-    suspend fun updateAvatarFinish(fileUUID: String): Result<RespNoData> {
-        return withContext(Dispatchers.IO) {
-            val result = cloudStorageService.updateAvatarFinish(CloudUploadFinishReq(fileUUID)).toResult()
-            if (result is Success) {
-                avatarUrl?.let { avatar ->
-                    appKVCenter.getUserInfo()?.copy(avatar = avatar)?.run {
-                        appKVCenter.setUserInfo(this)
-                    }
-                }
-            }
-            result
-        }
-    }
 }

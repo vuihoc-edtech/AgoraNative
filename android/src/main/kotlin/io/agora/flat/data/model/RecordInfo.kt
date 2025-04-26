@@ -1,6 +1,6 @@
 package io.agora.flat.data.model
 
-data class RecordInfo constructor(
+data class RecordInfo(
     val title: String,
     val ownerUUID: String,
     val roomType: RoomType,
@@ -11,7 +11,7 @@ data class RecordInfo constructor(
     val recordInfo: List<RecordItem>,
 )
 
-data class RecordItem constructor(
+data class RecordItem(
     val beginTime: Long,
     val endTime: Long,
     val videoURL: String,

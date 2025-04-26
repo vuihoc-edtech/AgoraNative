@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 const val CLOUD_ROOT_DIR = "/"
 
 @Parcelize
-data class CloudFile constructor(
+data class CloudFile(
     val fileUUID: String,
     val fileName: String,
     val fileSize: Long,
@@ -29,13 +29,13 @@ data class CloudFile constructor(
 }
 
 @Parcelize
-data class CloudFileMeta constructor(
+data class CloudFileMeta(
     val whiteboardConvert: WhiteboardConvertPayload? = null,
     val whiteboardProjector: WhiteboardProjectorPayload? = null,
 ) : Parcelable
 
 @Parcelize
-data class WhiteboardConvertPayload constructor(
+data class WhiteboardConvertPayload(
     val region: String,
     val convertStep: FileConvertStep,
     val taskUUID: String,
@@ -43,7 +43,7 @@ data class WhiteboardConvertPayload constructor(
 ) : Parcelable
 
 @Parcelize
-data class WhiteboardProjectorPayload constructor(
+data class WhiteboardProjectorPayload(
     val region: String,
     val convertStep: FileConvertStep,
     val taskUUID: String,

@@ -1,6 +1,6 @@
 package io.agora.flat.data.model
 
-data class RoomPeriodic constructor(
+data class RoomPeriodic(
     // 创建者的 uuid
     val ownerUUID: String,
     // 房间类型

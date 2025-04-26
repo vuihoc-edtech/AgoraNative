@@ -6,6 +6,4 @@ import io.agora.flat.util.Ticker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel : ViewModel() {
-
-}
+abstract class BaseViewModel : ViewModel()

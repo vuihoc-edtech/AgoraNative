@@ -39,16 +39,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 
 class AgoraBoardRoom(
-    val userRepository: UserRepository = UserRepository.getInstance(),
+    private val userRepository: UserRepository = UserRepository.getInstance(),
     val syncedClassState: SyncedClassState = WhiteSyncedState(),
-    val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
     val appEnv: AppEnv = AppEnv.getInstance(),
     ) : BoardRoom {
     private lateinit var fastboard: Fastboard

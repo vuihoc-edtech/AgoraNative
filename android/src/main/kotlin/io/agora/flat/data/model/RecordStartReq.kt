@@ -1,20 +1,20 @@
 package io.agora.flat.data.model
 
-data class RecordStartReq constructor(
+data class RecordStartReq(
     val roomUUID: String,
     val agoraParams: AgoraRecordParams,
     val agoraData: AgoraRecordStartedData,
 )
 
-data class AgoraRecordStartedData constructor(
+data class AgoraRecordStartedData(
     val clientRequest: ClientRequest,
 )
 
-data class ClientRequest constructor(
+data class ClientRequest(
     val recordingConfig: RecordingConfig,
 )
 
-data class RecordingConfig constructor(
+data class RecordingConfig(
     val channelType: Long? = null,
     val streamTypes: Int = 2,
     // val decryptionMode: Int?,
@@ -31,7 +31,7 @@ data class RecordingConfig constructor(
     val subscribeUidGroup: Int?,
 )
 
-data class TranscodingConfig constructor(
+data class TranscodingConfig(
     // px
     val width: Int,
     // px
@@ -46,7 +46,7 @@ data class TranscodingConfig constructor(
     val backgroundConfig: List<BackgroundConfig>? = null,
 )
 
-data class LayoutConfig constructor(
+data class LayoutConfig(
     val uid: String,
     // 屏幕里该画面左上角的横坐标的相对值，范围是 [0.0,1.0]
     val x_axis: Float,
@@ -62,7 +62,7 @@ data class LayoutConfig constructor(
     val render_mode: Int = 0,
 )
 
-data class BackgroundConfig constructor(
+data class BackgroundConfig(
     val uid: String,
     val image_url: String,
     val render_mode: Int = 0,

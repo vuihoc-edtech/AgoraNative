@@ -4,9 +4,9 @@ import java.util.*
 
 object DateUtils {
     fun isToday(utc: Long): Boolean {
-        val c1 = Calendar.getInstance();
+        val c1 = Calendar.getInstance()
 
-        val c2 = Calendar.getInstance();
+        val c2 = Calendar.getInstance()
         c2.time = Date(utc)
 
         return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
@@ -14,10 +14,10 @@ object DateUtils {
     }
 
     fun isTomorrow(utc: Long): Boolean {
-        val c1 = Calendar.getInstance();
+        val c1 = Calendar.getInstance()
         c1.add(Calendar.DAY_OF_YEAR, 1)
 
-        val c2 = Calendar.getInstance();
+        val c2 = Calendar.getInstance()
         c2.time = Date(utc)
 
         return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
@@ -25,10 +25,10 @@ object DateUtils {
     }
 
     fun isYesterday(utc: Long): Boolean {
-        val c1 = Calendar.getInstance();
+        val c1 = Calendar.getInstance()
         c1.add(Calendar.DAY_OF_YEAR, -1)
 
-        val c2 = Calendar.getInstance();
+        val c2 = Calendar.getInstance()
         c2.time = Date(utc)
 
         return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
@@ -36,9 +36,9 @@ object DateUtils {
     }
 
     fun isThisYear(utc: Long): Boolean {
-        val c1 = Calendar.getInstance();
+        val c1 = Calendar.getInstance()
 
-        val c2 = Calendar.getInstance();
+        val c2 = Calendar.getInstance()
         c2.time = Date(utc)
 
         return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)

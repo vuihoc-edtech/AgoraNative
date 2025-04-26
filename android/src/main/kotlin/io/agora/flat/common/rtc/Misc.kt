@@ -32,10 +32,6 @@ internal class RTCEventHandler : IRtcEngineEventHandler() {
         }
     }
 
-    override fun onConnectionStateChanged(state: Int, reason: Int) {
-        super.onConnectionStateChanged(state, reason)
-    }
-
     override fun onFirstRemoteVideoDecoded(uid: Int, width: Int, height: Int, elapsed: Int) {
         for (listener in listeners) {
             listener.onFirstRemoteVideoDecoded(uid, width, height, elapsed)

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
  * agora record params describe
  * https://docs.agora.io/cn/cloud-recording/cloud_recording_api_rest
  */
-data class AgoraRecordParams constructor(
+data class AgoraRecordParams(
     val resourceid: String,
     val mode: AgoraRecordMode,
     val sid: String? = null,

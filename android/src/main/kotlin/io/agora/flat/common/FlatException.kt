@@ -5,7 +5,7 @@ sealed class FlatException(
     exception: Exception? = null,
 ) : RuntimeException(message, exception)
 
-data class FlatNetException constructor(
+data class FlatNetException(
     val exception: Exception? = null,
     val code: Int = DEFAULT_ERROR_CODE,
     val status: Int = DEFAULT_ERROR_STATUS,

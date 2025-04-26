@@ -8,11 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun FlatNormalHorizontalSpacer() {
-    Spacer(Modifier.width(16.dp))
-}
-
-@Composable
 fun FlatLargeHorizontalSpacer() {
     Spacer(Modifier.width(32.dp))
 }
@@ -27,7 +22,3 @@ fun FlatNormalVerticalSpacer() {
     Spacer(Modifier.height(16.dp))
 }
 
-@Composable
-fun FlatLargeVerticalSpacer() {
-    Spacer(Modifier.height(24.dp))
-}

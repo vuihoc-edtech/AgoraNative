@@ -1,5 +1,5 @@
 package io.agora.flat.data.model
 
-data class UserRenameReq constructor(
+data class UserRenameReq(
     val name: String,
 )

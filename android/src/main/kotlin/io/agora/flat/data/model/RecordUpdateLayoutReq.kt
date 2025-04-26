@@ -1,16 +1,16 @@
 package io.agora.flat.data.model
 
-data class RecordUpdateLayoutReq constructor(
+data class RecordUpdateLayoutReq(
     val roomUUID: String,
     val agoraParams: AgoraRecordParams,
     val agoraData: AgoraRecordUpdateLayoutData,
 )
 
-data class AgoraRecordUpdateLayoutData constructor(
+data class AgoraRecordUpdateLayoutData(
     val clientRequest: UpdateLayoutClientRequest,
 )
 
-data class UpdateLayoutClientRequest constructor(
+data class UpdateLayoutClientRequest(
     val maxResolutionUid: String? = null,
     val mixedVideoLayout: Int = 3,
     val backgroundColor: String = "#FFFFFF",

@@ -1,6 +1,6 @@
 package io.agora.flat.data.model
 
-data class PeriodicSubRoom constructor(
+data class PeriodicSubRoom(
     val roomInfo: RoomInfo,
     val previousPeriodicRoomBeginTime: Long?,
     val nextPeriodicRoomEndTime: Long?,

@@ -150,7 +150,7 @@ class AppKVCenter {
     fun getDeviceStatePreference(): DeviceState {
         val preferenceJson = store.getString(KEY_DEVICE_STATE, null)
         return if (preferenceJson == null) {
-            DeviceState(camera = false, mic = true);
+            DeviceState(camera = false, mic = true)
         } else {
             gson.fromJson(preferenceJson, DeviceState::class.java)
         }

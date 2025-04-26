@@ -1,92 +1,26 @@
 package io.agora.flat.ui.activity.setting
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Bundle
 import android.view.ViewGroup
-import android.webkit.*
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import io.agora.flat.Constants
-import io.agora.flat.ui.activity.base.BaseComposeActivity
-import io.agora.flat.ui.compose.BackTopAppBar
-import io.agora.flat.ui.compose.FlatColumnPage
 import kotlinx.coroutines.launch
-
-class WebViewActivity : BaseComposeActivity() {
-    @SuppressLint("SetJavaScriptEnabled")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-            WebViewContent(
-                url = intent.getStringExtra(Constants.IntentKey.URL)!!,
-                title = intent.getStringExtra(Constants.IntentKey.TITLE),
-                onPageBack = { this.finish() }
-            )
-        }
-    }
-}
-
-@Composable
-internal fun WebViewContent(url: String, title: String?, onPageBack: () -> Unit) {
-    var webViewProgress by remember { mutableStateOf(-1) }
-    var titleLocal by remember { mutableStateOf(title ?: "") }
-
-    FlatColumnPage {
-        BackTopAppBar(title = titleLocal, onBackPressed = onPageBack)
-        Box {
-            ComposeWebView(
-                modifier = Modifier.fillMaxSize(),
-                url = url,
-                onProgressChange = { progress ->
-                    webViewProgress = progress
-                },
-                onTitleChange = { t ->
-                    if (titleLocal == "") titleLocal = t
-                },
-                initSettings = { settings ->
-                    settings?.apply {
-                        javaScriptEnabled = true
-                        useWideViewPort = true
-                        domStorageEnabled = true
-                        cacheMode = WebSettings.LOAD_NO_CACHE
-                        setSupportZoom(false)
-                    }
-                }, onBack = { webView ->
-                    if (webView?.canGoBack() == true) {
-                        webView.goBack()
-                    } else {
-                        onPageBack()
-                    }
-                }, onReceivedError = {
-
-                }
-            )
-            if (webViewProgress != 100) {
-                LinearProgressIndicator(
-                    progress = webViewProgress * 1.0F / 100F,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(5.dp),
-                    color = MaterialTheme.colors.primary,
-                )
-            }
-        }
-    }
-}
 
 @Composable
 fun ComposeWebView(

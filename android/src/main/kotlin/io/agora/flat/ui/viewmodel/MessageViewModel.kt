@@ -23,7 +23,7 @@ import io.agora.flat.ui.util.ObservableLoadingCounter
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 
 class MessageViewModel(

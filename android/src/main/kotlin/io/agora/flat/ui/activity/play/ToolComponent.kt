@@ -233,8 +233,8 @@ class ToolComponent(
                     }
 
                     is ExpirationEvent -> {
-                        val expiration = FlatFormatter.timeHM(event.expireAt);
-                        val minutes = event.leftMinutes;
+                        val expiration = FlatFormatter.timeHM(event.expireAt)
+                        val minutes = event.leftMinutes
                         activity.showToast(activity.getString(R.string.pay_room_about_to_end, expiration, minutes))
                     }
 

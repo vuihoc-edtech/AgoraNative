@@ -1,11 +1,11 @@
 package io.agora.flat.data.model
 
-data class RecordAcquireReq constructor(
+data class RecordAcquireReq(
     val roomUUID: String,
     val agoraData: RecordAcquireReqData,
 )
 
-data class RecordAcquireReqData constructor(
+data class RecordAcquireReqData(
     val clientRequest: RecordAcquireReqDataClientRequest,
 )
 

@@ -104,7 +104,7 @@ object UploadManager {
     }
 }
 
-data class UploadRequest constructor(
+data class UploadRequest(
     // remote info
     val uuid: String,
     val policy: String,

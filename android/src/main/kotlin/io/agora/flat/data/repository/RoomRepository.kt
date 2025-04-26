@@ -5,31 +5,21 @@ import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.Result
 import io.agora.flat.data.ServiceFetcher
 import io.agora.flat.data.manager.JoinRoomRecordManager
-import io.agora.flat.data.model.CancelRoomReq
 import io.agora.flat.data.model.JoinRoomRecord
 import io.agora.flat.data.model.JoinRoomReq
 import io.agora.flat.data.model.NetworkRoomUser
 import io.agora.flat.data.model.PureRoomReq
 import io.agora.flat.data.model.RespNoData
-import io.agora.flat.data.model.RoomCreateReq
-import io.agora.flat.data.model.RoomCreateRespData
 import io.agora.flat.data.model.RoomDetailOrdinary
 import io.agora.flat.data.model.RoomDetailOrdinaryReq
-import io.agora.flat.data.model.RoomDetailPeriodic
-import io.agora.flat.data.model.RoomDetailPeriodicReq
-import io.agora.flat.data.model.RoomInfo
 import io.agora.flat.data.model.RoomPlayInfo
-import io.agora.flat.data.model.RoomType
 import io.agora.flat.data.model.RoomUsersReq
 import io.agora.flat.data.toResult
 import io.agora.flat.http.api.RoomService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 class RoomRepository(
-    private val roomService: RoomService = ServiceFetcher.getInstance().fetchRoomService(),
     private val serviceFetcher: ServiceFetcher = ServiceFetcher.getInstance(),
     private val joinRoomRecordManager: JoinRoomRecordManager = JoinRoomRecordManager.getInstance(),
     private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
@@ -52,18 +42,6 @@ class RoomRepository(
         return serviceFetcher.fetchRoomService()
     }
 
-    suspend fun getRoomListAll(page: Int): Result<List<RoomInfo>> {
-        return withContext(Dispatchers.IO) {
-            roomService.getRoomAll(page).toResult()
-        }
-    }
-
-    suspend fun getRoomListHistory(page: Int): Result<List<RoomInfo>> {
-        return withContext(Dispatchers.IO) {
-            roomService.getRoomHistory(page).toResult()
-        }
-    }
-
     suspend fun getOrdinaryRoomInfo(roomUUID: String): Result<RoomDetailOrdinary> {
         return withContext(Dispatchers.IO) {
             fetchService(roomUUID).getOrdinaryRoomInfo(RoomDetailOrdinaryReq(roomUUID = roomUUID)).toResult().also {
@@ -82,30 +60,6 @@ class RoomRepository(
         }
     }
 
-    suspend fun getPeriodicRoomInfo(periodicUUID: String): Result<RoomDetailPeriodic> {
-        return withContext(Dispatchers.IO) {
-            roomService.getPeriodicRoomInfo(RoomDetailPeriodicReq(periodicUUID = periodicUUID)).toResult()
-        }
-    }
-
-    suspend fun cancelOrdinary(roomUUID: String): Result<RespNoData> {
-        return withContext(Dispatchers.IO) {
-            fetchService(roomUUID).cancelOrdinary(CancelRoomReq(roomUUID = roomUUID)).toResult()
-        }
-    }
-
-    suspend fun cancelPeriodic(periodicUUID: String): Result<RespNoData> {
-        return withContext(Dispatchers.IO) {
-            roomService.cancelPeriodic(CancelRoomReq(periodicUUID = periodicUUID)).toResult()
-        }
-    }
-
-    suspend fun cancelPeriodicSubRoom(roomUUID: String, periodicUUID: String): Result<RespNoData> {
-        return withContext(Dispatchers.IO) {
-            roomService.cancelPeriodicSubRoom(CancelRoomReq(roomUUID, periodicUUID)).toResult()
-        }
-    }
-
     suspend fun joinRoom(roomUUID: String): Result<RoomPlayInfo> {
         return withContext(Dispatchers.IO) {
             fetchService(roomUUID).joinRoom(JoinRoomReq(roomUUID)).toResult()
@@ -115,12 +69,6 @@ class RoomRepository(
     suspend fun getRoomUsers(roomUUID: String, usersUUID: List<String>?): Result<Map<String, NetworkRoomUser>> {
         return withContext(Dispatchers.IO) {
             fetchService(roomUUID).getRoomUsers(RoomUsersReq(roomUUID, usersUUID)).toResult()
-        }
-    }
-
-    suspend fun createOrdinary(title: String, type: RoomType): Result<RoomCreateRespData> {
-        return withContext(Dispatchers.IO) {
-            roomService.createOrdinary(RoomCreateReq(title, type, System.currentTimeMillis())).toResult()
         }
     }
 

@@ -4,13 +4,13 @@ package io.agora.flat.ui.viewmodel
 import io.agora.flat.common.rtm.Message
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
+
 
 /**
  * a class to manage chat messages in classroom.
  */
 
-class ChatMessageManager() {
+class ChatMessageManager {
     private var _messages = MutableStateFlow<List<Message>>(emptyList())
     val messages = _messages.asStateFlow()
 

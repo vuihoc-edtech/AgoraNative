@@ -7,7 +7,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.DialogFragment
 
-open class ClassDialogFragment constructor(
+open class ClassDialogFragment(
     @LayoutRes contentLayoutId: Int,
 ) : DialogFragment(contentLayoutId) {
 

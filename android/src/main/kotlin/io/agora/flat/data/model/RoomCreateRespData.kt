@@ -1,5 +1,5 @@
 package io.agora.flat.data.model
 
-data class RoomCreateRespData constructor(
+data class RoomCreateRespData(
     val roomUUID: String,
 )

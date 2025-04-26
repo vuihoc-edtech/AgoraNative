@@ -1,6 +1,6 @@
 package io.agora.flat.data.model
 
-data class RoomCreateReq constructor(
+data class RoomCreateReq(
     // 房间主题, 最多 50 字
     val title: String,
     // 上课类型

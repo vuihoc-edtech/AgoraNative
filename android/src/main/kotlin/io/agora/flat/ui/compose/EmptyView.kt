@@ -30,20 +30,3 @@ internal fun EmptyView(modifier: Modifier = Modifier, imgRes: Int, message: Int)
         }
     }
 }
-
-@Composable
-@Preview(widthDp = 400, heightDp = 800, uiMode = 0x10, locale = "zh")
-@Preview(widthDp = 400, heightDp = 800, uiMode = 0x20)
-private fun PreviewEmptyView() {
-    FlatPage {
-        Box {
-            EmptyView(
-                modifier = Modifier
-                    .width(200.dp)
-                    .align(Alignment.Center),
-                imgRes = R.drawable.img_room_list_empty_light,
-                message = R.string.home_no_history_room_tip,
-            )
-        }
-    }
-}

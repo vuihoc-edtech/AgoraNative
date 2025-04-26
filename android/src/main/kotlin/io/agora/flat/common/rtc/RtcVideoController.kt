@@ -4,11 +4,9 @@ import android.view.TextureView
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
-// import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.flat.di.interfaces.RtcApi
 import io.agora.rtc2.video.VideoCanvas
 import io.agora.rtc2.RtcEngine
-import javax.inject.Inject
 import kotlin.collections.set
 
 

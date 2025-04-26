@@ -1,14 +1,7 @@
 package io.agora.flat.data
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.core.content.edit
-// import dagger.hilt.android.qualifiers.ApplicationContext
 import io.agora.flat.BuildConfig
-
 import io.agora.flat.di.interfaces.LogConfig
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 应用内切换配置

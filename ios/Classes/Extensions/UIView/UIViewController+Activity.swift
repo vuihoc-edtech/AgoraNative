@@ -35,7 +35,11 @@ extension UIView {
             activityView = view
         } else {
             let view: CustomActivityIndicatorView
-            view = CustomActivityIndicatorView(style: .large)
+            if #available(iOS 13.0, *) {
+                view = CustomActivityIndicatorView(style: .large)
+            } else {
+                view = CustomActivityIndicatorView(style: .white)
+            }
             view.color = .white
             activityView = view
             addSubview(activityView)

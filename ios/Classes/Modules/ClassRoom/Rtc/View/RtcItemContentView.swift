@@ -255,9 +255,17 @@ class RtcItemContentView: UIView {
         view.clipsToBounds = true
         view.contentMode = .center
         view.layer.cornerRadius = micStrenthView.bounds.size.width / 2
-        view.setTraitRelatedBlock { v in
-            v.image = UIImage.fromPlugin(named: "silence")?.tintColor(.color(type: .danger).resolvedColor(with: v.traitCollection))
+        if #available(iOS 13.0, *) {
+            view.setTraitRelatedBlock { v in
+                let tintColor = UIColor.color(type: .danger).resolvedColor(with: v.traitCollection)
+                v.image = UIImage.fromPlugin(named: "silence")?.tintColor(tintColor)
+            }
+        } else {
+            // Fallback for iOS 12 (no traitCollection or dynamic colors)
+            let tintColor = UIColor.color(type: .danger)
+            view.image = UIImage.fromPlugin(named: "silence")?.tintColor(tintColor)
         }
+
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         return view
     }()

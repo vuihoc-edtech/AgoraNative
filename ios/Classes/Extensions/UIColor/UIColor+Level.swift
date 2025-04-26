@@ -244,16 +244,20 @@ extension UIColor {
     // Return dynamic color when system dynamic color is enable.
     // Return single color depends on theme when not.
     static func color(light: UIColor, dark: UIColor) -> UIColor {
-        UIColor { t in
-            switch t.userInterfaceStyle {
-            case .dark:
-                return dark
-            case .light, .unspecified:
-                return light
-            @unknown default:
+        if #available(iOS 13.0, *) {
+                return UIColor { traitCollection in
+                    switch traitCollection.userInterfaceStyle {
+                    case .dark:
+                        return dark
+                    case .light, .unspecified:
+                        return light
+                    @unknown default:
+                        return light
+                    }
+                }
+            } else {
                 return light
             }
-        }
     }
 
     static func color(type: ColorType, _ strenth: ColorStrenth = .normal) -> UIColor {

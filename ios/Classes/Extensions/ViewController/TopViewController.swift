@@ -16,6 +16,7 @@ func modalTopViewControllerFrom(root: UIViewController) -> UIViewController {
     return root
 }
 
+@available(iOS 13.0, *)
 extension UIResponder {
     func scene() -> UIScene? {
         var i: UIResponder? = self
@@ -41,6 +42,7 @@ extension UIResponder {
 }
 
 extension UIApplication {
+    @available(iOS 13.0, *)
     func topWith(windowScene: UIWindowScene?) -> UIViewController? {
         if let kw = windowScene?.windows.first(where: \.isKeyWindow) {
             return topWith(root: kw.rootViewController)

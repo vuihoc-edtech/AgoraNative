@@ -41,7 +41,7 @@ extension UIButton: FlatCustomAlertSetable {
     }
     
     func _onClickCommonCustomAlert() {
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
         _flat_viewContainingController()?.presentCommonCustomAlert(actions)
     }
 

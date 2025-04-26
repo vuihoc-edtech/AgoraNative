@@ -179,14 +179,20 @@ class InviteViewController: UIViewController {
     lazy var shareMoreBtn: SpringButton = {
         let btn = SpringButton()
         btn.setTitle(localizeStrings("ShareMore"), for: .normal)
-        btn.setTraitRelatedBlock { btn in
-            let borderColor = UIColor.color(light: .grey3, dark: .grey6).resolvedColor(with: btn.traitCollection)
-            let titleColor = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
+        if #available(iOS 13.0, *) {
+            btn.setTraitRelatedBlock { btn in
+                let borderColor = UIColor.color(light: .grey3, dark: .grey6).resolvedColor(with: btn.traitCollection)
+                let titleColor = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
+                btn.setTitleColor(titleColor,for: .normal)
+                btn.layer.borderColor = borderColor.cgColor
+            }
+        } else {
+            let borderColor: UIColor  = .grey3
+            let titleColor: UIColor = .grey6
+            btn.setTitleColor(titleColor,for: .normal)
             btn.layer.borderColor = borderColor.cgColor
-            btn.setTitleColor(titleColor
-                .resolvedColor(with: btn.traitCollection),
-                for: .normal)
         }
+      
         btn.addTarget(self, action: #selector(onClickMore), for: .touchUpInside)
         btn.layer.borderWidth = commonBorderWidth
         btn.clipsToBounds = true

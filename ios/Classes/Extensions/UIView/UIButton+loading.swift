@@ -114,7 +114,11 @@ private extension UIView {
         if let tagView = viewWithTag(activityTag) as? UIActivityIndicatorView {
             activityView = tagView
         } else {
-            activityView = UIActivityIndicatorView(style: .medium)
+            if #available(iOS 13.0, *) {
+                activityView = UIActivityIndicatorView(style: .medium)
+            } else {
+                activityView = UIActivityIndicatorView(style: .white)
+            }
             activityView.tintColor = .white
             activityView.color = .white
             activityView.tag = activityTag

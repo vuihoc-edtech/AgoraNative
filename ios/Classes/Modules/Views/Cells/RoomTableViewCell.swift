@@ -45,9 +45,11 @@ class RoomTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        setTraitRelatedBlock { v in
-            let color = selected ? UIColor.color(type: .primary, .weak) : UIColor.clear
-            v.selectionShapeLayer.fillColor = color.resolvedColor(with: v.traitCollection).cgColor
+        if #available(iOS 13.0, *) {
+            setTraitRelatedBlock { v in
+                let color = selected ? UIColor.color(type: .primary, .weak) : UIColor.clear
+                v.selectionShapeLayer.fillColor = color.resolvedColor(with: v.traitCollection).cgColor
+            }
         }
     }
 

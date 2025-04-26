@@ -157,7 +157,9 @@ class ClassRoomViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         initRoomStatus()
-        observeScene()
+        if #available(iOS 13.0, *) {
+            observeScene()
+        }
     }
 
     // MARK: - Private
@@ -802,13 +804,15 @@ class ClassRoomViewController: UIViewController {
     }
 
     func leaveUIHierarchy() {
-        if let session = view.window?.windowScene?.session,
-           view.window?.rootViewController === self
-        {
-            UIApplication.shared.requestSceneSessionDestruction(session,
-                                                                options: nil)
-            return
-        }
+        if #available(iOS 13.0, *) {
+            if let session = view.window?.windowScene?.session,
+               view.window?.rootViewController === self
+            {
+                UIApplication.shared.requestSceneSessionDestruction(session,
+                                                                    options: nil)
+                return
+            }
+        } 
         if let presenting = presentingViewController {
             presenting.dismiss(animated: true, completion: nil)
         }
@@ -821,10 +825,12 @@ class ClassRoomViewController: UIViewController {
 
     // MARK: - Scene
 
+    @available(iOS 13.0, *)
     func observeScene() {
         NotificationCenter.default.addObserver(self, selector: #selector(onSceneDisconnect(notification:)), name: UIScene.didDisconnectNotification, object: nil)
     }
 
+    @available(iOS 13.0, *)
     @objc func onSceneDisconnect(notification: Notification) {
         guard let scene = notification.object as? UIWindowScene else { return }
         if view.window?.windowScene === scene {

@@ -77,114 +77,86 @@ class ClassroomCoordinator: NSObject {
             self.enterClassDate = nil
         }
     }
-    
-    func enterClassroomFrom(windowScene: UIWindowScene) {
-        guard let uuid = windowScene.session.userInfo?["roomUUID"] as? String
-        else { return }
-        currentClassroomUUID = uuid
-        enterClassDate = Date()
-        let periodicUUID = windowScene.session.userInfo?["periodicUUID"] as? String
-        let window = windowScene.windows.first(where: \.isKeyWindow)
-        let emptyRoot = EmptySplitSecondaryViewController()
-        window?.rootViewController = emptyRoot
-        emptyRoot.showActivityIndicator()
-        fetchClassroomViewController(uuid: uuid,
-                                     periodUUID: periodicUUID,
-                                     basicInfo: nil)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self) { _, vc in
-                emptyRoot.stopActivityIndicator()
-                window?.rootViewController = vc
-            } onFailure: { weakSelf, error in
-                emptyRoot.stopActivityIndicator()
-                weakSelf.currentClassroomUUID = nil
-                emptyRoot.showAlertWith(message: localizeStrings("JoinRoomFailWarning") + " : \(error.localizedDescription)") {
-                    UIApplication.shared.requestSceneSessionDestruction(windowScene.session,
-                                                                        options: nil)
-                }
-            }
-            .disposed(by: rx.disposeBag)
-    }
-
-    func enterClassroom(uuid: String,
-                        periodUUID: String?,
-                        basicInfo: RoomBasicInfo?,
-                        sender: UIResponder?)
-    {
-        // Prevent join two classroom one time.
-        let controller = sender?.viewController()
-        if currentClassroomUUID != nil {
-            controller?.toast(localizeStrings("ExitCurrentClassroomWarning"))
-            return
-        }
-
-        currentClassroomUUID = uuid
-        enterClassDate = Date()
-        // if #available(iOS 14.0, *) {
-        //     if ProcessInfo().isiOSAppOnMac {
-        //         guard let main = controller?.mainContainer?.concreteViewController else { return }
-        //         if let _ = main.presentedViewController { main.dismiss(animated: true) }
-        //         // M1 Mac
-        //         let userActivety = NSUserActivity(activityType: NSUserActivity.Classroom)
-        //         userActivety.userInfo?["roomUUID"] = uuid
-        //         userActivety.userInfo?["periodicUUID"] = periodUUID
-        //         let options = UIScene.ActivationRequestOptions()
-        //         options.requestingScene = sender?.scene()
-        //         UIApplication.shared.requestSceneSessionActivation(nil,
-        //                                                            userActivity: userActivety,
-        //                                                            options: options)
-        //         return
-        //     }
-        // }
-        // iOS or iPad
-        let btn = sender as? UIButton
-        btn?.isLoading = true
-
-        fetchClassroomViewController(uuid: uuid,
-                                     periodUUID: periodUUID,
-                                     basicInfo: basicInfo)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onSuccess: { _, vc in
-                btn?.isLoading = false
-
-                guard let main = controller?.mainContainer?.concreteViewController else { return }
-                if let _ = main.presentedViewController {
-                    main.showActivityIndicator()
-                    main.dismiss(animated: true) {
-                        main.stopActivityIndicator()
-                        main.present(vc, animated: true)
-                    }
-                } else {
-                    main.present(vc, animated: true)
-                }
-            }, onFailure: { weakSelf, error in
-                btn?.isLoading = false
-                weakSelf.currentClassroomUUID = nil
-                if let flatError = error as? FlatApiError {
-                    if flatError == .RoomNotBegin {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
-                        controller?.showAlertWith(message: errorStr)
-                    } else if flatError == .RoomNotBeginAndAddList {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
-                        controller?.showAlertWith(message: errorStr)
-                    } else {
-                        controller?.showAlertWith(message: error.localizedDescription)
-                    }
-                } else {
-                    controller?.showAlertWith(message: error.localizedDescription)
-                }
-                
-                if let flatError = error as? FlatApiError {
-                    if flatError == .RoomNotBeginAndAddList ||
-                        flatError == .RoomIsEnded ||
-                        flatError == .RoomNotFound
-                    {
-                        NotificationCenter.default.post(name: classRoomListNeedRefreshNotificationName, object: nil)
-                    }
-                }
-            })
-            .disposed(by: rx.disposeBag)
-    }
+//
+//    func enterClassroom(uuid: String,
+//                        periodUUID: String?,
+//                        basicInfo: RoomBasicInfo?,
+//                        sender: UIResponder?)
+//    {
+//        // Prevent join two classroom one time.
+//        let controller = sender?.viewController()
+//        if currentClassroomUUID != nil {
+//            controller?.toast(localizeStrings("ExitCurrentClassroomWarning"))
+//            return
+//        }
+//
+//        currentClassroomUUID = uuid
+//        enterClassDate = Date()
+//        // if #available(iOS 14.0, *) {
+//        //     if ProcessInfo().isiOSAppOnMac {
+//        //         guard let main = controller?.mainContainer?.concreteViewController else { return }
+//        //         if let _ = main.presentedViewController { main.dismiss(animated: true) }
+//        //         // M1 Mac
+//        //         let userActivety = NSUserActivity(activityType: NSUserActivity.Classroom)
+//        //         userActivety.userInfo?["roomUUID"] = uuid
+//        //         userActivety.userInfo?["periodicUUID"] = periodUUID
+//        //         let options = UIScene.ActivationRequestOptions()
+//        //         options.requestingScene = sender?.scene()
+//        //         UIApplication.shared.requestSceneSessionActivation(nil,
+//        //                                                            userActivity: userActivety,
+//        //                                                            options: options)
+//        //         return
+//        //     }
+//        // }
+//        // iOS or iPad
+//        let btn = sender as? UIButton
+//        btn?.isLoading = true
+//
+//        fetchClassroomViewController(uuid: uuid,
+//                                     periodUUID: periodUUID,
+//                                     basicInfo: basicInfo)
+//            .observe(on: MainScheduler.instance)
+//            .subscribe(with: self, onSuccess: { _, vc in
+//                btn?.isLoading = false
+//
+//                guard let main = controller?.mainContainer?.concreteViewController else { return }
+//                if let _ = main.presentedViewController {
+//                    main.showActivityIndicator()
+//                    main.dismiss(animated: true) {
+//                        main.stopActivityIndicator()
+//                        main.present(vc, animated: true)
+//                    }
+//                } else {
+//                    main.present(vc, animated: true)
+//                }
+//            }, onFailure: { weakSelf, error in
+//                btn?.isLoading = false
+//                weakSelf.currentClassroomUUID = nil
+//                if let flatError = error as? FlatApiError {
+//                    if flatError == .RoomNotBegin {
+//                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
+//                        controller?.showAlertWith(message: errorStr)
+//                    } else if flatError == .RoomNotBeginAndAddList {
+//                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
+//                        controller?.showAlertWith(message: errorStr)
+//                    } else {
+//                        controller?.showAlertWith(message: error.localizedDescription)
+//                    }
+//                } else {
+//                    controller?.showAlertWith(message: error.localizedDescription)
+//                }
+//                
+//                if let flatError = error as? FlatApiError {
+//                    if flatError == .RoomNotBeginAndAddList ||
+//                        flatError == .RoomIsEnded ||
+//                        flatError == .RoomNotFound
+//                    {
+//                        NotificationCenter.default.post(name: classRoomListNeedRefreshNotificationName, object: nil)
+//                    }
+//                }
+//            })
+//            .disposed(by: rx.disposeBag)
+//    }
 
     private func fetchClassroomViewController(uuid: String,
                                               periodUUID: String?,

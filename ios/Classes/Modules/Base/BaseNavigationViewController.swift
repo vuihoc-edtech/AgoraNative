@@ -11,13 +11,16 @@ import UIKit
 class BaseNavigationViewController: UINavigationController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        updateNaviAppearance()
+        if #available(iOS 13.0, *) {
+            updateNaviAppearance()
+        }
     }
 
     override var description: String {
         "BaseNavigationViewController: \(children.map(\.description).joined(separator: "-"))"
     }
 
+    @available(iOS 13.0, *)
     func updateNaviAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .color(type: .background, .weak)
@@ -32,7 +35,9 @@ class BaseNavigationViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
-        updateNaviAppearance()
+        if #available(iOS 13.0, *) {
+            updateNaviAppearance()
+        }
     }
 
     override func show(_ vc: UIViewController, sender: Any?) {

@@ -209,11 +209,22 @@ class ClassRoomSettingViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.backgroundColor = .classroomChildBG
         button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.setTraitRelatedBlock { button in
+        if #available(iOS 13.0, *) {
+            button.setTraitRelatedBlock { button in
+                let color = UIColor.color(light: .red6, dark: .red5)
+                let resolvedColor = color.resolvedColor(with: button.traitCollection)
+                
+                button.setTitleColor(resolvedColor, for: .normal)
+                button.setImage(UIImage.fromPlugin(named: "logout")?.tintColor(resolvedColor), for: .normal)
+                button.layer.borderColor = resolvedColor.cgColor
+            }
+        } else {
+            // Fallback for iOS 12 (no traitCollection or dynamic colors)
             let color = UIColor.color(light: .red6, dark: .red5)
-            button.setTitleColor(color.resolvedColor(with: button.traitCollection), for: .normal)
-            button.setImage(UIImage.fromPlugin(named: "logout")?.tintColor(color.resolvedColor(with: button.traitCollection)), for: .normal)
-            button.layer.borderColor = color.resolvedColor(with: button.traitCollection).cgColor
+            
+            button.setTitleColor(color, for: .normal)
+            button.setImage(UIImage.fromPlugin(named: "logout")?.tintColor(color), for: .normal)
+            button.layer.borderColor = color.cgColor
         }
         button.adjustsImageWhenHighlighted = false
         button.layer.borderWidth = commonBorderWidth
@@ -229,9 +240,17 @@ class ClassRoomSettingViewController: UIViewController {
         view.backgroundColor = .classroomChildBG
 
         let leftIcon = UIImageView()
-        view.setTraitRelatedBlock { [weak leftIcon] v in
-            leftIcon?.image = UIImage.fromPlugin(named: "classroom_setting")?.tintColor(.color(type: .text, .strong).resolvedColor(with: v.traitCollection))
+        if #available(iOS 13.0, *) {
+            view.setTraitRelatedBlock { [weak leftIcon] v in
+                let tintColor = UIColor.color(type: .text, .strong).resolvedColor(with: v.traitCollection)
+                leftIcon?.image = UIImage.fromPlugin(named: "classroom_setting")?.tintColor(tintColor)
+            }
+        } else {
+            // Fallback for iOS 12 (no traitCollection or dynamic colors)
+            let tintColor = UIColor.color(type: .text, .strong)
+            leftIcon.image = UIImage.fromPlugin(named: "classroom_setting")?.tintColor(tintColor)
         }
+
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
         leftIcon.snp.makeConstraints { make in

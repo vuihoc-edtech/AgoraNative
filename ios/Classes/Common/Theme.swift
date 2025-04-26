@@ -94,7 +94,11 @@ enum WhiteboardStyle {
     func whiteboardTraitCollectionDidChangeResolve(_ traitCollection: UITraitCollection, fastRoom: FastRoom) {
         switch self {
         case .default:
-            fastRoom.view.whiteboardView.backgroundColor = UIColor.color(type: .background).resolvedColor(with: traitCollection)
+            if #available(iOS 13.0, *) {
+                fastRoom.view.whiteboardView.backgroundColor = UIColor.color(type: .background).resolvedColor(with: traitCollection)
+            } else {
+                fastRoom.view.whiteboardView.backgroundColor = UIColor.white
+            }
         case .hex(let string):
             fastRoom.view.whiteboardView.backgroundColor = .init(hexString: string)
         }
@@ -149,6 +153,7 @@ class Theme {
         style = getPreferredStyle()
     }
 
+    @available(iOS 13.0, *)
     func setupWindowTheme(_ window: UIWindow?) {
         apply(style, window: window)
     }
@@ -180,6 +185,7 @@ class Theme {
         }
     }
 
+    @available(iOS 13.0, *)
     private func apply(_ style: ThemeStyle, window: UIWindow?) {
         switch style {
         case .dark:
@@ -219,7 +225,11 @@ class Theme {
         case .light:
             flatTheme = FastRoomDefaultTheme.defaultLightTheme
         case .auto:
-            flatTheme = FastRoomDefaultTheme.defaultAutoTheme
+            if #available(iOS 13, *) {
+                flatTheme = FastRoomDefaultTheme.defaultAutoTheme
+            } else {
+                flatTheme = FastRoomDefaultTheme.defaultLightTheme
+            }
         }
 
         if let teleboxTheme = whiteboardStyle.teleboxTheme {

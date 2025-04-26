@@ -209,8 +209,15 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
         button.contentEdgeInsets = .init(top: 0, left: 44, bottom: 0, right: 44)
 
         button.setTraitRelatedBlock { button in
-            button.layer.borderColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection).cgColor
-            button.setTitleColor(UIColor.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
+            if #available(iOS 13.0, *) {
+                let resolvedColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection)
+                button.layer.borderColor = resolvedColor.cgColor
+                button.setTitleColor(resolvedColor, for: .normal)
+            } else {
+                let fallbackColor = UIColor.color(type: .danger)
+                button.layer.borderColor = fallbackColor.cgColor
+                button.setTitleColor(fallbackColor, for: .normal)
+            }
         }
         return button
     }()

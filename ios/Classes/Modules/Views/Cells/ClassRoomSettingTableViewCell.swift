@@ -20,12 +20,17 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         lineHeightConstraint.constant = commonBorderWidth
         borderView.backgroundColor = .borderColor
 
-        iconView.setTraitRelatedBlock { v in
-            v.image = v.image?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
-        }
-
-        rightArrowImageView.setTraitRelatedBlock { v in
-            v.image = v.image?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
+        // For iconView
+        if #available(iOS 13.0, *) {
+            iconView.setTraitRelatedBlock { v in
+                v.image = v.image?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
+            }
+            rightArrowImageView.setTraitRelatedBlock { v in
+                v.image = v.image?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
+            }
+        } else {
+            iconView.image = iconView.image?.tintColor(.color(type: .text))
+            rightArrowImageView.image = rightArrowImageView.image?.tintColor(.color(type: .text))
         }
 
         contentView.addSubview(rightArrowImageView)

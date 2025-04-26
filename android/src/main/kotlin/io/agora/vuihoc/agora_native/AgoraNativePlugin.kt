@@ -1,14 +1,8 @@
 package io.agora.vuihoc.agora_native
 
 import android.app.Activity
-import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
 import android.content.Context
 import android.widget.Toast
-import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.herewhite.sdk.WhiteboardView
 import io.agora.flat.common.Navigator
@@ -24,9 +18,13 @@ import io.agora.flat.data.Success
 import io.agora.flat.data.manager.JoinRoomRecordManager
 import io.agora.flat.data.model.UserInfo
 import io.agora.flat.data.repository.RoomRepository
-import io.agora.flat.ui.util.UiMessage
+import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+import io.flutter.plugin.common.MethodChannel.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

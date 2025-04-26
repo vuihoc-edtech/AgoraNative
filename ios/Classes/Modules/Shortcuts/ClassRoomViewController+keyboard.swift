@@ -14,6 +14,7 @@ extension ClassRoomViewController: ClassroomKeyboardRespondable {
     override var canBecomeFirstResponder: Bool { true }
     override var canResignFirstResponder: Bool { true }
     
+    @available(iOS 13.0, *)
     override func validate(_ command: UICommand) {
         if #available(iOS 14.0, *) {
             if ProcessInfo().isiOSAppOnMac {
@@ -41,12 +42,14 @@ extension ClassRoomViewController: ClassroomKeyboardRespondable {
     }
     
     func updateAppliance(_ item: Any?) {
-        guard
-            let command = item as? UIKeyCommand,
-            let identifier = (command.propertyList as? [String])?.first as? String,
-            fastboardViewController.roomPermission.value.inputEnable,
-            fastboardViewController.isRoomJoined.value else { return }
-        fastboardViewController.fastRoom.updateApplianceIdentifier(identifier)
+        if #available(iOS 13.0, *) {
+            guard
+                let command = item as? UIKeyCommand,
+                let identifier = (command.propertyList as? [String])?.first as? String,
+                fastboardViewController.roomPermission.value.inputEnable,
+                fastboardViewController.isRoomJoined.value else { return }
+            fastboardViewController.fastRoom.updateApplianceIdentifier(identifier)
+        }
     }
     
     func switchNextColor(_ item: Any?) {

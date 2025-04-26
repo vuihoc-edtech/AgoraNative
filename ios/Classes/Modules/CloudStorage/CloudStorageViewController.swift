@@ -192,7 +192,15 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             let imageNames = ["upload_list", "cloud_storage_selection", "create_directory"]
             for (index, v) in tk.arrangedSubviews.enumerated() {
                 let btn = v as! UIButton
-                btn.setImage(UIImage.fromPlugin(named: imageNames[index])?.tintColor(.color(type: .text).resolvedColor(with: tk.traitCollection)), for: .normal)
+                if #available(iOS 13.0, *) {
+                    btn.setImage(UIImage.fromPlugin(named: imageNames[index])?.tintColor(
+                        .color(type: .text).resolvedColor(with: tk.traitCollection)
+                    ), for: .normal)
+                } else {
+                    // Fallback for iOS 12 (no traitCollection or dynamic colors)
+                    let tintColor = UIColor.color(type: .text)
+                    btn.setImage(UIImage.fromPlugin(named: imageNames[index])?.tintColor(tintColor), for: .normal)
+                }
             }
         }
         return stack
@@ -236,6 +244,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         return cell
     }
 
+    @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         guard let identifier = configuration.identifier as? NSString else { return }
         let index = Int(identifier.intValue)
@@ -258,6 +267,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
     }
 
+    @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point _: CGPoint) -> UIContextMenuConfiguration? {
         guard !tableView.isEditing else { return nil }
         let item = container.items[indexPath.row]

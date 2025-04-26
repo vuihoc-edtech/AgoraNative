@@ -21,13 +21,29 @@ class CloudStorageTableViewCell: UITableViewCell {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        let color = (isSelected ? UIColor.color(type: .primary, .weaker) : UIColor.color(type: .background)).resolvedColor(with: traitCollection)
+        let color: UIColor
+
+        if #available(iOS 13.0, *) {
+            // iOS 13+ (dynamic colors based on traitCollection)
+            color = (isSelected ? UIColor.color(type: .primary, .weaker) : UIColor.color(type: .background)).resolvedColor(with: traitCollection)
+        } else {
+            // iOS 12 fallback (static color, no traitCollection support)
+            color = isSelected ? UIColor.color(type: .primary, .weaker) : UIColor.color(type: .background)
+        }
         selectionView.backgroundColor = color
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        let color = (selected ? UIColor.color(type: .primary, .weaker) : UIColor.color(type: .background)).resolvedColor(with: traitCollection)
+        let color: UIColor
+
+        if #available(iOS 13.0, *) {
+            // iOS 13+ (dynamic colors based on traitCollection)
+            color = (selected ? UIColor.color(type: .primary, .weaker) : UIColor.color(type: .background)).resolvedColor(with: traitCollection)
+        } else {
+            // iOS 12 fallback (static color, no traitCollection support)
+            color = selected ? UIColor.color(type: .primary, .weaker) : UIColor.color(type: .background)
+        }
         if animated {
             selectionView.layer.backgroundColor = color.cgColor
         } else {
@@ -105,12 +121,22 @@ class CloudStorageTableViewCell: UITableViewCell {
 
     lazy var convertingActivityView: UIActivityIndicatorView = {
         let view: UIActivityIndicatorView
-        view = UIActivityIndicatorView(style: .medium)
+        if #available(iOS 13.0, *) {
+            view = UIActivityIndicatorView(style: .medium)
+        } else {
+            view = UIActivityIndicatorView(style: .white)
+        }
         view.color = .color(type: .primary)
         return view
     }()
 
-    lazy var activity: UIActivityIndicatorView = .init(style: .medium)
+    lazy var activity: UIActivityIndicatorView = {
+        if #available(iOS 13.0, *) {
+            return UIActivityIndicatorView(style: .medium)
+        } else {
+            return UIActivityIndicatorView(style: .white)
+        }
+    }()
 
     lazy var iconImage: UIImageView = {
         let imageView = UIImageView()
@@ -120,24 +146,47 @@ class CloudStorageTableViewCell: UITableViewCell {
 
     lazy var moreActionButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setTraitRelatedBlock { btn in
-            btn.setImage(UIImage.fromPlugin(named: "cloud_file_more")?.tintColor(
-                .color(light: .init(hexString: "#1A1E21"), dark: .grey3)
-                    .resolvedColor(with: btn.traitCollection)
-            ), for: .normal)
-            btn.setImage(UIImage.fromPlugin(named: "cloud_file_more")?.tintColor(
-                .color(type: .primary)
-                    .resolvedColor(with: btn.traitCollection)
-            ), for: .selected)
+
+        if #available(iOS 13.0, *) {
+            btn.setTraitRelatedBlock { btn in
+                btn.setImage(UIImage.fromPlugin(named: "cloud_file_more")?.tintColor(
+                    .color(light: .init(hexString: "#1A1E21"), dark: .grey3)
+                        .resolvedColor(with: btn.traitCollection)
+                ), for: .normal)
+                
+                btn.setImage(UIImage.fromPlugin(named: "cloud_file_more")?.tintColor(
+                    .color(type: .primary)
+                        .resolvedColor(with: btn.traitCollection)
+                ), for: .selected)
+            }
+        } else {
+            // Fallback for iOS 12 (no traitCollection or dynamic colors)
+            btn.setTraitRelatedBlock { btn in
+                let normalColor = UIColor.color(light: .init(hexString: "#1A1E21"), dark: .grey3)
+                let selectedColor = UIColor.color(type: .primary)
+                
+                btn.setImage(UIImage.fromPlugin(named: "cloud_file_more")?.tintColor(normalColor), for: .normal)
+                btn.setImage(UIImage.fromPlugin(named: "cloud_file_more")?.tintColor(selectedColor), for: .selected)
+            }
         }
+
         return btn
+
     }()
 
     lazy var rightArrowImageView: UIImageView = {
         let view = UIImageView()
-        view.setTraitRelatedBlock { v in
-            v.image = UIImage.fromPlugin(named: "arrowRight")?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
+        if #available(iOS 13.0, *) {
+            view.setTraitRelatedBlock { v in
+                let tintColor = UIColor.color(type: .text).resolvedColor(with: v.traitCollection)
+                v.image = UIImage.fromPlugin(named: "arrowRight")?.tintColor(tintColor)
+            }
+        } else {
+            // Fallback for iOS 12 (no traitCollection or dynamic colors)
+            let tintColor = UIColor.color(type: .text)
+            view.image = UIImage.fromPlugin(named: "arrowRight")?.tintColor(tintColor)
         }
+
         view.contentMode = .scaleAspectFit
         return view
     }()

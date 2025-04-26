@@ -122,19 +122,31 @@ class FlatCompactAlertController: UIViewController {
             btn.tag = value.offset
             btn.backgroundColor = .customAlertBg
             btn.titleLabel?.font = .systemFont(ofSize: 20)
-            if value.element.style == .destructive {
-                btn.setTraitRelatedBlock { button in
-                    button.setTitleColor(.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
-                }
-            } else if value.element.isCancelAction() {
-                btn.setTraitRelatedBlock { button in
-                    button.setTitleColor(.color(type: .text, .strong).resolvedColor(with: button.traitCollection), for: .normal)
+            if #available(iOS 13.0, *) {
+                if value.element.style == .destructive {
+                    btn.setTraitRelatedBlock { button in
+                        button.setTitleColor(.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
+                    }
+                } else if value.element.isCancelAction() {
+                    btn.setTraitRelatedBlock { button in
+                        button.setTitleColor(.color(type: .text, .strong).resolvedColor(with: button.traitCollection), for: .normal)
+                    }
+                } else {
+                    btn.setTraitRelatedBlock { button in
+                        button.setTitleColor(.color(type: .text).resolvedColor(with: button.traitCollection), for: .normal)
+                    }
                 }
             } else {
-                btn.setTraitRelatedBlock { button in
-                    button.setTitleColor(.color(type: .text).resolvedColor(with: button.traitCollection), for: .normal)
+                // Fallback for iOS 12 (no dynamic colors or traitCollection)
+                if value.element.style == .destructive {
+                    btn.setTitleColor(.color(type: .danger), for: .normal)
+                } else if value.element.isCancelAction() {
+                    btn.setTitleColor(.color(type: .text, .strong), for: .normal)
+                } else {
+                    btn.setTitleColor(.color(type: .text), for: .normal)
                 }
             }
+
             btn.addTarget(self, action: #selector(onClickAction(button:)), for: .touchUpInside)
             return btn
         }

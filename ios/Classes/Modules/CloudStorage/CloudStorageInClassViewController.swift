@@ -317,7 +317,11 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
 
     lazy var uploadingActivity: UIActivityIndicatorView = {
         let view: UIActivityIndicatorView
-        view = UIActivityIndicatorView(style: .medium)
+        if #available(iOS 13.0, *) {
+            view = UIActivityIndicatorView(style: .medium)
+        } else {
+            view = UIActivityIndicatorView(style: .white)
+        }
         view.hidesWhenStopped = true
         return view
     }()

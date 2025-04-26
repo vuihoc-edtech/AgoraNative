@@ -34,14 +34,20 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     func setup() {
         tabBar.tintColor = .blue6
         tabBar.isTranslucent = true
-        let appearance = UITabBarAppearance()
-        appearance.configureWithDefaultBackground()
-        appearance.backgroundColor = .color(type: .background)
-        tabBar.standardAppearance = appearance
-        if #available(iOS 15.0, *) {
-            tabBar.scrollEdgeAppearance = appearance
+        if #available(iOS 13.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithDefaultBackground()
+            appearance.backgroundColor = .color(type: .background)
+            tabBar.standardAppearance = appearance
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = appearance
+            }
+        } else {
+            // iOS 12 fallback
+            tabBar.barTintColor = .color(type: .background)
+            tabBar.isTranslucent = false
         }
-
+        
         let cloudStorage = makeSubController(fromViewController: CloudStorageViewController(),
                                              image: UIImage.fromPlugin(named: "side_cloud")!,
                                              selectedImage: UIImage.fromPlugin(named: "side_cloud_filled")!,
@@ -65,6 +71,11 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
 
     func tabBarController(_: UITabBarController, didSelect _: UIViewController) {
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        if #available(iOS 13.0, *) {
+            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        } else {
+            // Fallback for iOS 12
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        }
     }
 }

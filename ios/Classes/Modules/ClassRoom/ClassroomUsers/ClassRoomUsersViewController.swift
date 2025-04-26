@@ -194,9 +194,17 @@ class ClassRoomUsersViewController: UIViewController {
         }
 
         let leftIcon = UIImageView()
-        view.setTraitRelatedBlock { [weak leftIcon] v in
-            leftIcon?.image = UIImage.fromPlugin(named: "users")?.tintColor(.color(type: .text, .strong).resolvedColor(with: v.traitCollection))
+        if #available(iOS 13.0, *) {
+            view.setTraitRelatedBlock { [weak leftIcon] v in
+                let tintColor = UIColor.color(type: .text, .strong).resolvedColor(with: v.traitCollection)
+                leftIcon?.image = UIImage.fromPlugin(named: "users")?.tintColor(tintColor)
+            }
+        } else {
+            // Fallback for iOS 12 (no traitCollection or dynamic colors)
+            let tintColor = UIColor.color(type: .text, .strong)
+            leftIcon.image = UIImage.fromPlugin(named: "users")?.tintColor(tintColor)
         }
+
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
         leftIcon.snp.makeConstraints { make in

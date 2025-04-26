@@ -30,19 +30,19 @@ A new Flutter Agora project.
   s.dependency 'RxDataSources', '5.0.0'
   s.dependency 'CropViewController', '2.7.4'
   s.dependency 'Zip', '2.1.2'
-  s.dependency 'lottie-ios', '4.5.1'
+  s.dependency 'lottie-ios', '4.4.1'
   s.dependency 'ScreenCorners', '1.0.1'
 
   s.dependency 'SyncPlayer', '0.3.3'
   s.dependency 'ViewDragger', '1.1.0'
   
   s.dependency 'MBProgressHUD', '~> 1.2.0'
-  s.dependency 'Kingfisher', '8.3.2'
+  s.dependency 'Kingfisher', '7.12.0'
   s.dependency 'Hero', '1.6.4'
   s.dependency 'SnapKit', '5.7.1'
   s.dependency 'DZNEmptyDataSet', '1.8.1'
 
-  s.platform = :ios, '13'
+  s.platform = :ios, '12.1'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

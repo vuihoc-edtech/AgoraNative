@@ -199,9 +199,20 @@ class ChatViewController: UIViewController {
 
     lazy var sendButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTraitRelatedBlock { button in
-            button.setImage(UIImage.fromPlugin(named: "send_message")?.tintColor(.color(type: .text, .strong).resolvedColor(with: button.traitCollection)), for: .normal)
-            button.setImage(UIImage.fromPlugin(named: "send_message")?.tintColor(.color(type: .text, .weak).resolvedColor(with: button.traitCollection)), for: .disabled)
+        if #available(iOS 13.0, *) {
+            button.setTraitRelatedBlock { button in
+                let normalColor = UIColor.color(type: .text, .strong).resolvedColor(with: button.traitCollection)
+                let disabledColor = UIColor.color(type: .text, .weak).resolvedColor(with: button.traitCollection)
+                
+                button.setImage(UIImage.fromPlugin(named: "send_message")?.tintColor(normalColor), for: .normal)
+                button.setImage(UIImage.fromPlugin(named: "send_message")?.tintColor(disabledColor), for: .disabled)
+            }
+        } else {
+            let normalColor = UIColor.color(type: .text, .strong)
+            let disabledColor = UIColor.color(type: .text, .weak)
+            
+            button.setImage(UIImage.fromPlugin(named: "send_message")?.tintColor(normalColor), for: .normal)
+            button.setImage(UIImage.fromPlugin(named: "send_message")?.tintColor(disabledColor), for: .disabled)
         }
         button.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return button
@@ -228,10 +239,22 @@ class ChatViewController: UIViewController {
 
     lazy var banTextButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setTraitRelatedBlock { button in
-            button.setImage(UIImage.fromPlugin(named: "message_ban")?.tintColor(.color(type: .text).resolvedColor(with: button.traitCollection)), for: .normal)
-            button.setImage(UIImage.fromPlugin(named: "message_ban")?.tintColor(.color(type: .danger).resolvedColor(with: button.traitCollection)), for: .selected)
+        if #available(iOS 13.0, *) {
+            btn.setTraitRelatedBlock { button in
+                let normalColor = UIColor.color(type: .text).resolvedColor(with: button.traitCollection)
+                let selectedColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection)
+                
+                button.setImage(UIImage.fromPlugin(named: "message_ban")?.tintColor(normalColor), for: .normal)
+                button.setImage(UIImage.fromPlugin(named: "message_ban")?.tintColor(selectedColor), for: .selected)
+            }
+        } else {
+            let normalColor = UIColor.color(type: .text)
+            let selectedColor = UIColor.color(type: .danger)
+            
+            btn.setImage(UIImage.fromPlugin(named: "message_ban")?.tintColor(normalColor), for: .normal)
+            btn.setImage(UIImage.fromPlugin(named: "message_ban")?.tintColor(selectedColor), for: .selected)
         }
+
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return btn
     }()
@@ -253,8 +276,15 @@ class ChatViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
         let leftIcon = UIImageView()
-        view.setTraitRelatedBlock { [weak leftIcon] v in
-            leftIcon?.image = UIImage.fromPlugin(named: "chat")?.tintColor(.color(type: .text, .strong).resolvedColor(with: v.traitCollection))
+        if #available(iOS 13.0, *) {
+            view.setTraitRelatedBlock { [weak leftIcon] v in
+                let tintColor = UIColor.color(type: .text, .strong).resolvedColor(with: v.traitCollection)
+                leftIcon?.image = UIImage.fromPlugin(named: "chat")?.tintColor(tintColor)
+            }
+        } else {
+            // Fallback for iOS 12: Use the static color
+            let tintColor = UIColor.color(type: .text, .strong)
+            leftIcon.image = UIImage.fromPlugin(named: "chat")?.tintColor(tintColor)
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)

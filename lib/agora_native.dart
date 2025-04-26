@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agora_native/auth.dart';
 import 'package:agora_native/user.dart';
 
@@ -15,8 +13,8 @@ class AgoraNative {
   }
 
   Future<bool> login() async {
-    final res = await Auth.shared
-        .loginWithEmail("trungkien71297@gmail.com", "trungkien123");
+    final res =
+        await Auth.shared.loginWithEmail("ndql1996@gmail.com", "Abc123123");
     if (res["status"] == 0) {
       final user = User.fromJson(res["data"]);
       final saved = AgoraNativePlatform.instance.saveLoginInfo(user.toJson());

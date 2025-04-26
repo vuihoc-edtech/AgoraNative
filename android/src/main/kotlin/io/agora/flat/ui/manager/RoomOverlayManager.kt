@@ -19,6 +19,7 @@ object RoomOverlayManager {
     const val AREA_ID_ACCEPT_HANDUP = 10
 
     const val AREA_ID_APPS = 11
+    const val AREA_ID_AUDIENCE_EXIT_DIALOG = 12
 
     private var showId = MutableStateFlow(AREA_ID_NO_OVERLAY)
 

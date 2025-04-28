@@ -18,12 +18,10 @@ A new Flutter Agora project.
   'agora_native' => ['Assets/*.xcassets', 'Assets/*.json', 'Assets/*.mp3', 'Assets/*.lproj']
   }
   s.dependency 'Flutter'
-  s.dependency 'Agora_Chat_iOS', "~> 1.0.6"
   s.dependency 'AgoraRtm_iOS', '2.2.4'
-  s.dependency 'AgoraRtcEngine_iOS', '4.3.0'
+  s.dependency 'AgoraRtcEngine_iOS/RtcBasic', '4.5.2'
   s.dependency 'Fastboard', '2.0.0-alpha.19'
   s.dependency 'Whiteboard', '2.17.0-alpha.30'
-  s.dependency 'Whiteboard/SyncPlayer', '2.17.0-alpha.30'
   s.dependency 'RxSwift', '6.9.0'
   s.dependency 'RxCocoa', '6.9.0'
   s.dependency 'NSObject+Rx', '5.2.2'
@@ -32,10 +30,7 @@ A new Flutter Agora project.
   s.dependency 'Zip', '2.1.2'
   s.dependency 'lottie-ios', '4.4.1'
   s.dependency 'ScreenCorners', '1.0.1'
-
-  s.dependency 'SyncPlayer', '0.3.3'
   s.dependency 'ViewDragger', '1.1.0'
-  
   s.dependency 'MBProgressHUD', '~> 1.2.0'
   s.dependency 'Kingfisher', '7.12.0'
   s.dependency 'Hero', '1.6.4'

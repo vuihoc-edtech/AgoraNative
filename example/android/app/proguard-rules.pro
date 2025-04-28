@@ -7,3 +7,13 @@
 -dontwarn org.openjsse.javax.net.ssl.SSLParameters
 -dontwarn org.openjsse.javax.net.ssl.SSLSocket
 -dontwarn org.openjsse.net.ssl.OpenJSSE
+#-dontwarn io.agora.flat.common.FlatException
+#-dontwarn io.agora.flat.common.rtc.RtcEvent
+#-dontwarn io.agora.flat.common.upload.UploadEvent
+#-dontwarn io.agora.flat.common.board.BoardPhase
+#-dontwarn io.agora.flat.common.board.BoardError
+#-dontwarn io.agora.flat.common.rtm.ClassRtmEvent
+#-dontwarn io.agora.flat.common.rtm.MessageBody
+#-dontwarn io.agora.flat.data.model.LoadState
+#-dontwarn io.agora.flat.event.ClassroomEvent
+#-dontwarn io.agora.flat.data.Result

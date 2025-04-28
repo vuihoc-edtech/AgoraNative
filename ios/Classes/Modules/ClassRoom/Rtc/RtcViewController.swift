@@ -17,6 +17,8 @@ import RxSwift
 import UIKit
 import ViewDragger
 
+
+
 struct FreeDraggingUser: Equatable {
     let uid: UInt
     let rect: CGRect

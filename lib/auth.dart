@@ -38,4 +38,33 @@ class Auth {
       return {};
     }
   }
+
+  Future<Map<String, dynamic>> loginCheck(String token) async {
+    // Generate UUIDs for headers
+    const uuid = Uuid();
+    final requestId = uuid.v4();
+    String sessionId = await AgoraNativePlatform.instance.getGlobalUUID();
+    if (sessionId.isEmpty) {
+      sessionId = uuid.v4();
+    }
+    final response = await http.post(
+      Uri.parse('https://api.flat.agora.io/v1/login'),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'x-request-id': requestId,
+        'x-session-id': sessionId,
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode({'type': 'mobile'}),
+    );
+
+    if (response.statusCode == 200) {
+      // Handle successful login
+      final responseData = jsonDecode(response.body);
+      return responseData as Map<String, dynamic>;
+    } else {
+      // Handle error
+      return {};
+    }
+  }
 }

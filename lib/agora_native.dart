@@ -1,5 +1,5 @@
-import 'package:agora_native/auth.dart';
-import 'package:agora_native/user.dart';
+import 'package:vh_agora_native/auth.dart';
+import 'package:vh_agora_native/user.dart';
 
 import 'agora_native_platform_interface.dart';
 

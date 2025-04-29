@@ -1,4 +1,4 @@
-import 'package:agora_native/agora_native_platform_interface.dart';
+import 'package:vh_agora_native/agora_native_platform_interface.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:uuid/uuid.dart';

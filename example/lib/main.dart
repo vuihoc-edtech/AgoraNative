@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:agora_native/agora_native.dart';
+import 'package:vh_agora_native/agora_native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

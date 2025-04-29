@@ -3,7 +3,7 @@
 # Run `s.dependency lib lint agora_native.s.dependencyspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'agora_native'
+  s.name             = 'vh_agora_native'
   s.version          = '0.0.1'
   s.summary          = 'A new Flutter Agora project.'
   s.description      = <<-DESC

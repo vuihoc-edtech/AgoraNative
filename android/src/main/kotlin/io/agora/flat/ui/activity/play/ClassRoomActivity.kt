@@ -4,36 +4,22 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
-import io.agora.flat.Constants
-import io.agora.flat.common.android.AndroidClipboardController
-import io.agora.flat.common.android.I18NFetcher
 import io.agora.flat.common.board.AgoraBoardRoom
 import io.agora.flat.common.board.WhiteSyncedState
 import io.agora.flat.common.rtc.AgoraRtc
 import io.agora.flat.common.rtc.RtcVideoController
 import io.agora.flat.common.rtm.AgoraRtm
-import io.agora.flat.data.AppDatabase
-import io.agora.flat.data.manager.JoinRoomRecordManager
-import io.agora.flat.data.repository.CloudRecordRepository
-import io.agora.flat.data.repository.MessageRepository
-import io.agora.flat.data.repository.RoomRepository
-import io.agora.flat.di.interfaces.RtmApi
-import io.agora.flat.event.EventBus
-// import dagger.hilt.android.AndroidEntryPoint
-import io.agora.vuihoc.agora_native.databinding.ActivityRoomPlayBinding
 import io.agora.flat.ui.activity.base.BaseActivity
 import io.agora.flat.ui.manager.RecordManager
 import io.agora.flat.ui.manager.RoomErrorManager
 import io.agora.flat.ui.manager.UserManager
 import io.agora.flat.ui.manager.UserQuery
-import io.agora.flat.ui.manager.WindowsDragManager
 import io.agora.flat.ui.viewmodel.ChatMessageManager
 import io.agora.flat.ui.viewmodel.MessageQuery
 import io.agora.flat.ui.viewmodel.MessageViewModel
 import io.agora.flat.ui.viewmodel.MessageViewModelFactory
+import io.agora.vuihoc.agora_native.databinding.ActivityRoomPlayBinding
 
 
 class ClassRoomActivity : BaseActivity() {

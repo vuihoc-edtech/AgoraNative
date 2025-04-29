@@ -9,8 +9,8 @@ import androidx.lifecycle.viewModelScope
 // import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
 import io.agora.flat.common.FlatException
-import io.agora.flat.common.android.AndroidClipboardController
-import io.agora.flat.common.android.ClipboardController
+//import io.agora.flat.common.android.AndroidClipboardController
+//import io.agora.flat.common.android.ClipboardController
 import io.agora.flat.common.board.AgoraBoardRoom
 import io.agora.flat.common.board.DeviceState
 import io.agora.flat.common.rtc.AgoraRtc
@@ -98,7 +98,7 @@ class ClassRoomViewModel(
     private val rtmApi: RtmApi = AgoraRtm.getInstance()
     private val rtcApi: RtcApi = AgoraRtc.getInstance()
     private val eventbus: EventBus = EventBus.getInstance()
-    private val clipboard: ClipboardController = AndroidClipboardController.getInstance()
+//    private val clipboard: ClipboardController = AndroidClipboardController.getInstance()
     private val appEnv: AppEnv = AppEnv.getInstance()
     private val appKVCenter: AppKVCenter = AppKVCenter.getInstance()
     //end init
@@ -677,7 +677,7 @@ class ClassRoomViewModel(
     }
 
     fun setClipboard(text: String) {
-        clipboard.putText(text)
+//        clipboard.putText(text)
     }
 
     fun updateOnStage(uuid: String, onstage: Boolean) {

@@ -9,9 +9,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
-import io.agora.vuihoc.agora_native.R
 
 class PermissionsFragment : Fragment() {
 
@@ -29,17 +26,17 @@ class PermissionsFragment : Fragment() {
             // Request camera-related permissions
             activityResultLauncher.launch(PERMISSIONS_REQUIRED)
         } else {
-            navigateToCamera()
+//            navigateToCamera()
         }
     }
 
-    private fun navigateToCamera() {
-        lifecycleScope.launchWhenStarted {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-                PermissionsFragmentDirections.actionPermissionsToCamera()
-            )
-        }
-    }
+//    private fun navigateToCamera() {
+//        lifecycleScope.launchWhenStarted {
+//            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
+//                PermissionsFragmentDirections.actionPermissionsToCamera()
+//            )
+//        }
+//    }
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -51,7 +48,7 @@ class PermissionsFragment : Fragment() {
             if (!permissionGranted) {
                 Toast.makeText(context, "Permission request denied", Toast.LENGTH_LONG).show()
             } else {
-                navigateToCamera()
+//                navigateToCamera()
             }
         }
 

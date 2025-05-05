@@ -53,8 +53,8 @@
 "Chat" = "Trò chuyện";
 "Class end confirming detail" = "Khi buổi học kết thúc, tất cả người dùng sẽ thoát khỏi phòng và buổi học cũng như bản ghi (nếu có) sẽ tự động kết thúc và không thể tiếp tục phát trực tiếp";
 "Class end confirming title" = "Xác nhận kết thúc buổi học?";
-"Class exit confirming detail" = "Lớp học đang tiếp diễn, chắc chắn thoát khỏi phòng?";
-"Class exit confirming title" = "Xác nhận thoát phòng?";
+"Class exit confirming detail" = "Lớp học chưa kết thúc, bạn có muốn thoát không?";
+"Class exit confirming title" = "Thoát khỏi lớp học";
 "ClassesStillLeftTips" = "Bạn có các phòng chưa được đóng hoặc rút khỏi, bạn chỉ có thể yêu cầu hủy tài khoản sau khi xử lý xong, số lượng còn lại: ";
 "ClearHistory" = "Xóa lịch sử";
 "ClearWhiteboard" = "Xóa bảng trắng";
@@ -406,3 +406,5 @@
 "selected" = " (Đã chọn)";
 "smsAuth" = "Qua SMS";
 "whiteboard_save_annotation" = "Lưu chú thích";
+"studyContinue" = "Học tiếp";
+"out" = "Thoát";

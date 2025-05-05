@@ -535,8 +535,8 @@ class ClassRoomViewModel {
                                                   message: localizeStrings("Class exit confirming detail"),
                                                   preferredStyle: .actionSheet,
                                                   actionModels: [
-                                                      .init(title: localizeStrings("Confirm"), style: .default, handler: nil),
-                                                      .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil),
+                                                      .init(title: localizeStrings("out"), style: .default, handler: nil),
+                                                      .init(title: localizeStrings("studyContinue"), style: .cancel, handler: nil),
                                                   ])
                     return self.alertProvider
                         .showActionSheet(with: studentAlert, source: source)

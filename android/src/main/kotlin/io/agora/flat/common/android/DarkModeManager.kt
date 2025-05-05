@@ -29,7 +29,7 @@ object DarkModeManager {
 
     fun init(application: Application) {
         store = application.getSharedPreferences("flat_config", Context.MODE_PRIVATE)
-        setDarkMode(current())
+        setDarkMode(Mode.Light)
     }
 
     fun current(): Mode {

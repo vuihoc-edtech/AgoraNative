@@ -22,6 +22,7 @@ object LanguageManager {
         Default("", null, R.string.language_follow_system),
         English("en", Locale.ENGLISH, R.string.language_english),
         Chinese("zh", Locale.CHINA, R.string.language_chinese),
+        Vietnamese("vi", Locale("vi","VN"),R.string.language_vietnam ),
         ;
 
         companion object {

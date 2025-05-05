@@ -1,5 +1,9 @@
 package io.agora.flat.ui.activity.play
 
+// import dagger.hilt.EntryPoint
+// import dagger.hilt.InstallIn
+// import dagger.hilt.android.EntryPointAccessors
+// import dagger.hilt.android.components.ActivityComponent
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -17,21 +21,21 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-// import dagger.hilt.EntryPoint
-// import dagger.hilt.InstallIn
-// import dagger.hilt.android.EntryPointAccessors
-// import dagger.hilt.android.components.ActivityComponent
 import io.agora.flat.Constants
-import io.agora.flat.common.board.AgoraBoardRoom
 import io.agora.flat.common.rtc.AgoraRtc
-import io.agora.vuihoc.agora_native.R
 import io.agora.flat.data.AppEnv
 import io.agora.flat.data.model.RoomStatus
-import io.agora.vuihoc.agora_native.databinding.ComponentToolBinding
 import io.agora.flat.di.interfaces.BoardRoom
 import io.agora.flat.di.interfaces.RtcApi
-import io.agora.flat.event.*
-import io.agora.flat.ui.activity.camera.CameraActivity
+import io.agora.flat.event.EventBus
+import io.agora.flat.event.ExpirationEvent
+import io.agora.flat.event.NotifyDeviceOffReceived
+import io.agora.flat.event.RequestDeviceReceived
+import io.agora.flat.event.RequestDeviceResponseReceived
+import io.agora.flat.event.RequestDeviceSent
+import io.agora.flat.event.RequestMuteAllSent
+import io.agora.flat.event.RoomsUpdated
+import io.agora.flat.event.TakePhotoEvent
 import io.agora.flat.ui.animator.SimpleAnimator
 import io.agora.flat.ui.manager.RoomOverlayManager
 import io.agora.flat.ui.view.AidienceExitDialog
@@ -42,6 +46,8 @@ import io.agora.flat.util.FlatFormatter
 import io.agora.flat.util.contentInfo
 import io.agora.flat.util.isTabletMode
 import io.agora.flat.util.showToast
+import io.agora.vuihoc.agora_native.R
+import io.agora.vuihoc.agora_native.databinding.ComponentToolBinding
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
@@ -84,10 +90,10 @@ class ToolComponent(
             }
     }
 
-    private fun launchTakePhoto() {
-        rtcApi.enableLocalVideo(false)
-        takePhotoLauncher.launch(Intent(activity, CameraActivity::class.java))
-    }
+//    private fun launchTakePhoto() {
+//        rtcApi.enableLocalVideo(false)
+//        takePhotoLauncher.launch(Intent(activity, CameraActivity::class.java))
+//    }
 
     private fun injectApi() {
         appEnv = AppEnv.getInstance()
@@ -149,13 +155,13 @@ class ToolComponent(
             }
         }
 
-        lifecycleScope.launchWhenResumed {
-            viewModel.recordState.collect { recordState ->
-                val isRecording = recordState != null
-                binding.startRecord.isVisible = !isRecording
-                binding.stopRecord.isVisible = isRecording
-            }
-        }
+//        lifecycleScope.launchWhenResumed {
+//            viewModel.recordState.collect { recordState ->
+//                val isRecording = recordState != null
+//                binding.startRecord.isVisible = !isRecording
+//                binding.stopRecord.isVisible = isRecording
+//            }
+//        }
 
         lifecycleScope.launchWhenResumed {
             viewModel.state.filterNotNull().collect {
@@ -376,9 +382,9 @@ class ToolComponent(
                 }
                 RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_ACCEPT_HANDUP, target)
             },
-            binding.takePhoto to {
-                launchTakePhoto()
-            }
+//            binding.takePhoto to {
+//                launchTakePhoto()
+//            }
         )
 
         map.forEach { (view, action) -> view.setOnClickListener { action(it) } }

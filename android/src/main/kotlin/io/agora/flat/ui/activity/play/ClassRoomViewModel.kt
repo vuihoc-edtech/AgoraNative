@@ -9,8 +9,8 @@ import androidx.lifecycle.viewModelScope
 // import dagger.hilt.android.lifecycle.HiltViewModel
 import io.agora.flat.Constants
 import io.agora.flat.common.FlatException
-import io.agora.flat.common.android.AndroidClipboardController
-import io.agora.flat.common.android.ClipboardController
+//import io.agora.flat.common.android.AndroidClipboardController
+//import io.agora.flat.common.android.ClipboardController
 import io.agora.flat.common.board.AgoraBoardRoom
 import io.agora.flat.common.board.DeviceState
 import io.agora.flat.common.rtc.AgoraRtc
@@ -59,7 +59,7 @@ import io.agora.flat.event.RequestDeviceResponseReceived
 import io.agora.flat.event.RequestDeviceSent
 import io.agora.flat.event.RequestMuteAllSent
 import io.agora.flat.event.RewardReceived
-import io.agora.flat.ui.manager.RecordManager
+//import io.agora.flat.ui.manager.RecordManager
 import io.agora.flat.ui.manager.RoomErrorManager
 import io.agora.flat.ui.manager.UserManager
 import io.agora.flat.ui.viewmodel.ChatMessageManager
@@ -84,7 +84,7 @@ import kotlinx.coroutines.launch
 class ClassRoomViewModel(
     savedStateHandle: SavedStateHandle,
     private val userManager: UserManager,
-    private val recordManager: RecordManager,
+//    private val recordManager: RecordManager,
     private val messageManager: ChatMessageManager,
     private val roomErrorManager: RoomErrorManager,
     private val rtcVideoController: RtcVideoController,
@@ -98,7 +98,7 @@ class ClassRoomViewModel(
     private val rtmApi: RtmApi = AgoraRtm.getInstance()
     private val rtcApi: RtcApi = AgoraRtc.getInstance()
     private val eventbus: EventBus = EventBus.getInstance()
-    private val clipboard: ClipboardController = AndroidClipboardController.getInstance()
+//    private val clipboard: ClipboardController = AndroidClipboardController.getInstance()
     private val appEnv: AppEnv = AppEnv.getInstance()
     private val appKVCenter: AppKVCenter = AppKVCenter.getInstance()
     //end init
@@ -114,7 +114,7 @@ class ClassRoomViewModel(
     val videoUsersMap = videoUsers.map { it.associateBy { user -> user.userUUID } }
 
     // cloud record state
-    val recordState get() = recordManager.observeRecordState()
+//    val recordState get() = recordManager.observeRecordState()
 
     val noOptPermission get() = eventbus.events.filterIsInstance<NoOptPermission>()
 
@@ -231,7 +231,7 @@ class ClassRoomViewModel(
             ownerUUID = roomInfo.ownerUUID
         )
 
-        recordManager.reset(roomUUID, viewModelScope)
+//        recordManager.reset(roomUUID, viewModelScope)
 
         onStageLimit = when (roomInfo.roomType) {
             RoomType.OneToOne -> 2
@@ -663,21 +663,21 @@ class ClassRoomViewModel(
         val result = roomRepository.stopRoomClass(roomUUID)
         if (result.isSuccess) {
             rtmApi.sendChannelCommand(RoomStateEvent(roomUUID = roomUUID, status = RoomStatus.Stopped))
-            recordManager.stopRecord(true)
+//            recordManager.stopRecord(true)
         }
         return result.isSuccess
     }
 
     suspend fun startRecord() {
-        recordManager.startRecord()
+//        recordManager.startRecord()
     }
 
     suspend fun stopRecord() {
-        recordManager.stopRecord()
+//        recordManager.stopRecord()
     }
 
     fun setClipboard(text: String) {
-        clipboard.putText(text)
+//        clipboard.putText(text)
     }
 
     fun updateOnStage(uuid: String, onstage: Boolean) {
@@ -908,7 +908,7 @@ data class ImageInfo(val width: Int, val height: Int, val orientation: Int)
 
 class ClassRoomViewModelFactory(
     private val userManager: UserManager,
-    private val recordManager: RecordManager,
+//    private val recordManager: RecordManager,
     private val messageManager: ChatMessageManager,
     private val roomErrorManager: RoomErrorManager,
     private val rtcVideoController: RtcVideoController,
@@ -923,7 +923,7 @@ class ClassRoomViewModelFactory(
         return ClassRoomViewModel(
             handle,
             userManager = userManager,
-            recordManager = recordManager,
+//            recordManager = recordManager,
             messageManager = messageManager,
             roomErrorManager = roomErrorManager,
             rtcVideoController = rtcVideoController,

@@ -6,12 +6,12 @@ import android.widget.Toast
 import com.google.gson.Gson
 import com.herewhite.sdk.WhiteboardView
 import io.agora.flat.common.Navigator
-import io.agora.flat.common.android.AndroidClipboardController
+//import io.agora.flat.common.android.AndroidClipboardController
 import io.agora.flat.common.android.I18NFetcher
 import io.agora.flat.common.board.DeviceState
 import io.agora.flat.common.rtc.AgoraRtc
 import io.agora.flat.common.rtm.AgoraRtm
-import io.agora.flat.data.AppDatabase
+//import io.agora.flat.data.AppDatabase
 import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.Failure
 import io.agora.flat.data.Success
@@ -45,8 +45,8 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         context = flutterPluginBinding.applicationContext
         AppKVCenter.getInstance().initStore(context)
         AppKVCenter.getInstance().updateSessionId(UUID.randomUUID().toString())
-        AndroidClipboardController.init(context = context)
-        AppDatabase.init(context)
+//        AndroidClipboardController.init(context = context)
+//        AppDatabase.init(context)
         JoinRoomRecordManager.init(context)
         I18NFetcher.init(context)
         WhiteboardView.setEntryUrl("https://vuihoc-edtech.github.io/white_board_with_apps/")

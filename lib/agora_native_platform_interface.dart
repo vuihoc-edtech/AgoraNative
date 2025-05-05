@@ -27,7 +27,7 @@ abstract class AgoraNativePlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<void> joinClassRoom(String roomUUID) {
+  Future<bool> joinClassRoom(String roomUUID) {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 

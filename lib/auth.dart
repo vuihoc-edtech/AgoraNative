@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 
 class Auth {
   Auth._();
+  static const baseUrl = 'api.flat.agora.io';
   static final _instance = Auth._();
   static Auth shared = _instance;
   Future<Map<String, dynamic>> loginWithEmail(
@@ -17,7 +18,7 @@ class Auth {
       sessionId = uuid.v4();
     }
     final response = await http.post(
-      Uri.parse('https://api.flat.agora.io/v2/login/email'),
+      Uri.parse('https://$baseUrl/v2/login/email'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'x-request-id': requestId,
@@ -48,7 +49,7 @@ class Auth {
       sessionId = uuid.v4();
     }
     final response = await http.post(
-      Uri.parse('https://api.flat.agora.io/v1/login'),
+      Uri.parse('https://$baseUrl/v1/login'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'x-request-id': requestId,

@@ -32,7 +32,8 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
             
             ClassroomCoordinator.shared.enterClassroomFromFlutter(uuid: roomId,
                                                                   periodUUID: nil,
-                                                                  basicInfo: nil)
+                                                                  basicInfo: nil,
+                                                                  result: result)
         case "login":
             result("iOS " + UIDevice.current.systemVersion)
         case "saveLoginInfo":

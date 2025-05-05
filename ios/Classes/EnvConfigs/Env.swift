@@ -184,21 +184,7 @@ extension Env {
 
 extension Env {
     func customBaseUrlFor(roomUUID: String) -> String? {
-        let isAllNumer = roomUUID.allSatisfy(\.isNumber)
-        if isAllNumer, roomUUID.count == 10 {
-            return servers.first(where: { $0.classroomUUIDPrefix == "CN-"})?.baseURL // Old invite code. Using CN.
-        }
-        for server in servers {
-            if isAllNumer {
-                if roomUUID.hasPrefix(server.classroomInviteCode.description) {
-                    return server.baseURL
-                }
-            }
-            if roomUUID.hasPrefix(server.classroomUUIDPrefix) {
-                return server.baseURL
-            }
-        }
-        return nil
+        return baseURL
     }
     
     func isCrossRegion(roomUUID: String) -> Bool {

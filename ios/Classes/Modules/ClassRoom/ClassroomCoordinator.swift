@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import Flutter
 
 struct JoinRoomHistoryItem: Codable {
     let roomName: String
@@ -190,7 +191,8 @@ class ClassroomCoordinator: NSObject {
     
     func enterClassroomFromFlutter(uuid: String,
                         periodUUID: String?,
-                        basicInfo: RoomBasicInfo?)
+                        basicInfo: RoomBasicInfo?,
+                        result: @escaping FlutterResult)
     {
         currentClassroomUUID = uuid
         enterClassDate = Date()
@@ -200,7 +202,7 @@ class ClassroomCoordinator: NSObject {
                                      basicInfo: basicInfo)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onSuccess: { _, vc in
-
+                result(true)
                 guard let main = AgoraNativePlugin.topViewController() else { return }
                 if let _ = main.presentedViewController {
                     main.showActivityIndicator()
@@ -212,6 +214,7 @@ class ClassroomCoordinator: NSObject {
                     main.present(vc, animated: true)
                 }
             }, onFailure: { weakSelf, error in
+                result(false)
                 weakSelf.currentClassroomUUID = nil
                 let controller = AgoraNativePlugin.topViewController()
                 if let flatError = error as? FlatApiError {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:vh_agora_native/auth.dart';
 import 'package:vh_agora_native/user.dart';
 
@@ -8,8 +10,8 @@ class AgoraNative {
     return AgoraNativePlatform.instance.getPlatformVersion();
   }
 
-  void joinClassRoom(String roomUUID) {
-    AgoraNativePlatform.instance.joinClassRoom(roomUUID);
+  Future<bool> joinClassRoom(String roomUUID) {
+    return AgoraNativePlatform.instance.joinClassRoom(roomUUID);
   }
 
   Future<bool> login() async {
@@ -38,7 +40,12 @@ class AgoraNative {
     if (!res) {
       return false;
     }
-    joinClassRoom(roomId);
-    return true;
+    try {
+      final joined = joinClassRoom(roomId);
+      return joined;
+    } catch (e, st) {
+      log(st.toString());
+    }
+    return false;
   }
 }

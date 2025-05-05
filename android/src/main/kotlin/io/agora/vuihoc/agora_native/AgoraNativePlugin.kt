@@ -59,8 +59,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             "joinClassRoom" -> {
                 val roomUUID = call.arguments as String
-                joinClassRoom(roomUUID)
-                result.success(null)
+                joinClassRoom(roomUUID, result)
             }
             "saveLoginInfo" -> {
                 val user = call.arguments as Map<String, Any>
@@ -90,17 +89,21 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         return true
     }
 
-    private fun joinClassRoom(uuid: String) {
+    private fun joinClassRoom(uuid: String, result: Result) {
             if(activity != null) {
                 CoroutineScope(Dispatchers.Main).launch {
                     try {
-                        when (val result = RoomRepository.getInstance().joinRoom(uuid)) {
+                        when (val res = RoomRepository.getInstance().joinRoom(uuid)) {
                             is Success -> {
+                                result.success(true)
                                 AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
-                                Navigator.launchRoomPlayActivity(activity!!, result.data)
+                                Navigator.launchRoomPlayActivity(activity!!, res.data)
                             }
 
-                            is Failure -> Toast.makeText(context, "join room error", Toast.LENGTH_SHORT).show()
+                            is Failure -> {
+                                result.success(false)
+                                Toast.makeText(context, "join room error", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()

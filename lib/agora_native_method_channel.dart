@@ -17,8 +17,8 @@ class MethodChannelAgoraNative extends AgoraNativePlatform {
   }
 
   @override
-  Future<void> joinClassRoom(String roomUUID) async {
-    await methodChannel.invokeMethod("joinClassRoom", roomUUID);
+  Future<bool> joinClassRoom(String roomUUID) async {
+    return await methodChannel.invokeMethod("joinClassRoom", roomUUID);
   }
 
   @override

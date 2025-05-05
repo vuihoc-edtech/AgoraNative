@@ -37,7 +37,7 @@ object LanguageManager {
     }
 
     fun current(): String {
-        return store?.getString(KEY_LANGUAGE, "") ?: ""
+        return "vi"
     }
 
     fun update(language: String) {

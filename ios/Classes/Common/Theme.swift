@@ -19,7 +19,7 @@ enum ThemeStyle: String, Codable, CaseIterable {
         localizeStrings("Theme.\(rawValue)")
     }
 
-    static var `default`: Self { .auto }
+    static var `default`: Self { .light }
 
     var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {

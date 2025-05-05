@@ -11,7 +11,7 @@ import io.agora.flat.common.rtc.AgoraRtc
 import io.agora.flat.common.rtc.RtcVideoController
 import io.agora.flat.common.rtm.AgoraRtm
 import io.agora.flat.ui.activity.base.BaseActivity
-import io.agora.flat.ui.manager.RecordManager
+//import io.agora.flat.ui.manager.RecordManager
 import io.agora.flat.ui.manager.RoomErrorManager
 import io.agora.flat.ui.manager.UserManager
 import io.agora.flat.ui.manager.UserQuery
@@ -76,7 +76,7 @@ class ClassRoomActivity : BaseActivity() {
     private fun createViewModels() {
         val userQuery = UserQuery()
         val userManager = UserManager(userQuery)
-        val recordManager = RecordManager(userManager = userManager)
+//        val recordManager = RecordManager(userManager = userManager)
         val messageManager = ChatMessageManager()
         val roomErrorManager = RoomErrorManager()
 
@@ -94,7 +94,7 @@ class ClassRoomActivity : BaseActivity() {
 
         val classRoomViewModelFactory = ClassRoomViewModelFactory(
             userManager = userManager,
-            recordManager = recordManager,
+//            recordManager = recordManager,
             messageManager = messageManager,
             roomErrorManager = roomErrorManager,
             rtcVideoController = rtcVideoController,

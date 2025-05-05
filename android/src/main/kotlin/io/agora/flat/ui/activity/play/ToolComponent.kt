@@ -155,13 +155,13 @@ class ToolComponent(
             }
         }
 
-        lifecycleScope.launchWhenResumed {
-            viewModel.recordState.collect { recordState ->
-                val isRecording = recordState != null
-                binding.startRecord.isVisible = !isRecording
-                binding.stopRecord.isVisible = isRecording
-            }
-        }
+//        lifecycleScope.launchWhenResumed {
+//            viewModel.recordState.collect { recordState ->
+//                val isRecording = recordState != null
+//                binding.startRecord.isVisible = !isRecording
+//                binding.stopRecord.isVisible = isRecording
+//            }
+//        }
 
         lifecycleScope.launchWhenResumed {
             viewModel.state.filterNotNull().collect {

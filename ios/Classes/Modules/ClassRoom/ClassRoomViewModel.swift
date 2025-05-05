@@ -531,12 +531,12 @@ class ClassRoomViewModel {
                         .showActionSheet(with: teacherStartAlert, source: source)
                         .asObservable()
                 } else {
-                    let studentAlert = AlertModel(title: localizeStrings("Class exit confirming title"),
-                                                  message: localizeStrings("Class exit confirming detail"),
+                    let studentAlert = AlertModel(title: "Thoát khỏi lớp học",
+                                                  message: "Lớp học chưa kết thúc, bạn có muốn thoát không?",
                                                   preferredStyle: .actionSheet,
                                                   actionModels: [
-                                                      .init(title: localizeStrings("Confirm"), style: .default, handler: nil),
-                                                      .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil),
+                                                      .init(title: "Thoát", style: .default, handler: nil),
+                                                      .init(title: "Học tiếp", style: .cancel, handler: nil),
                                                   ])
                     return self.alertProvider
                         .showActionSheet(with: studentAlert, source: source)

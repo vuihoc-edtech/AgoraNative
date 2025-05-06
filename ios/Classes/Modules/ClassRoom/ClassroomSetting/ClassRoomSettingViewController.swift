@@ -19,7 +19,7 @@ class ClassRoomSettingViewController: UIViewController {
         case cameraDirection
         case mic
         case videoArea
-        case shortcut
+//        case shortcut
         case mirror
 
         var description: String {
@@ -34,8 +34,8 @@ class ClassRoomSettingViewController: UIViewController {
                 return localizeStrings("Mic")
             case .videoArea:
                 return localizeStrings("Video Area")
-            case .shortcut:
-                return localizeStrings("PreferencesSetting")
+//            case .shortcut:
+//                return localizeStrings("PreferencesSetting")
             }
         }
     }
@@ -68,12 +68,12 @@ class ClassRoomSettingViewController: UIViewController {
     func reloadModels() {
         if cameraOn.value {
             if isCameraFront {
-                models = [[.shortcut], [.camera, .cameraDirection, .mirror], [.mic], [.videoArea]]
+                models = [/*[.shortcut],*/ [.camera, .cameraDirection, .mirror], [.mic], [.videoArea]]
             } else {
-                models = [[.shortcut], [.camera, .cameraDirection], [.mic], [.videoArea]]
+                models = [/*[.shortcut],*/ [.camera, .cameraDirection], [.mic], [.videoArea]]
             }
         } else {
-            models = [[.shortcut], [.camera], [.mic], [.videoArea]]
+            models = [/*[.shortcut],*/ [.camera], [.mic], [.videoArea]]
         }
         tableView.reloadData()
     }
@@ -170,11 +170,11 @@ class ClassRoomSettingViewController: UIViewController {
             cell.cameraFaceFrontChangedHandler = { [weak self] _ in
                 self?.isCameraFront.toggle()
             }
-        case .shortcut:
-            cell.switch.isHidden = true
-            cell.rightArrowImageView.isHidden = false
-            cell.setEnable(true)
-            cell.iconView.image = UIImage.fromPlugin(named: "command")?.tintColor(.color(type: .text))
+//        case .shortcut:
+//            cell.switch.isHidden = true
+//            cell.rightArrowImageView.isHidden = false
+//            cell.setEnable(true)
+//            cell.iconView.image = UIImage.fromPlugin(named: "command")?.tintColor(.color(type: .text))
         case .camera:
             if cell.switch.isOn != cameraOn.value {
                 cell.switch.isOn = cameraOn.value
@@ -302,9 +302,9 @@ extension ClassRoomSettingViewController: UITableViewDelegate, UITableViewDataSo
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if models[indexPath.section][indexPath.row] == .shortcut {
-            preferencePublish.accept(())
-        }
+//        if models[indexPath.section][indexPath.row] == .shortcut {
+//            preferencePublish.accept(())
+//        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

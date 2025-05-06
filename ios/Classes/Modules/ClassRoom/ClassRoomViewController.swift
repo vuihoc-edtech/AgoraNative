@@ -988,7 +988,7 @@ class ClassRoomViewController: UIViewController {
         if traitCollection.hasCompact {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [takePhotoButton, chatButton, usersButton, inviteButton, cloudStorageButton, settingButton])
+                                         views: [takePhotoButton, chatButton,/* usersButton, inviteButton,*/ cloudStorageButton, settingButton])
             bar.forceUpdate(button: takePhotoButton, visible: false)
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
@@ -997,7 +997,7 @@ class ClassRoomViewController: UIViewController {
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [takePhotoButton, chatButton, usersButton, inviteButton, cloudStorageButton, recordButton, settingButton])
+                                         views: [takePhotoButton, chatButton, /*usersButton, inviteButton,*/ cloudStorageButton, recordButton, settingButton])
             bar.forceUpdate(button: takePhotoButton, visible: false)
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)

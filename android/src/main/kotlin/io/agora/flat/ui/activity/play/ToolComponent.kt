@@ -139,7 +139,7 @@ class ToolComponent(
                 acceptHandupAdapter.setData(handupUsers)
 
                 val handUpCount = handupUsers.size
-                binding.userlistDot.isVisible = handUpCount > 0
+//                binding.userlistDot.isVisible = handUpCount > 0
                 binding.handupCount.isVisible = handUpCount > 0
                 binding.handupCount.text = "$handUpCount"
                 binding.layoutAcceptHandup.listEmpty.isVisible = handUpCount == 0
@@ -280,7 +280,7 @@ class ToolComponent(
 
     private fun hideUserListLayout() {
         binding.layoutUserList.root.isVisible = false
-        binding.userlist.isSelected = false
+//        binding.userlist.isSelected = false
     }
 
     private val expectedUserListWidth = activity.resources.getDimensionPixelSize(R.dimen.room_class_user_list_width)
@@ -288,7 +288,7 @@ class ToolComponent(
 
     private fun showUserListLayout() {
         binding.layoutUserList.root.isVisible = true
-        binding.userlist.isSelected = true
+//        binding.userlist.isSelected = true
 
         // resize for small size devices
         val limitedWidth = binding.root.width - 2 * panelMargin
@@ -322,20 +322,20 @@ class ToolComponent(
                 val targetShow = RoomOverlayManager.getShowId() != RoomOverlayManager.AREA_ID_CLOUD_STORAGE
                 RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_CLOUD_STORAGE, targetShow)
             },
-            binding.userlist to {
-                with(binding.layoutUserList.root) {
-                    if (isVisible) {
-                        hideUserListLayout()
-                    } else {
-                        showUserListLayout()
-                    }
-                    RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_USER_LIST, isVisible)
-                }
-            },
-            binding.invite to {
-                showInviteDialog()
-                binding.invite.isSelected = true
-            },
+//            binding.userlist to {
+//                with(binding.layoutUserList.root) {
+//                    if (isVisible) {
+//                        hideUserListLayout()
+//                    } else {
+//                        showUserListLayout()
+//                    }
+//                    RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_USER_LIST, isVisible)
+//                }
+//            },
+//            binding.invite to {
+//                showInviteDialog()
+//                binding.invite.isSelected = true
+//            },
             binding.setting to {
                 with(binding.layoutSettings.settingLayout) {
                     if (isVisible) {
@@ -589,7 +589,7 @@ class ToolComponent(
             }
 
             override fun onHide() {
-                binding.invite.isSelected = false
+//                binding.invite.isSelected = false
                 RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_INVITE_DIALOG, false)
             }
         })

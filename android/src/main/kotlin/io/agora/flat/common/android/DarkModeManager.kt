@@ -33,7 +33,8 @@ object DarkModeManager {
     }
 
     fun current(): Mode {
-        return Mode.of(store?.getString(KEY_DARK_MODE, Mode.Auto.type))
+        return Mode.Light
+//        return Mode.of(store?.getString(KEY_DARK_MODE, Mode.Auto.type))
     }
 
     fun update(mode: Mode) {

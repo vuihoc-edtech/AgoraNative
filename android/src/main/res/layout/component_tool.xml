@@ -67,41 +67,41 @@
                     tools:ignore="ContentDescription" />
             </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/room_class_button_gap">
+<!--            <FrameLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="@dimen/room_class_button_gap">-->
 
-                <ImageView
-                    android:id="@+id/userlist"
-                    android:layout_width="@dimen/room_class_button_size"
-                    android:layout_height="@dimen/room_class_button_size"
-                    android:background="@drawable/ic_class_room_icon_bg"
-                    android:padding="@dimen/room_class_button_gap"
-                    android:src="@drawable/ic_class_room_user_list"
-                    app:tint="@color/color_class_room_icon"
-                    tools:ignore="ContentDescription" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/userlist"-->
+<!--                    android:layout_width="@dimen/room_class_button_size"-->
+<!--                    android:layout_height="@dimen/room_class_button_size"-->
+<!--                    android:background="@drawable/ic_class_room_icon_bg"-->
+<!--                    android:padding="@dimen/room_class_button_gap"-->
+<!--                    android:src="@drawable/ic_class_room_user_list"-->
+<!--                    app:tint="@color/color_class_room_icon"-->
+<!--                    tools:ignore="ContentDescription" />-->
 
-                <ImageView
-                    android:id="@+id/userlistDot"
-                    android:layout_width="@dimen/room_class_button_size"
-                    android:layout_height="@dimen/room_class_button_size"
-                    android:padding="@dimen/room_class_button_gap"
-                    android:src="@drawable/ic_float_red_dot"
-                    android:visibility="invisible"
-                    tools:ignore="ContentDescription" />
-            </FrameLayout>
+<!--                <ImageView-->
+<!--                    android:id="@+id/userlistDot"-->
+<!--                    android:layout_width="@dimen/room_class_button_size"-->
+<!--                    android:layout_height="@dimen/room_class_button_size"-->
+<!--                    android:padding="@dimen/room_class_button_gap"-->
+<!--                    android:src="@drawable/ic_float_red_dot"-->
+<!--                    android:visibility="invisible"-->
+<!--                    tools:ignore="ContentDescription" />-->
+<!--            </FrameLayout>-->
 
-            <ImageView
-                android:id="@+id/invite"
-                android:layout_width="@dimen/room_class_button_size"
-                android:layout_height="@dimen/room_class_button_size"
-                android:layout_margin="@dimen/room_class_button_gap"
-                android:background="@drawable/ic_class_room_icon_bg"
-                android:padding="@dimen/room_class_button_gap"
-                android:src="@drawable/ic_class_room_invite"
-                app:tint="@color/color_class_room_icon"
-                tools:ignore="ContentDescription" />
+<!--            <ImageView-->
+<!--                android:id="@+id/invite"-->
+<!--                android:layout_width="@dimen/room_class_button_size"-->
+<!--                android:layout_height="@dimen/room_class_button_size"-->
+<!--                android:layout_margin="@dimen/room_class_button_gap"-->
+<!--                android:background="@drawable/ic_class_room_icon_bg"-->
+<!--                android:padding="@dimen/room_class_button_gap"-->
+<!--                android:src="@drawable/ic_class_room_invite"-->
+<!--                app:tint="@color/color_class_room_icon"-->
+<!--                tools:ignore="ContentDescription" />-->
 
             <ImageView
                 android:id="@+id/cloudservice"

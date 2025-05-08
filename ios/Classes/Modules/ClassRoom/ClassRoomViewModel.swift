@@ -651,11 +651,5 @@ class ClassRoomViewModel {
         // Manual deinit it to remove update timer. In case of memory leak
         recordModel = nil
         stateHandler.destroy()
-        let startStatus = stateHandler.roomStartStatus.value
-        NotificationCenter.default.post(name: classRoomLeavingNotificationName,
-                                        object: nil,
-                                        userInfo: ["roomUUID": roomUUID,
-                                                   "startStatus": startStatus,
-                                                   "sender": sender])
     }
 }

@@ -155,7 +155,7 @@ class Theme {
 
     @available(iOS 13.0, *)
     func setupWindowTheme(_ window: UIWindow?) {
-        apply(style, window: window)
+        apply(.light, window: window)
     }
     
     func updateUserPreferredStyle(_ style: ThemeStyle?, whiteboardStyle: WhiteboardStyle?) {

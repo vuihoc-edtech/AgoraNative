@@ -29,10 +29,15 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
             guard AuthStore.shared.user != nil, let roomId = call.arguments as? String else {
                 break
             }
-            
+            if #available(iOS 13.0, *) {
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                    let windows = windowScene.windows
+                    for window in windows {
+                        Theme.shared.setupWindowTheme(window)
+                    }
+                }
+            }
             ClassroomCoordinator.shared.enterClassroomFromFlutter(uuid: roomId,
-                                                                  periodUUID: nil,
-                                                                  basicInfo: nil,
                                                                   result: result)
         case "login":
             result("iOS " + UIDevice.current.systemVersion)

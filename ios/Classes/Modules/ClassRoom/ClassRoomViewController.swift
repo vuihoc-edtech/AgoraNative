@@ -14,9 +14,6 @@ import SnapKit
 import UIKit
 import Whiteboard
 
-let classRoomLeavingNotificationName = Notification.Name("classRoomLeaving")
-let classRoomListNeedRefreshNotificationName = Notification.Name("classRoomListNeedRefresh")
-
 let classroomStatusBarMinHeight: CGFloat = 24
 let classroomRtcMinHeight: CGFloat = 88
 let classroomRtcMaxHeight: CGFloat = 190

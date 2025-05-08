@@ -49,4 +49,9 @@ extension RoomPlayInfo {
         let request = JoinRoomRequest(info: .init(roomUUID: uuid, periodicUUID: periodicUUID, inviteCode: ""))
         ApiProvider.shared.request(fromApi: request, completionHandler: completion)
     }
+    
+    static func fetchByJoinWith(uuid: String) -> Observable<Self> {
+        let request = JoinRoomRequest(info: .init(roomUUID: uuid, periodicUUID: nil, inviteCode: ""))
+        return ApiProvider.shared.request(fromApi: request)
+    }
 }

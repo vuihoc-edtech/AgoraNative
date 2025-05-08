@@ -308,26 +308,26 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindRecording() {
-        let output = viewModel.transformRecordTap(recordButton.rx.tap)
-
-        output.recording
-            .skip(while: { !$0 })
-            .asDriver(onErrorJustReturn: false)
-            .do(onNext: { [weak self] recording in
-                self?.toast(localizeStrings(recording ? "RecordingStartTips" : "RecordingEndTips"))
-            })
-            .drive(recordButton.rx.isSelected)
-            .disposed(by: rx.disposeBag)
-
-        output
-            .loading
-            .asDriver(onErrorJustReturn: false)
-            .drive(recordButton.rx.isLoading)
-            .disposed(by: rx.disposeBag)
-
-        output.layoutUpdate
-            .subscribe()
-            .disposed(by: rx.disposeBag)
+//        let output = viewModel.transformRecordTap(recordButton.rx.tap)
+//
+//        output.recording
+//            .skip(while: { !$0 })
+//            .asDriver(onErrorJustReturn: false)
+//            .do(onNext: { [weak self] recording in
+//                self?.toast(localizeStrings(recording ? "RecordingStartTips" : "RecordingEndTips"))
+//            })
+//            .drive(recordButton.rx.isSelected)
+//            .disposed(by: rx.disposeBag)
+//
+//        output
+//            .loading
+//            .asDriver(onErrorJustReturn: false)
+//            .drive(recordButton.rx.isLoading)
+//            .disposed(by: rx.disposeBag)
+//
+//        output.layoutUpdate
+//            .subscribe()
+//            .disposed(by: rx.disposeBag)
     }
 
     func bindTerminate() {
@@ -390,11 +390,11 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindInvite() {
-        inviteButton.rx.tap
-            .subscribe(with: self, onNext: { weakSelf, _ in
-                weakSelf.present(weakSelf.inviteViewController(), animated: true)
-            })
-            .disposed(by: rx.disposeBag)
+//        inviteButton.rx.tap
+//            .subscribe(with: self, onNext: { weakSelf, _ in
+//                weakSelf.present(weakSelf.inviteViewController(), animated: true)
+//            })
+//            .disposed(by: rx.disposeBag)
     }
 
     func bindChat() {
@@ -555,12 +555,12 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindWhiteboard() {
-        fastboardViewController.bind(observablePermission: viewModel.whiteboardPermission)
-            .subscribe(with: self, onNext: { weakSelf, permission in
-                weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: permission.inputEnable)
-                weakSelf.rightToolBar.forceUpdate(button: weakSelf.takePhotoButton, visible: permission.inputEnable)
-            })
-            .disposed(by: rx.disposeBag)
+//        fastboardViewController.bind(observablePermission: viewModel.whiteboardPermission)
+//            .subscribe(with: self, onNext: { weakSelf, permission in
+////                weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: permission.inputEnable)
+////                weakSelf.rightToolBar.forceUpdate(button: weakSelf.takePhotoButton, visible: permission.inputEnable)
+//            })
+//            .disposed(by: rx.disposeBag)
 
         fastboardViewController.appsClickHandler = { [weak self] room, button in
             guard let self else { return }
@@ -885,19 +885,19 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
-    lazy var recordButton: FastRoomPanelItemButton = {
-        let button = FastRoomPanelItemButton(type: .custom)
-        button.rawImage = UIImage.fromPlugin(named: "classroom_record")!
-        button.style = .selectableAppliance
-        return button
-    }()
+//    lazy var recordButton: FastRoomPanelItemButton = {
+//        let button = FastRoomPanelItemButton(type: .custom)
+//        button.rawImage = UIImage.fromPlugin(named: "classroom_record")!
+//        button.style = .selectableAppliance
+//        return button
+//    }()
 
-    lazy var takePhotoButton: FastRoomPanelItemButton = {
-        let button = FastRoomPanelItemButton(type: .custom)
-        button.rawImage = UIImage.fromPlugin(named: "classroom_take_photo")!
-        button.addTarget(self, action: #selector(onClickTakePhoto(_:)), for: .touchUpInside)
-        return button
-    }()
+//    lazy var takePhotoButton: FastRoomPanelItemButton = {
+//        let button = FastRoomPanelItemButton(type: .custom)
+//        button.rawImage = UIImage.fromPlugin(named: "classroom_take_photo")!
+//        button.addTarget(self, action: #selector(onClickTakePhoto(_:)), for: .touchUpInside)
+//        return button
+//    }()
 
     lazy var raiseHandListButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -928,23 +928,23 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
-    @objc func onClickTakePhoto(_: UIButton) {
-        let picker = UIImagePickerController()
-        picker.sourceType = .camera
-        picker.modalPresentationStyle = .pageSheet
-        picker.delegate = self
-        present(picker, animated: true)
-    }
+//    @objc func onClickTakePhoto(_: UIButton) {
+//        let picker = UIImagePickerController()
+//        picker.sourceType = .camera
+//        picker.modalPresentationStyle = .pageSheet
+//        picker.delegate = self
+//        present(picker, animated: true)
+//    }
 
-    @objc func onClickStorage(_ sender: UIButton) {
-        cloudStorageNavigationController.popOverDismissHandler = { [weak self] in
-            self?.cloudStorageButton.isSelected = false
-        }
-        cloudStorageButton.isSelected = true
-        popoverViewController(viewController: cloudStorageNavigationController,
-                              fromSource: sender,
-                              permittedArrowDirections: .none)
-    }
+//    @objc func onClickStorage(_ sender: UIButton) {
+//        cloudStorageNavigationController.popOverDismissHandler = { [weak self] in
+//            self?.cloudStorageButton.isSelected = false
+//        }
+//        cloudStorageButton.isSelected = true
+//        popoverViewController(viewController: cloudStorageNavigationController,
+//                              fromSource: sender,
+//                              permittedArrowDirections: .none)
+//    }
 
     lazy var cloudStorageNavigationController = BaseNavigationViewController(rootViewController: cloudStorageListViewController)
 
@@ -968,37 +968,37 @@ class ClassRoomViewController: UIViewController {
         return vc
     }()
 
-    lazy var cloudStorageButton: FastRoomPanelItemButton = {
-        let button = FastRoomPanelItemButton(type: .custom)
-        button.rawImage = UIImage.fromPlugin(named: "classroom_cloud")!
-        button.addTarget(self, action: #selector(onClickStorage(_:)), for: .touchUpInside)
-        return button
-    }()
+//    lazy var cloudStorageButton: FastRoomPanelItemButton = {
+//        let button = FastRoomPanelItemButton(type: .custom)
+//        button.rawImage = UIImage.fromPlugin(named: "classroom_cloud")!
+//        button.addTarget(self, action: #selector(onClickStorage(_:)), for: .touchUpInside)
+//        return button
+//    }()
 
-    lazy var inviteButton: FastRoomPanelItemButton = {
-        let button = FastRoomPanelItemButton(type: .custom)
-        button.rawImage = UIImage.fromPlugin(named: "invite")!
-        return button
-    }()
+//    lazy var inviteButton: FastRoomPanelItemButton = {
+//        let button = FastRoomPanelItemButton(type: .custom)
+//        button.rawImage = UIImage.fromPlugin(named: "invite")!
+//        return button
+//    }()
 
     lazy var rightToolBar: FastRoomControlBar = {
         if traitCollection.hasCompact {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [takePhotoButton, chatButton,/* usersButton, inviteButton,*/ cloudStorageButton, settingButton])
-            bar.forceUpdate(button: takePhotoButton, visible: false)
-            bar.forceUpdate(button: cloudStorageButton, visible: false)
+                                         views: [chatButton,/* usersButton, inviteButton, cloudStorageButton,*/ settingButton])
+//            bar.forceUpdate(button: takePhotoButton, visible: false)
+//            bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
             bar.narrowStyle = .none
             return bar
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [takePhotoButton, chatButton, /*usersButton, inviteButton,*/ cloudStorageButton, recordButton, settingButton])
-            bar.forceUpdate(button: takePhotoButton, visible: false)
-            bar.forceUpdate(button: cloudStorageButton, visible: false)
+                                         views: [chatButton, /*usersButton, inviteButton, cloudStorageButton, recordButton,*/ settingButton])
+//            bar.forceUpdate(button: takePhotoButton, visible: false)
+//            bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
-            bar.forceUpdate(button: recordButton, visible: isOwner)
+//            bar.forceUpdate(button: recordButton, visible: isOwner)
             return bar
         }
     }()

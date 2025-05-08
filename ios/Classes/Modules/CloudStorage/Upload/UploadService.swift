@@ -223,7 +223,7 @@ class UploadService {
             ("key", info.ossFilePath),
             ("name", fileURL.lastPathComponent),
             ("policy", info.policy),
-            ("OSSAccessKeyId", Env().ossAccessKeyId),
+            ("OSSAccessKeyId", AgoraNativePlugin.env.ossAccessKeyId),
             ("success_action_status", "200"),
             ("callback", ""),
             ("signature", info.signature),

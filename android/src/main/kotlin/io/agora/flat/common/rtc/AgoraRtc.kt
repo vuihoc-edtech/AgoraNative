@@ -28,12 +28,13 @@ class AgoraRtc(val appEnv: AppEnv = AppEnv.getInstance()) : RtcApi, StartupIniti
                 mEventHandler = eventHandler
             }
             rtcEngine = RtcEngine.create(config)
+            setupVideoConfig()
             // rtcEngine.setLogFile(FileUtil.initializeLogFile(this))
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
-        setupVideoConfig()
+
     }
 
     private fun setupVideoConfig() {

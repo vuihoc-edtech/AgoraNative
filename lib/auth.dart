@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 
 class Auth {
   Auth._();
-  static const baseUrl = 'api.flat.agora.io';
+  static const baseUrl = 'dev-class-api.rinoedu.ai';
   static final _instance = Auth._();
   static Auth shared = _instance;
   Future<Map<String, dynamic>> loginWithEmail(

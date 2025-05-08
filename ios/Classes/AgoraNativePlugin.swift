@@ -5,6 +5,7 @@ var globalSessionId = UUID().uuidString
 
 public class AgoraNativePlugin: NSObject, FlutterPlugin {
     static var pluginBundle: Bundle?
+    static var env = Env()
     // Get the top-most view controller that can present
     static func topViewController() -> UIViewController? {
         var topController = UIApplication.shared.keyWindow?.rootViewController
@@ -62,6 +63,15 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
         let token = argument["token"] as? String ?? ""
         let user = User(name: name, avatar: avatar, userUUID: userUUID, token: token, hasPhone: false, hasPassword: false)
         AuthStore.shared.user = user
+    }
+    
+    private static func initValues(_ channel: FlutterMethodChannel) {
+        channel.invokeMethod("env", arguments: nil, result: { result in
+            if let res = result as? Dictionary<String, String> {
+                print("AgoraNativePlugin baseURL: \(res)")
+                env.baseURL = res["baseUrl"] ?? ""
+            }
+        })
     }
     
     static let resourceBundle: Bundle = {

@@ -33,7 +33,6 @@ class ClassRoomActivity : BaseActivity() {
     private val rtcVideoController = RtcVideoController(AgoraRtc.getInstance())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityRoomPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
         componentSet.add(WhiteboardComponent(this, binding.whiteboardContainer, boardRoom))
@@ -76,7 +75,6 @@ class ClassRoomActivity : BaseActivity() {
     private fun createViewModels() {
         val userQuery = UserQuery()
         val userManager = UserManager(userQuery)
-//        val recordManager = RecordManager(userManager = userManager)
         val messageManager = ChatMessageManager()
         val roomErrorManager = RoomErrorManager()
 
@@ -84,14 +82,6 @@ class ClassRoomActivity : BaseActivity() {
             rtmApi = AgoraRtm.getInstance(),
             userQuery = userQuery
         )
-//        val roomUUID = intent.getStringExtra(Constants.IntentKey.ROOM_UUID)
-//        val periodicUUID = intent.getStringExtra(Constants.IntentKey.PERIODIC_UUID)
-//        val quickStart = intent.getBooleanExtra(Constants.IntentKey.ROOM_QUICK_START, false)
-//
-////        savedStateHandle[Constants.IntentKey.ROOM_UUID] = roomUUID
-////        savedStateHandle[Constants.IntentKey.PERIODIC_UUID] = periodicUUID
-////        savedStateHandle[Constants.IntentKey.ROOM_QUICK_START] = quickStart
-
         val classRoomViewModelFactory = ClassRoomViewModelFactory(
             userManager = userManager,
 //            recordManager = recordManager,

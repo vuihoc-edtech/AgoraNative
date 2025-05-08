@@ -13,6 +13,6 @@ struct JoinRoomRequest: FlatRequest {
 
     var path: String { "/v1/room/join" }
     var task: Task { .requestJSONEncodable(encodable: ["uuid": info.periodicUUID ?? info.roomUUID]) }
-    var customBaseURL: String? { Env().customBaseUrlFor(roomUUID: info.roomUUID) }
+    var customBaseURL: String? { AgoraNativePlugin.env.baseURL }
     let responseType = RoomPlayInfo.self
 }

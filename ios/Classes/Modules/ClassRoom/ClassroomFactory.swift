@@ -18,7 +18,7 @@ enum ClassroomFactory {
                                            deviceStatus: DeviceState) -> ClassRoomViewController
     {
         // Config Rtc
-        let rtc = Rtc(appId: Env().agoraAppId,
+        let rtc = Rtc(appId: AgoraNativePlugin.env.agoraAppId,
                       channelId: playInfo.roomUUID,
                       token: playInfo.rtcToken,
                       uid: playInfo.rtcUID,
@@ -35,7 +35,7 @@ enum ClassroomFactory {
 
         let mixerDelegate: FastAudioMixerDelegate? = (PerferrenceManager.shared.preferences[.audioMixing] ?? false) ? rtc : nil
         print("set audio mixer \(mixerDelegate != nil)")
-        fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
+        fastRoomConfiguration = FastRoomConfiguration(appIdentifier: AgoraNativePlugin.env.netlessAppId,
                                                       roomUUID: playInfo.whiteboardRoomUUID,
                                                       roomToken: playInfo.whiteboardRoomToken,
                                                       region: region,
@@ -44,7 +44,7 @@ enum ClassroomFactory {
                                                       audioMixerDelegate: mixerDelegate)
 
         if var ua = fastRoomConfiguration.whiteSdkConfiguration.value(forKey: "netlessUA") as? [String] {
-            let env = Env()
+            let env = AgoraNativePlugin.env
             //TODO: Flat check flat fastRoomConfig
 //            let isFlat = Bundle.main.bundleIdentifier == "io.agora.flat"
 //            let productName = env.name.replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: " ", with: "_")
@@ -82,7 +82,7 @@ enum ClassroomFactory {
 
         let agoraRtm = AgoraRtm(rtmToken: playInfo.rtmToken,
                            rtmUserUUID: playInfo.rtmUID,
-                           agoraAppId: Env().agoraAppId)
+                           agoraAppId: AgoraNativePlugin.env.agoraAppId)
         // Config Rtm
         let rtm: RtmProvider = agoraRtm
         let rtmChannel = agoraRtm.joinChannelId(playInfo.rtmChannelId)

@@ -733,12 +733,12 @@ class ClassRoomViewModel(
 
     fun getInviteInfo(): InviteInfo? {
         val state = state.value ?: return null
-        val linkCode = if (state.isPmi) state.inviteCode else state.roomUUID
+//        val linkCode = if (state.isPmi) state.inviteCode else state.roomUUID
 
         return InviteInfo(
             username = currentUserName,
             roomTitle = state.title,
-            link = "${appEnv.baseInviteUrl}/join/$linkCode",
+            link = "",
             roomUuid = state.inviteCode.toInviteCodeDisplay(),
             beginTime = state.beginTime,
             endTime = state.endTime,

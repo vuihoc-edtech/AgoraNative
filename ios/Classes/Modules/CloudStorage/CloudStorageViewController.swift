@@ -463,7 +463,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         do {
             let jsonData = try JSONEncoder().encode(item)
             let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)) ?? ""
-            let link = Env().webBaseURL + "/preview/\(itemJSONStr)?theme=\(Theme.shared.style.schemeStringForWeb)"
+            let link = AgoraNativePlugin.env.webBaseURL + "/preview/\(itemJSONStr)?theme=\(Theme.shared.style.schemeStringForWeb)"
             if let url = URL(string: link) {
                 let vc = WKWebViewController(url: url)
                 vc.modalPresentationStyle = .fullScreen

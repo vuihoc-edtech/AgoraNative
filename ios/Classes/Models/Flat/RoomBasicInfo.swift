@@ -120,7 +120,7 @@ private struct RoomInfoRequest: FlatRequest {
     var path: String { "/v1/room/info/ordinary" }
     var task: Task { .requestJSONEncodable(encodable: ["roomUUID": roomUUID]) }
     let responseType = RawRoomInfo.self
-    var customBaseURL: String? { Env().customBaseUrlFor(roomUUID: roomUUID) }
+    var customBaseURL: String? { AgoraNativePlugin.env.baseURL }
 }
 
 // Middle Struct

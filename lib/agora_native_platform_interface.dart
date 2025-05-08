@@ -38,4 +38,8 @@ abstract class AgoraNativePlatform extends PlatformInterface {
   Future<String> getGlobalUUID() {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
+
+  Map<String, String> getEnv() {
+    throw UnimplementedError('platformVersion() has not been implemented.');
+  }
 }

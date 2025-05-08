@@ -23,10 +23,10 @@ struct ShareInfo {
         subject = roomDetail.title
         number = roomDetail.inviteCode.formatterInviteCode
         if roomDetail.isPmi {
-            link = URL(string: Env().webBaseURL + "/join/\(roomDetail.inviteCode)")!
+            link = URL(string: AgoraNativePlugin.env.webBaseURL + "/join/\(roomDetail.inviteCode)")!
             title = (AuthStore.shared.user?.name ?? "") + localizeStrings("pmiInviteDescribe")
         } else {
-            link = URL(string: Env().webBaseURL + "/join/\(roomDetail.roomUUID)")!
+            link = URL(string: AgoraNativePlugin.env.webBaseURL + "/join/\(roomDetail.roomUUID)")!
             title = (AuthStore.shared.user?.name ?? "") + localizeStrings("inviteDescribe")
         }
     }

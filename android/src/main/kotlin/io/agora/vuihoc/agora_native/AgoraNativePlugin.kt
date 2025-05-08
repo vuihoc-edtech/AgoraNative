@@ -3,15 +3,15 @@ package io.agora.vuihoc.agora_native
 import android.app.Activity
 import android.content.Context
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.herewhite.sdk.WhiteboardView
 import io.agora.flat.common.Navigator
-//import io.agora.flat.common.android.AndroidClipboardController
 import io.agora.flat.common.android.I18NFetcher
 import io.agora.flat.common.board.DeviceState
 import io.agora.flat.common.rtc.AgoraRtc
 import io.agora.flat.common.rtm.AgoraRtm
-//import io.agora.flat.data.AppDatabase
+import io.agora.flat.data.AppEnv
 import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.Failure
 import io.agora.flat.data.Success
@@ -45,11 +45,28 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         context = flutterPluginBinding.applicationContext
         AppKVCenter.getInstance().initStore(context)
         AppKVCenter.getInstance().updateSessionId(UUID.randomUUID().toString())
-//        AndroidClipboardController.init(context = context)
-//        AppDatabase.init(context)
         JoinRoomRecordManager.init(context)
         I18NFetcher.init(context)
         WhiteboardView.setEntryUrl("https://vuihoc-edtech.github.io/white_board_with_apps/")
+
+    }
+
+    private fun initValues() {
+        channel.invokeMethod("env", null, object : Result {
+            override fun success(result: Any?) {
+                (result as? Map<*, *>)?.let {
+                    AppEnv.getInstance().envItem.serviceUrl ="https://" + it["baseUrl"] as String
+                }
+            }
+
+            override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun notImplemented() {
+                // Handle not implemented
+            }
+        })
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
@@ -91,26 +108,28 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private fun joinClassRoom(uuid: String, result: Result) {
             if(activity != null) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    try {
-                        when (val res = RoomRepository.getInstance().joinRoom(uuid)) {
-                            is Success -> {
-                                result.success(true)
-                                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
-                                Navigator.launchRoomPlayActivity(activity!!, res.data)
-                            }
-
-                            is Failure -> {
-                                result.success(false)
-                                Toast.makeText(context, "join room error", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        // Handle unexpected error
-                    }
-                }
-
+                result.success(true)
+                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
+                Navigator.launchRoomPlayActivity(activity!!, uuid, null, true)
+//                CoroutineScope(Dispatchers.Main).launch {
+//                    try {
+//                        when (val res = RoomRepository.getInstance().joinRoom(uuid)) {
+//                            is Success -> {
+//                                result.success(true)
+//                                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
+//                                Navigator.launchRoomPlayActivity(activity!!, res.data)
+//                            }
+//
+//                            is Failure -> {
+//                                result.success(false)
+//                                Toast.makeText(context, "join room error", Toast.LENGTH_SHORT).show()
+//                            }
+//                        }
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                        // Handle unexpected error
+//                    }
+//                }
             }
 
     }
@@ -122,6 +141,8 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activity = binding.activity
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

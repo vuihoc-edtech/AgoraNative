@@ -5,7 +5,6 @@ import io.agora.flat.http.api.CloudStorageServiceV2
 import io.agora.flat.http.api.MessageService
 import io.agora.flat.http.api.MiscService
 import io.agora.flat.http.api.RoomService
-import io.agora.flat.http.api.UserService
 import io.agora.flat.http.interceptor.HeaderInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -36,33 +35,6 @@ class ServiceFetcher(
                 }
             }
         }
-        private val regions = listOf(
-            "CN",
-            "SG",
-        )
-
-        private val codeMap = mapOf(
-            "1" to "CN",
-            "2" to "SG",
-        )
-
-        fun fetchEnv(uuid: String, currentEnv: String): String {
-            var (region, envType) = currentEnv.split("_")
-
-            // short invite code
-            if (uuid.length == 11) {
-                val code = uuid[0] + ""
-                codeMap[code]?.let { region = it }
-            }
-
-            // long uuid
-            if (uuid.length > 15) {
-                val firstTwo = uuid.substring(0, 2)
-                regions.find { it == firstTwo.uppercase() }?.let { region = it }
-            }
-
-            return "${region}_$envType".lowercase()
-        }
     }
 
     private lateinit var client: OkHttpClient
@@ -71,10 +43,6 @@ class ServiceFetcher(
 
     fun fetchRoomService(): RoomService {
         return getApiService<RoomService>(appEnv.flatServiceUrl)
-    }
-
-    fun fetchUserService(): UserService {
-        return getApiService<UserService>(appEnv.flatServiceUrl)
     }
 
     fun fetchCloudRecordService(): CloudRecordService {
@@ -97,7 +65,7 @@ class ServiceFetcher(
         val env = AppEnv.getInstance().getEnv()
         val name = T::class.java.simpleName
         return allCache.getOrPut(env to name) {
-            val serviceUrl = baseUrl ?: appEnv.getEnvServiceUrl(env)
+            val serviceUrl = baseUrl ?: appEnv.getEnvServiceUrl()
             createService<T>(serviceUrl)!!
         } as T
     }

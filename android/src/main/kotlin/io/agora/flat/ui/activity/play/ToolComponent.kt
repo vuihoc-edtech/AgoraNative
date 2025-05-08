@@ -109,7 +109,7 @@ class ToolComponent(
                 } else {
                     hideSettingLayout()
                 }
-                binding.cloudservice.isSelected = areaId == RoomOverlayManager.AREA_ID_CLOUD_STORAGE
+//                binding.cloudservice.isSelected = areaId == RoomOverlayManager.AREA_ID_CLOUD_STORAGE
                 if (areaId == RoomOverlayManager.AREA_ID_USER_LIST) {
                     showUserListLayout()
                 } else {
@@ -166,8 +166,8 @@ class ToolComponent(
         lifecycleScope.launchWhenResumed {
             viewModel.state.filterNotNull().collect {
                 binding.recordLayout.isVisible = it.isOwner && activity.isTabletMode()
-                binding.cloudservice.isVisible = it.allowDraw
-                binding.takePhoto.isVisible = it.allowDraw
+//                binding.cloudservice.isVisible = it.allowDraw
+//                binding.takePhoto.isVisible = it.allowDraw
 
                 binding.handupLayout.isVisible = !it.isOnStage && !it.ban
                 binding.handup.isSelected = it.isRaiseHand
@@ -318,10 +318,10 @@ class ToolComponent(
                 val shown = RoomOverlayManager.getShowId() != RoomOverlayManager.AREA_ID_MESSAGE
                 RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_MESSAGE, shown)
             },
-            binding.cloudservice to {
-                val targetShow = RoomOverlayManager.getShowId() != RoomOverlayManager.AREA_ID_CLOUD_STORAGE
-                RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_CLOUD_STORAGE, targetShow)
-            },
+//            binding.cloudservice to {
+//                val targetShow = RoomOverlayManager.getShowId() != RoomOverlayManager.AREA_ID_CLOUD_STORAGE
+//                RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_CLOUD_STORAGE, targetShow)
+//            },
 //            binding.userlist to {
 //                with(binding.layoutUserList.root) {
 //                    if (isVisible) {

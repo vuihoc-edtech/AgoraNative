@@ -52,7 +52,7 @@ struct MemberRequest: FlatRequest, Encodable {
     let usersUUID: [String]?
 
     var path: String { "/v1/room/info/users" }
-    var customBaseURL: String? { Env().customBaseUrlFor(roomUUID: roomUUID) }
+    var customBaseURL: String? { AgoraNativePlugin.env.baseURL }
     let responseType = MemberResponse.self
 
     var decoder: JSONDecoder {

@@ -3,7 +3,6 @@ package io.agora.flat.common.board
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.herewhite.sdk.domain.Promise
 import com.herewhite.sdk.domain.RoomPhase
@@ -12,7 +11,6 @@ import com.herewhite.sdk.domain.Scene
 import com.herewhite.sdk.domain.WindowAppParam
 import com.herewhite.sdk.domain.WindowPrefersColorScheme.Dark
 import com.herewhite.sdk.domain.WindowPrefersColorScheme.Light
-// import dagger.hilt.android.scopes.ActivityRetainedScoped
 import io.agora.board.fast.FastException
 import io.agora.board.fast.FastRoom
 import io.agora.board.fast.FastRoomListener
@@ -24,17 +22,15 @@ import io.agora.board.fast.model.FastRegion
 import io.agora.board.fast.model.FastRoomOptions
 import io.agora.board.fast.model.FastUserPayload
 import io.agora.board.fast.ui.RoomControllerGroup
-import io.agora.vuihoc.agora_native.R
 import io.agora.flat.common.FlatBoardException
 import io.agora.flat.data.AppEnv
-import io.agora.flat.data.AppKVCenter
 import io.agora.flat.data.repository.UserRepository
 import io.agora.flat.di.interfaces.BoardRoom
-import io.agora.flat.di.interfaces.Logger
 import io.agora.flat.di.interfaces.SyncedClassState
 import io.agora.flat.util.dp
 import io.agora.flat.util.getAppVersion
 import io.agora.flat.util.px2dp
+import io.agora.vuihoc.agora_native.R
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,7 +43,7 @@ import kotlin.coroutines.suspendCoroutine
 class AgoraBoardRoom(
     private val userRepository: UserRepository = UserRepository.getInstance(),
     val syncedClassState: SyncedClassState = WhiteSyncedState(),
-    val appEnv: AppEnv = AppEnv.getInstance(),
+    private val appEnv: AppEnv = AppEnv.getInstance(),
     ) : BoardRoom {
     private lateinit var fastboard: Fastboard
     private lateinit var fastboardView: FastboardView

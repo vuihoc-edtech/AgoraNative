@@ -10,7 +10,7 @@ import Foundation
 
 struct HistoryMessageRequest: AgoraRequest {
     let messagePath: String
-    var path: String { "/dev/v2/project/\(Env().agoraAppId)\(messagePath)" }
+    var path: String { "/dev/v2/project/\(AgoraNativePlugin.env.agoraAppId)\(messagePath)" }
 
     var task: Task { .requestPlain }
     var method: HttpMethod { .get }

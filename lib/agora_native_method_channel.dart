@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:vh_agora_native/auth.dart';
 
 import 'agora_native_platform_interface.dart';
 
@@ -8,6 +9,17 @@ class MethodChannelAgoraNative extends AgoraNativePlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('agora_native');
+
+  MethodChannelAgoraNative() {
+    methodChannel.setMethodCallHandler((call) async {
+      switch (call.method) {
+        case 'env':
+          return getEnv();
+        default:
+          return '';
+      }
+    });
+  }
 
   @override
   Future<String?> getPlatformVersion() async {
@@ -31,5 +43,13 @@ class MethodChannelAgoraNative extends AgoraNativePlatform {
   Future<String> getGlobalUUID() async {
     final res = await methodChannel.invokeMethod<String>("getGlobalUUID");
     return res ?? '';
+  }
+
+  @override
+  Map<String, String> getEnv() {
+    //TODO: should separate to debug and prod
+    return {
+      'baseUrl': Auth.baseUrl,
+    };
   }
 }

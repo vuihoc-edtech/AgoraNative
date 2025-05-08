@@ -39,7 +39,7 @@ class ClassroomCoordinator: NSObject {
         let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: user.userUUID)
         let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
-        let deviceState = DeviceState(mic: micOn, camera: cameraOn)
+        let deviceState = DeviceState(mic: true, camera: true)
         return RoomPlayInfo.fetchByJoinWith(uuid: uuid)
             .concatMap { p -> Observable<(RoomPlayInfo, RoomBasicInfo)> in
                 return RoomBasicInfo.fetchInfoBy(uuid: p.roomUUID, periodicUUID: nil)
@@ -76,10 +76,10 @@ class ClassroomCoordinator: NSObject {
                 let controller = AgoraNativePlugin.topViewController()
                 if let flatError = error as? FlatApiError {
                     if flatError == .RoomNotBegin {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
+                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(AgoraNativePlugin.env.joinEarly / 60))
                         controller?.showAlertWith(message: errorStr)
                     } else if flatError == .RoomNotBeginAndAddList {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(Env().joinEarly / 60))
+                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(AgoraNativePlugin.env.joinEarly / 60))
                         controller?.showAlertWith(message: errorStr)
                     } else {
                         controller?.showAlertWith(message: error.localizedDescription)

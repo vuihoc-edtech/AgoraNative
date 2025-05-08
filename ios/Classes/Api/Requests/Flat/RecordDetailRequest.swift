@@ -13,6 +13,6 @@ struct RecordDetailRequest: FlatRequest {
 
     var path: String { "/v1/room/record/info" }
     var task: Task { .requestJSONEncodable(encodable: ["roomUUID": uuid]) }
-    var customBaseURL: String? { Env().customBaseUrlFor(roomUUID: uuid) }
+    var customBaseURL: String? { AgoraNativePlugin.env.baseURL }
     let responseType = RecordDetailInfo.self
 }

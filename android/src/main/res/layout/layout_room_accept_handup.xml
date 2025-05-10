@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_gray_border_round_8_bg"
+    tools:layout_width="200dp">
+
+    <LinearLayout
+        android:id="@+id/handup_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/room_class_handup_list_empty_height"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/handup_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="40"
+            tools:listitem="@layout/item_room_accept_handup" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/list_empty"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/room_class_handup_list_empty_height"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/RoomTextBodyTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/handup_list_empty" />
+    </FrameLayout>
+</FrameLayout>

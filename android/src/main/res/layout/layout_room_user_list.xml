@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_gray_border_round_8_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/room_class_panel_title_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <ImageView
+            android:layout_width="@dimen/room_class_button_size"
+            android:layout_height="@dimen/room_class_button_size"
+            android:padding="@dimen/room_class_button_gap"
+            android:src="@drawable/ic_class_room_user_list"
+            app:tint="@color/class_room_icon_gray"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/RoomTextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_list" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="@dimen/room_class_button_size"
+            android:layout_height="@dimen/room_class_button_size"
+            android:padding="@dimen/room_class_button_gap"
+            android:src="@drawable/ic_class_room_close"
+            app:tint="@color/class_room_icon_gray"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/flat_day_night_divider" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/teacher_avatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:padding="1dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circleStyle"
+            app:srcCompat="@drawable/ic_class_room_user_avatar"
+            app:strokeColor="@color/flat_day_night_divider"
+            app:strokeWidth="1dp"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/teacher_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/user_list_teacher_name_format"
+            android:textColor="@color/flat_day_night_text_primary"
+            android:textSize="14sp"
+            tools:text="老师：nickname" />
+
+        <TextView
+            android:id="@+id/stage_off_all"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:background="@drawable/shape_gray_border_round_4_bg"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/stage_off_all"
+            android:textColor="@color/flat_day_night_text_primary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/mute_mic_all"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/shape_gray_border_round_4_bg"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/mute_mic_all"
+            android:textColor="@color/flat_day_night_text_primary"
+            android:textSize="14sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="1dp"
+        android:background="@color/class_room_user_list_students_header_bg">
+
+        <TextView
+            android:id="@+id/student_size"
+            style="@style/RoomTextBodyTwo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/user_list_student_size_format"
+            android:textColor="@color/flat_day_night_text_primary" />
+
+        <TextView
+            style="@style/RoomTextBodyTwo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/on_or_off_stage"
+            android:textColor="@color/flat_day_night_text_primary" />
+
+        <TextView
+            style="@style/RoomTextBodyTwo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/whiteboard_allow_draw"
+            android:textColor="@color/flat_day_night_text_primary" />
+
+        <TextView
+            style="@style/RoomTextBodyTwo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/camera"
+            android:textColor="@color/flat_day_night_text_primary" />
+
+        <TextView
+            style="@style/RoomTextBodyTwo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/microphone"
+            android:textColor="@color/flat_day_night_text_primary" />
+
+        <TextView
+            style="@style/RoomTextBodyTwo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/user_list_handup"
+            android:textColor="@color/flat_day_night_text_primary" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/user_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_room_user_list" />
+
+        <FrameLayout
+            android:id="@+id/list_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <TextView
+                style="@style/RoomTextBodyOne"
+                android:layout_gravity="center"
+                android:text="@string/user_list_empty" />
+        </FrameLayout>
+    </FrameLayout>
+</LinearLayout>

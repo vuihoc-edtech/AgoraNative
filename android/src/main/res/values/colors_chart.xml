@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="flat_blue_0">#FFF4F8FF</color>
+    <color name="flat_blue_1">#FFEBF2FF</color>
+    <color name="flat_blue_6">#FF3381FF</color>
+    <color name="flat_blue_7">#FF2867CC</color>
+    <color name="flat_blue_12">#FF03060D</color>
+
+    <color name="flat_gray_0">#FFECF0F7</color>
+    <color name="flat_gray_1">#FFE5E8F0</color>
+    <color name="flat_gray_3">#FFB7BBC1</color>
+    <color name="flat_gray_5">#FF7B7E84</color>
+    <color name="flat_gray_6">#FF5D6066</color>
+    <color name="flat_gray_7">#FF4B4D54</color>
+    <color name="flat_gray_8">#FF383B42</color>
+    <color name="flat_gray_9">#FF272A30</color>
+    <color name="flat_gray_10">#FF14181E</color>
+
+    <color name="flat_green_6">#FF44AD00</color>
+
+    <color name="flat_yellow_6">#FFE89800</color>
+
+    <color name="flat_red_6">#FFD21F00</color>
+
+    <color name="flat_white">#FFFFFFFF</color>
+    <color name="flat_black">#FF000000</color>
+</resources>

@@ -1,0 +1,26 @@
+<resources>
+    <string-array name="weekdays_short">
+        <item>CN</item>
+        <item>T2</item>
+        <item>T3</item>
+        <item>T4</item>
+        <item>T5</item>
+        <item>T6</item>
+        <item>T7</item>
+    </string-array>
+
+    <string-array name="months">
+        <item>Tháng 1</item>
+        <item>Tháng 2</item>
+        <item>Tháng 3</item>
+        <item>Tháng 4</item>
+        <item>Tháng 5</item>
+        <item>Tháng 6</item>
+        <item>Tháng 7</item>
+        <item>Tháng 8</item>
+        <item>Tháng 9</item>
+        <item>Tháng 10</item>
+        <item>Tháng 11</item>
+        <item>Tháng 12</item>
+    </string-array>
+</resources>

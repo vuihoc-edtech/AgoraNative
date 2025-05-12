@@ -27,6 +27,5 @@ object Navigator {
             putExtra(Constants.IntentKey.ROOM_QUICK_START, quickStart)
         }
         context.startActivity(intent)
-
     }
 }

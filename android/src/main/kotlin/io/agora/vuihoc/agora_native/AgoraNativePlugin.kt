@@ -108,9 +108,9 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private fun joinClassRoom(uuid: String, result: Result) {
             if(activity != null) {
-                result.success(true)
                 AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
                 Navigator.launchRoomPlayActivity(activity!!, uuid, null, true)
+                result.success(true)
 //                CoroutineScope(Dispatchers.Main).launch {
 //                    try {
 //                        when (val res = RoomRepository.getInstance().joinRoom(uuid)) {

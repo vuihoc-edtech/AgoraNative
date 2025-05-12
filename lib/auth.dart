@@ -68,4 +68,23 @@ class Auth {
       return {};
     }
   }
+
+  Future<Map<String, dynamic>> loginVHToken(String token) async {
+    final response = await http.post(
+      Uri.parse('https://$baseUrl/v1/login/token'),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: jsonEncode({'token': token}),
+    );
+
+    if (response.statusCode == 200) {
+      // Handle successful login
+      final responseData = jsonDecode(response.body);
+      return responseData as Map<String, dynamic>;
+    } else {
+      // Handle error
+      return {};
+    }
+  }
 }

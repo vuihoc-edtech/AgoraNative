@@ -1,0 +1,153 @@
+<resources>
+    <string name="app_name">Flat</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="agree">Agree</string>
+    <string name="refuse">Refuse</string>
+
+    <string name="relative_time_mm">%d m</string>
+    <string name="relative_time_hh">%d h</string>
+    <string name="relative_time_dd">%d d</string>
+    <string name="title_cloud_storage">Cloud</string>
+
+    <string name="room_theme">Theme</string>
+    <string name="class_room_no_operate_permission">No permission</string>
+
+    <string name="room_id">Room ID</string>
+    <string name="join_room_record_pmi_title">%1$s\'s personal room</string>
+
+    <!-- login -->
+
+    <string name="login_verification_code_invalid">Invalid Verification Code</string>
+
+    <!-- bind -->
+
+    <!-- register -->
+
+    <string name="room_class_stop_class_fail">Failed to end the room</string>
+    <string name="loaded_all">All loaded</string>
+    <string name="loaded_retry">Click to load</string>
+    <string name="loaded_loading">Loading…</string>
+    <string name="say_something">Say something…</string>
+    <string name="message_muted">Muted</string>
+    <string name="message_unmuted">Unmuted</string>
+    <string name="class_room_message_muted">All members are mute</string>
+    <string name="room_class_message_empty_hit">Say something…</string>
+    <string name="room_class_cloud_empty_hint">No files</string>
+    <string name="room_dialog_exit_title">Close Options</string>
+
+    <string name="user_list">User List</string>
+    <string name="end_room">End of class</string>
+    <string name="settings">Settings</string>
+    <string name="camera">Camera</string>
+    <string name="microphone">Microphone</string>
+    <string name="exit_room">Exit</string>
+    <string name="chat">Chat</string>
+    <string name="record_started_toast">Record Started</string>
+    <string name="record_stopped_toast">Record Stopped</string>
+
+    <string name="room_class_time_waiting_format">Waiting: %1$s</string>
+    <string name="room_class_time_started_format">Started: %1$s</string>
+    <string name="room_class_time_left_format">Time Left: %1$s</string>
+    <string name="room_class_time_ended">Ended</string>
+
+    <string name="room_class_network_status">Network:</string>
+    <string name="room_class_network_delay">Latency: %1$dms</string>
+
+    <string name="cloud_storage">Cloud Storage</string>
+    <string name="cloud_preview_transcoding_hint">Courseware is being transcoded, please wait…</string>
+
+    <string name="copy_success">Copy successfully</string>
+    <string name="invite_text_format">%1$s invites you to join the Flat room\n\nRoom Theme: %2$s\nRoom ID: %3$s\n\nStart Time: %4$s\nJoin Link: %5$s</string>
+    <string name="invite_title_format">%1$s invites you to join the Flat room</string>
+    <string name="invite_pmi_text_format">%1$s invites you to join the Flat pmi room\n\nRoom Theme: %2$s\nRoom ID: %3$s\n\nStart Time: %4$s\nJoin Link: %5$s</string>
+    <string name="invite_pmi_title_format">%1$s invites you to join the Flat pmi room</string>
+    <string name="exit_replay">Exit playback</string>
+    <string name="exit_replay_tip">Are you sure to exit playback?</string>
+    <string name="camera_has_closed">Camera is off</string>
+    <string name="video_area">Video area</string>
+    <string name="time_start">Start Time</string>
+    <string name="copy_link_to_invite">Copy Invite</string>
+    <string name="hangup_room">Hangup</string>
+    <string name="hangup_room_exit_tip">The class is continuing. Do you leave the suspended room temporarily or end the class?</string>
+    <string name="invite">Invite</string>
+    <string name="exit_room_i_known_format">I know(%1$d)</string>
+    <string name="exit_remote_login_message">You have entered the room at another device</string>
+    <string name="exit_room_stopped_message">The room ends, exiting…</string>
+    <string name="exit_room_title">Exit Room</string>
+
+    <string name="fetcher_room_not_found">room not found.</string>
+    <string name="fetcher_room_is_ended">room has ended.</string>
+
+    <string name="language_follow_system">Auto</string>
+    <string name="language_chinese" translatable="false">简体中文</string>
+    <string name="language_english" translatable="false">English</string>
+    <string name="language_vietnam" translatable="false">Việt Nam</string>
+
+    <string name="dark_mode_auto">Auto</string>
+    <string name="dark_mode_light">Normal Mode</string>
+    <string name="dark_mode_dark">Dark Mode</string>
+
+    <string name="stage_off_all">off all</string>
+    <string name="mute_mic_all">mute all</string>
+    <string name="user_list_student_size_format">student (%1$s)</string>
+    <string name="on_or_off_stage">on/off</string>
+    <string name="whiteboard_allow_draw">whiteboard</string>
+    <string name="user_list_handup">Raised</string>
+    <string name="user_list_teacher_name_format">teacher：%1$s</string>
+
+    <string name="teacher_send_request_device">devices request send</string>
+    <string name="teacher_request_camera">teacher request camera</string>
+    <string name="teacher_request_mic">teacher request mic</string>
+    <string name="refuse_turn_on_camera_format">%1$s refuse camera</string>
+    <string name="refuse_turn_on_mic_format">%1$s refuse mic</string>
+    <string name="teacher_turn_off_camera">camera turned off</string>
+    <string name="teacher_turn_off_mic">mic turned off</string>
+    <string name="user_offline">Offline</string>
+    <string name="onstage_size_limited">onstage size limited, offstage someone</string>
+    <string name="handup_list_empty">Empty</string>
+    <string name="user_list_empty">Empty</string>
+
+    <string name="app_name_code">Code</string>
+    <string name="app_name_clock">Clock</string>
+    <string name="app_name_dice">Dice</string>
+    <string name="app_name_question">Question</string>
+    <string name="app_name_geometry">Geometry</string>
+    <string name="app_name_rich_text">Text</string>
+    <string name="app_name_mindmap">Mind</string>
+
+    <string name="toast_mute_all_mic">All students muted</string>
+
+    <!-- errors -->
+    <string name="error_jwt_sign_failed">Your login session has expired. Please log in again.</string>
+    <string name="error_request_too_frequently">request too frequently</string>
+    <string name="error_string_known_network">known network error (%1$s)</string>
+
+    <string name="error_user_not_found">user not found</string>
+    <string name="error_user_room_list_not_empty">room list not empty</string>
+    <string name="error_user_already_binding">user already binding</string>
+    <string name="error_user_password_incorrect">user password incorrect</string>
+    <string name="error_user_or_password_incorrect">user or password incorrect</string>
+
+    <string name="error_email_verification_code_invalid">verification code invalid</string>
+    <string name="error_email_already_exist">email already exist</string>
+    <string name="error_email_already_binding">email are binding</string>
+    <string name="error_email_failed_to_send_code">send code failed</string>
+
+    <string name="error_params_check_failed">parameter verification failed</string>
+    <!--messages -->
+
+    <string name="error_verification_code_invalid">code invalid</string>
+    <string name="error_phone_already_binding">phone already binding</string>
+    <string name="error_phone_already_exist">phone already exist</string>
+    <string name="error_send_verification_code">send code fail</string>
+    <string name="error_pmi_not_started">wait for the teacher to join</string>
+
+    <!-- payment -->
+    <string name="pay_room_reached_limit">Free room creation limit reached this month. Upgrade for more benefits.</string>
+    <string name="pay_room_users_limit">Free room capacity reached. Unable to join at the moment. Please contact the teacher for assistance.</string>
+    <string name="pay_room_expired">Room has ended.</string>
+    <string name="room_not_started">Room not started. Join in %1$d minutes before the class begins.</string>
+    <string name="room_not_started_added">Room not started. Join in %1$d minutes before the class begins. The room has been added to your room list.</string>
+    <string name="pay_room_about_to_end">The room is about to reach duration limit and will end at %1$s (%2$d minutes left)</string>
+</resources>

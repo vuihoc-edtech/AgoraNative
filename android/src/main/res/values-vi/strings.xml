@@ -1,0 +1,389 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Flat</string>
+    <string name="toast_in_development">Chưa được hỗ trợ</string>
+
+    <string name="commit">Gửi</string>
+    <string name="username">Tên người dùng</string>
+    <string name="delete">Xóa</string>
+    <string name="save">Lưu</string>
+    <string name="cancel">Hủy</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="agree">Đồng ý</string>
+    <string name="refuse">Từ chối</string>
+    <string name="end">Kết thúc</string>
+    <string name="create">Tạo</string>
+    <string name="start">Bắt đầu</string>
+    <string name="enter">Tham gia</string>
+    <string name="update">Cập nhật</string>
+    <string name="retry">Thử lại</string>
+    <string name="done">Hoàn tất</string>
+    <string name="preview">Xem trước</string>
+    <string name="rename">Đổi tên</string>
+    <string name="send">Gửi</string>
+    <string name="next">Tiếp theo</string>
+
+    <string name="account">Tài khoản</string>
+    <string name="preferences">Tùy chọn</string>
+    <string name="privacy">Quyền riêng tư</string>
+    <string name="more">Thêm</string>
+    <string name="setting_on">Bật</string>
+    <string name="setting_off">Tắt</string>
+
+    <string name="relative_time_mm">%d phút</string>
+    <string name="relative_time_hh">%d giờ</string>
+    <string name="relative_time_dd">%d ngày</string>
+    <string name="home_room_info_today_format">Hôm nay %s</string>
+    <string name="home_room_info_yesterday_format">Hôm qua %s</string>
+    <string name="home_room_info_tomorrow_format">Ngày mai %s</string>
+
+    <string name="title_home">Trang chủ</string>
+    <string name="title_cloud_storage">Lưu trữ đám mây</string>
+    <string name="title_cloud_pick">Tải lên</string>
+    <string name="title_cloud_preview">Xem trước</string>
+    <string name="title_user_info">Thông tin cá nhân</string>
+    <string name="title_setting">Cài đặt cá nhân</string>
+    <string name="title_my_profile">Hồ sơ của tôi</string>
+    <string name="title_room_detail">Chi tiết phòng</string>
+    <string name="title_room_all">Tất cả phòng</string>
+    <string name="title_join_room">Tham gia phòng</string>
+    <string name="title_feedback">Gửi phản hồi</string>
+    <string name="title_about_us">Về chúng tôi</string>
+    <string name="title_language">Cài đặt ngôn ngữ</string>
+    <string name="title_dark_mode">Chế độ tối</string>
+    <string name="title_activity_compose_test">ComposeTest</string>
+    <string name="title_country_or_area">Quốc gia/Khu vực</string>
+    <string name="privacy_policy">Chính sách quyền riêng tư</string>
+    <string name="term_of_service">Điều khoản dịch vụ</string>
+    <string name="info_gathering">Công bố thu thập thông tin cá nhân</string>
+    <string name="info_third_party">Chia sẻ dữ liệu thông tin bên thứ ba</string>
+    <string name="network_acceleration">Tăng tốc mạng</string>
+    <string name="account_security">Bảo mật tài khoản</string>
+    <string name="delete_account">Xóa tài khoản</string>
+    <string name="stream_data_analysis">Thu thập dữ liệu âm thanh và video</string>
+
+    <string name="room_type_big_class">Lớp học lớn</string>
+    <string name="room_type_small_class">Lớp học nhỏ</string>
+    <string name="room_type_one_to_one">Một kèm một</string>
+
+    <string name="room_type_desc_big_class">Dành cho số lượng lớn học viên</string>
+    <string name="room_type_desc_small_class">Tối đa 16 học viên</string>
+    <string name="room_type_desc_one_to_one">Dành cho 1 học viên</string>
+
+    <string name="create_room">Tạo phòng</string>
+    <string name="room_theme">Chủ đề</string>
+    <string name="create_room_type">Loại</string>
+    <string name="create_room_input_theme">Vui lòng nhập chủ đề phòng</string>
+    <string name="class_room_no_operate_permission">Không thể thực hiện</string>
+    <string name="room_theme_empty_toast">Chủ đề phòng không được để trống</string>
+
+    <string name="schedule_room">Đặt lịch phòng</string>
+    <string name="quick_start_room">Bắt đầu nhanh</string>
+
+    <string name="join_room">Tham gia phòng</string>
+    <string name="enter_room">Vào phòng</string>
+    <string name="room_id">ID phòng</string>
+    <string name="input_room_id_hint">Vui lòng nhập ID phòng</string>
+    <string name="room_type">Loại phòng</string>
+    <string name="nickname">Biệt danh</string>
+    <string name="input_nickname_hint">Vui lòng nhập biệt danh</string>
+    <string name="join">Tham gia</string>
+    <string name="join_option">Tùy chọn tham gia</string>
+    <string name="turn_on_camera">Bật camera</string>
+    <string name="turn_on_mic">Bật micro</string>
+    <string name="join_room_default_time_format">Phòng được tạo bởi %1$s</string>
+    <string name="join_room_toast_empty">ID phòng không được để trống</string>
+    <string name="join_room_record_pmi_title">Phòng cá nhân của %1$s</string>
+    <string name="room_not_stared">Phòng chưa bắt đầu</string>
+
+    <string name="home_room_list">Danh sách phòng</string>
+    <string name="home_room_history">Lịch sử</string>
+    <string name="home_room_state_idle">Chờ bắt đầu</string>
+    <string name="home_room_state_started">Đang diễn ra</string>
+    <string name="home_room_state_paused">Đã tạm dừng</string>
+    <string name="home_room_state_end">Đã kết thúc</string>
+    <string name="home_no_room_tip">Chưa có phòng nào</string>
+    <string name="home_no_history_room_tip">Chưa có bản ghi nào</string>
+    <string name="home_room_start_at_min">Bắt đầu sau %1$d phút</string>
+
+    <string name="setting_check_update">Kiểm tra cập nhật</string>
+
+    <string name="intent_no_browser">Lỗi liên kết hoặc không có trình duyệt</string>
+    <string name="intent_browser_choose_title">Chọn trình duyệt</string>
+    <string name="login_set_auth_uuid_error">Đặt mã xác thực thất bại</string>
+    <string name="login_page_label_1">Tương tác trực tuyến, đồng bộ ý tưởng</string>
+    <string name="login_page_label_2">powered by Agora</string>
+    <string name="login_success_and_jump">Đăng nhập thành công, đang chuyển hướng…</string>
+    <string name="login_fail">Đăng nhập thất bại</string>
+    <string name="login_exit">Đăng xuất</string>
+
+    <string name="login_agreement_message">Đã đọc và đồng ý với Chính sách quyền riêng tư và Điều khoản dịch vụ</string>
+    <string name="login_agreement_unchecked_hint">Vui lòng đồng ý với điều khoản dịch vụ trước</string>
+    <string name="login_agreement_dialog_title">Điều khoản dịch vụ và Bảo vệ quyền riêng tư</string>
+    <string name="login_agreement_dialog_message">Để đảm bảo quyền lợi hợp pháp của bạn, vui lòng đọc và đồng ý với các thỏa thuận sau: 《Chính sách quyền riêng tư Flat》, 《Thỏa thuận người dùng Flat》</string>
+
+    <string name="login_phone_input_placeholder">Vui lòng nhập số điện thoại</string>
+    <string name="login_phone_invalid_tip">Vui lòng nhập số điện thoại hợp lệ</string>
+    <string name="login_email_invalid_tip">Vui lòng nhập địa chỉ email hợp lệ</string>
+    <string name="login_password_invalid_tip">Mật khẩu tối thiểu 8 ký tự, bao gồm chữ và số</string>
+    <string name="login_code_input_placeholder">Vui lòng nhập mã xác minh</string>
+    <string name="login_code_invalid_tip">Vui lòng nhập mã xác minh hợp lệ</string>
+    <string name="login_send_sms_code">Gửi mã xác minh</string>
+    <string name="login_code_send">Mã xác minh đã được gửi</string>
+    <string name="login_others_tip">Hoặc đăng nhập trực tiếp bằng các cách sau</string>
+    <string name="login_sign_in_or_up">Đăng ký hoặc Đăng nhập</string>
+    <string name="login_welcome">Chào mừng đến với Flat</string>
+    <string name="login_welcome_slogan">Tương tác trực tuyến, đồng bộ ý tưởng</string>
+
+    <string name="login_already_bind_phone">Đã liên kết số điện thoại</string>
+    <string name="login_phone_already_bound">Số điện thoại này đã được liên kết</string>
+    <string name="login_verification_code_invalid">Mã xác minh không hợp lệ</string>
+    <string name="wechat">WeChat</string>
+    <string name="github">Github</string>
+    <string name="google">Google</string>
+    <string name="email">Email</string>
+    <string name="phone">Số điện thoại</string>
+
+    <string name="login_sign_in">Đăng nhập</string>
+    <string name="login_sign_up">Đăng ký</string>
+    <string name="login_use_sms_login">Đăng nhập bằng SMS</string>
+    <string name="login_use_password_login">Đăng nhập bằng mật khẩu</string>
+    <string name="login_forgot_pwd">Quên mật khẩu?</string>
+    <string name="login_password_input_hint">Vui lòng nhập mật khẩu</string>
+    <string name="login_email_input_hint">Vui lòng nhập email</string>
+    <string name="login_phone_or_email_input_hint">Vui lòng nhập email hoặc số điện thoại</string>
+
+    <string name="bind">Liên kết</string>
+    <string name="unbind">Hủy liên kết</string>
+    <string name="bind_fail">Liên kết thất bại</string>
+    <string name="bind_success">Liên kết thành công</string>
+    <string name="user_avatar">Ảnh đại diện</string>
+    <string name="bind_info">Thông tin liên kết</string>
+
+    <string name="bind_phone">Liên kết số điện thoại</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="verification_code">Mã xác minh</string>
+
+    <string name="bind_email">Liên kết email</string>
+
+    <string name="not_bound">Chưa liên kết</string>
+    <string name="check_unbind_title">Xác nhận hủy liên kết</string>
+    <string name="check_unbind_message">Sau khi hủy liên kết, bạn sẽ không thể dùng phương thức này để đăng nhập</string>
+    <string name="unbind_limit_message">Đây là phương thức đăng nhập duy nhất, không thể hủy liên kết</string>
+
+    <string name="register">Đăng ký tài khoản mới</string>
+    <string name="register_success">Đăng ký thành công</string>
+    <string name="register_profile_title">Thiết lập thông tin</string>
+    <string name="register_profile_avatar_tip">Tải lên ảnh đại diện (không bắt buộc)</string>
+    <string name="register_profile_username_tip">Nhập biệt danh (không bắt buộc)</string>
+
+    <string name="reset_password">Đặt lại mật khẩu</string>
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="set_password">Đặt mật khẩu</string>
+
+    <string name="old_password_input_hint">Vui lòng nhập mật khẩu cũ</string>
+    <string name="new_password_input_hint">Vui lòng nhập mật khẩu mới</string>
+    <string name="new_password_input_hint_again">Vui lòng nhập lại mật khẩu mới</string>
+    <string name="password_rule_tips">Mật khẩu tối thiểu 8 ký tự, bao gồm chữ và số</string>
+
+    <string name="merge_account">Hợp nhất tài khoản</string>
+    <string name="merge_account_message">Số điện thoại đã được liên kết với tài khoản khác, bạn có muốn hợp nhất tài khoản mới tạo này với tài khoản hiện có không? Thao tác hợp nhất sẽ xóa tất cả dữ liệu của tài khoản mới tạo.</string>
+
+    <string name="agreement_global_dialog_message">Cảm ơn bạn đã tin tưởng và sử dụng Flat.\n\nChúng tôi sẽ dựa trên 《Thỏa thuận người dùng Flat》 và 《Chính sách quyền riêng tư Flat》 để giúp bạn hiểu cách chúng tôi thu thập, sử dụng, lưu trữ thông tin cá nhân của bạn và các quyền liên quan mà bạn có.\n\nKhi bạn sử dụng Flat, chúng tôi sẽ thu thập thông tin thiết bị, nhật ký hoạt động và lịch sử duyệt web của bạn. Đồng thời, để đảm bảo trải nghiệm lớp học, bạn có thể cấp cho Flat quyền truy cập camera, micro và các thông tin khác trên thiết bị của bạn.\n\nBạn có thể đọc toàn bộ 《Thỏa thuận người dùng Flat》 và 《Chính sách quyền riêng tư Flat》 để biết thông tin chi tiết.</string>
+    <string name="agreement_global_recheck_dialog_message">Bạn cần đồng ý với Thỏa thuận người dùng và Chính sách quyền riêng tư để sử dụng Flat.\n\nNếu bạn không đồng ý, rất tiếc chúng tôi không thể cung cấp dịch vụ cho bạn.\n\nBạn có thể đọc toàn bộ 《Thỏa thuận người dùng Flat》 và 《Chính sách quyền riêng tư Flat》 để biết thông tin chi tiết.</string>
+    <string name="agreement_global_privacy">《Chính sách quyền riêng tư Flat》</string>
+    <string name="agreement_global_service">《Thỏa thuận người dùng Flat》</string>
+    <string name="agreement_global_agree">Đồng ý và tiếp tục</string>
+    <string name="agreement_global_disagree">Không đồng ý</string>
+    <string name="agreement_global_disagree_and_exit">Không đồng ý và thoát</string>
+
+    <string name="room_class_start_class_success">Bắt đầu phòng thành công</string>
+    <string name="room_class_start_class_fail">Bắt đầu phòng thất bại</string>
+    <string name="room_class_stop_class_fail">Kết thúc phòng thất bại</string>
+
+    <string name="loaded_all">Đã tải tất cả</string>
+    <string name="loaded_retry">Nhấn để tải</string>
+    <string name="loaded_loading">Đang tải…</string>
+    <string name="modify_room">Sửa phòng</string>
+    <string name="cancel_room">Hủy phòng</string>
+    <string name="remove_room">Xóa phòng</string>
+    <string name="delete_history">Xóa lịch sử</string>
+    <string name="show_all">Hiển thị tất cả</string>
+
+    <string name="say_something">Nói gì đó…</string>
+    <string name="message_muted">Đã tắt tiếng</string>
+    <string name="message_unmuted">Đã bật tiếng</string>
+    <string name="class_room_message_muted">Đã tắt tiếng tất cả</string>
+    <string name="room_class_message_empty_hit">Hãy nói gì đó…</string>
+    <string name="room_class_cloud_empty_hint">Chưa có tệp</string>
+    <string name="room_class_teacher_leave">Giáo viên tạm thời rời đi</string>
+    <string name="room_class_student_left">Học viên tạm thời rời đi</string>
+    <string name="room_dialog_exit_title">Tùy chọn đóng</string>
+
+    <string name="user_list">Danh sách người dùng</string>
+    <string name="room_class_userlist_state_speaking">(Đang phát biểu)</string>
+    <string name="room_class_userlist_state_speaking_left">(Đã rời)</string>
+    <string name="room_class_userlist_state_handup">(Đang giơ tay)</string>
+    <string name="room_class_userlist_state_teacher">(Giáo viên)</string>
+    <string name="room_class_userlist_state_teacher_left">(Giáo viên đã rời)</string>
+    <string name="room_recording_hit">Đang ghi hình buổi học…</string>
+    <string name="start_room">Bắt đầu buổi học</string>
+    <string name="stop_record">Dừng ghi hình</string>
+    <string name="end_room">Kết thúc buổi học</string>
+    <string name="settings">Cài đặt</string>
+    <string name="camera">Camera</string>
+    <string name="microphone">Micro</string>
+    <string name="exit_room">Rời phòng học</string>
+    <string name="start_record">Bắt đầu ghi hình</string>
+    <string name="chat">Trò chuyện</string>
+    <string name="class_settings">Cài đặt lớp học</string>
+    <string name="interaction_mode">Chế độ tương tác</string>
+    <string name="lecture_mode">Chế độ giảng bài</string>
+
+    <string name="record_started_toast">Đã bắt đầu ghi hình</string>
+    <string name="record_stopped_toast">Ghi hình hoàn tất, có thể xem trong lịch sử</string>
+
+    <string name="room_class_time_waiting_format">Còn %1$s đến giờ học</string>
+    <string name="room_class_time_started_format">Bắt đầu học: %1$s</string>
+    <string name="room_class_time_left_format">Thời gian còn lại: %1$s</string>
+    <string name="room_class_time_ended">Phòng đã kết thúc</string>
+
+    <string name="room_class_network_status">Mạng:</string>
+    <string name="room_class_network_delay">Độ trễ: %1$dms</string>
+
+    <string name="cloud_storage">Lưu trữ đám mây</string>
+    <string name="cloud_storage_usage_format">Đã dùng %1$s</string>
+    <string name="cloud_storage_upload_image">Tải lên ảnh</string>
+    <string name="cloud_storage_upload_video">Tải lên video</string>
+    <string name="cloud_storage_upload_music">Tải lên âm thanh</string>
+    <string name="cloud_storage_upload_doc">Tải lên tệp</string>
+    <string name="cloud_storage_upload_list_title">Danh sách tải lên</string>
+    <string name="cloud_storage_no_files">Chưa có dữ liệu</string>
+    <string name="cloud_preview_transcoding_hint">Đang chuyển đổi tài liệu, vui lòng đợi…</string>
+    <string name="cloud_new_folder_title">Thư mục mới</string>
+    <string name="cloud_new_folder_hint">Nhập tên thư mục</string>
+    <string name="cloud_rename_hint">Vui lòng nhập tên</string>
+
+    <string name="upload_success">Tải lên thành công</string>
+    <string name="upload_failure">Tải lên thất bại</string>
+    <string name="service_agreement">Điều khoản dịch vụ</string>
+    <string name="privacy_agreement">Thỏa thuận quyền riêng tư</string>
+    <string name="icp_registration_record">Số đăng ký ICP: Hỗ ICP bị 14053584 hiệu -25A</string>
+    <string name="network_error">Lỗi mạng, vui lòng kiểm tra cài đặt mạng</string>
+    <string name="copy_success">Sao chép thành công</string>
+
+    <string name="invite_text_format">%1$s mời bạn tham gia phòng Flat\n\nChủ đề phòng: %2$s\nID phòng: %3$s\n\nThời gian bắt đầu: %4$s\nLink tham gia: %5$s</string>
+    <string name="invite_title_format">%1$s mời bạn tham gia phòng Flat</string>
+
+    <string name="invite_pmi_text_format">%1$s mời bạn tham gia phòng cá nhân Flat\n\nChủ đề phòng: %2$s\nID phòng: %3$s\n\nThời gian bắt đầu: %4$s\nLink tham gia: %5$s</string>
+    <string name="invite_pmi_title_format">%1$s mời bạn tham gia phòng cá nhân Flat</string>
+
+    <string name="replay">Xem lại</string>
+    <string name="exit_replay">Thoát xem lại</string>
+    <string name="exit_replay_tip">Bạn có chắc muốn thoát xem lại?</string>
+    <string name="camera_has_closed">Camera đã tắt</string>
+    <string name="video_area">Khu vực video</string>
+    <string name="time_start">Thời gian bắt đầu</string>
+    <string name="copy_link_to_invite">Sao chép link mời</string>
+    <string name="hangup_room">Tạm dừng phòng</string>
+    <string name="hangup_room_exit_tip">Buổi học đang diễn ra, bạn muốn tạm thoát và tạm dừng phòng hay kết thúc buổi học?</string>
+    <string name="feedback_input_hint">Vui lòng nhập nội dung</string>
+    <string name="view_all_room_format">Xem tất cả %1$d phòng</string>
+    <string name="copy_invite">Sao chép lời mời</string>
+    <string name="invite">Mời</string>
+    <string name="exit_room_i_known_format">Đã hiểu (%1$d)</string>
+    <string name="exit_remote_login_message">Bạn đã vào phòng trên một thiết bị khác</string>
+    <string name="exit_room_stopped_message">Phòng đã kết thúc, đang thoát…</string>
+    <string name="exit_room_title">Rời phòng</string>
+
+    <string name="fetcher_room_not_found">Phòng không tồn tại</string>
+    <string name="fetcher_room_is_ended">Phòng đã kết thúc</string>
+    <string name="fetcher_join_room_error">Lỗi tham gia phòng (%1$d)</string>
+    <string name="fetcher_start_room_with_record">Bắt đầu buổi học và ghi hình…</string>
+
+    <string name="language_follow_system">Theo hệ thống</string>
+
+    <string name="dark_mode_auto">Theo hệ thống</string>
+    <string name="dark_mode_light">Chế độ sáng</string>
+    <string name="dark_mode_dark">Chế độ tối</string>
+
+    <string name="account_security_cancel_limited_tip">Bạn có %1$d phòng chưa kết thúc hoặc chưa thoát, vui lòng xử lý xong trước khi yêu cầu xóa tài khoản</string>
+    <string name="account_security_cancel_dialog_title">Thông báo quan trọng về việc xóa tài khoản Agora Flat</string>
+    <string name="account_security_cancel_dialog_message">"Bạn đang tiến hành xóa tài khoản Flat. Để đảm bảo an toàn cho tài khoản và tài sản của bạn, vui lòng đọc kỹ, hiểu và đồng ý với các điều khoản sau đây trước khi xóa tài khoản. Hãy thao tác cẩn thận.\nNếu tài khoản Flat bạn yêu cầu xóa đáp ứng đồng thời các điều kiện sau, nền tảng sẽ xác minh và hoàn tất việc xóa tài khoản cho bạn, việc xóa có hiệu lực ngay lập tức.\n1. Tài khoản ở trạng thái bình thường, không liên quan đến bất kỳ tranh chấp nào (bao gồm khiếu nại, tố cáo hoặc bị khiếu nại, tố cáo);\n2. Nếu có các buổi học chưa hoàn thành, để tránh ảnh hưởng đến quyền lợi của bạn hoặc phát sinh tranh chấp, bạn nên liên hệ với giáo viên và học viên liên quan để giải quyết thỏa đáng các buổi học chưa hoàn thành trước khi xóa tài khoản;\n3. Không có các quyền và nghĩa vụ chưa được giải quyết khác trong tài khoản hoặc các tranh chấp phát sinh do việc xóa tài khoản;\n4. Không có các trường hợp khác có thể ảnh hưởng đến việc xóa tài khoản.\n\nViệc xóa tài khoản Flat là không thể đảo ngược. Sau khi tài khoản Flat được xóa thành công, chúng tôi sẽ ngừng cung cấp sản phẩm hoặc dịch vụ cho bạn, không còn thu thập thông tin cá nhân của bạn nữa, chúng tôi sẽ xóa thông tin cá nhân của bạn hoặc ẩn danh hóa thông tin đó.\nSau khi tài khoản Flat được xóa thành công, bạn sẽ không thể sử dụng lại tài khoản Flat đó và cũng không thể khôi phục bất kỳ nội dung hoặc thông tin nào liên quan đến tài khoản đó (ngay cả khi bạn sử dụng cùng một phương thức để đăng ký lại và sử dụng Flat), bao gồm nhưng không giới hạn ở:\n1. Tất cả hồ sơ buổi học, tiết học sẽ bị xóa;\n2. Tất cả dữ liệu trò chuyện (văn bản, hình ảnh, video, âm thanh, v.v.) sẽ bị xóa;\n3. Dữ liệu lưu trữ đám mây sẽ bị xóa;\n4. Tất cả các bản ghi xem lại sẽ bị xóa;\n\nDữ liệu liên quan đến tài khoản Flat một khi đã bị xóa sẽ không thể khôi phục được. Vui lòng tự sao lưu tất cả thông tin và dữ liệu liên quan đến tài khoản trước khi thực hiện thao tác xóa.\nSau khi bạn xóa tài khoản, chúng tôi sẽ ngừng cung cấp sản phẩm hoặc dịch vụ cho bạn và sẽ xóa hoặc ẩn danh hóa thông tin cá nhân của bạn, trừ khi luật pháp và quy định có quy định khác.\nNhấp vào nút bên dưới để tiếp tục xóa, điều đó có nghĩa là bạn đã hoàn toàn biết và đồng ý với các lời nhắc trên."</string>
+    <string name="account_cancel_and_exit">Xóa tài khoản và đăng xuất</string>
+    <string name="account_cancel_agree_tip">Tôi đã đọc kỹ và đồng ý</string>
+
+    <string name="stage_off_all">Mời tất cả xuống</string>
+    <string name="mute_mic_all">Tắt tiếng tất cả</string>
+    <string name="user_list_student_size_format">Học viên (%1$s)</string>
+    <string name="on_or_off_stage">Mời lên/xuống</string>
+    <string name="whiteboard_allow_draw">Quyền vẽ bảng trắng</string>
+    <string name="user_list_handup">Giơ tay</string>
+    <string name="user_list_teacher_name_format">Giáo viên: %1$s</string>
+    <string name="view_all">Xem tất cả</string>
+
+    <string name="teacher_send_request_device">Đã gửi yêu cầu</string>
+    <string name="teacher_request_camera">Giáo viên yêu cầu bật camera</string>
+    <string name="teacher_request_mic">Giáo viên yêu cầu bật micro</string>
+    <string name="refuse_turn_on_camera_format">%1$s đã từ chối bật camera</string>
+    <string name="refuse_turn_on_mic_format">%1$s đã từ chối bật micro</string>
+    <string name="turn_off_camera">Đã tắt camera của học viên này</string>
+    <string name="turn_off_mic">Đã tắt micro của học viên này</string>
+    <string name="teacher_turn_off_camera">Giáo viên đã tắt camera của bạn</string>
+    <string name="teacher_turn_off_mic">Giáo viên đã tắt micro của bạn</string>
+    <string name="user_offline">Đã rời</string>
+    <string name="onstage_size_limited">Đã hết chỗ trên bục, vui lòng mời học viên khác xuống trước</string>
+    <string name="handup_list_empty">Chưa có học viên nào giơ tay</string>
+    <string name="user_list_empty">Chưa có học viên nào</string>
+    <string name="install_permission_description">Vì lý do bảo mật, điện thoại của bạn hiện không cho phép cài đặt ứng dụng không xác định từ nguồn này. Bạn có thể thay đổi điều này trong "Cài đặt".</string>
+
+    <string name="app_name_code">Mã nguồn</string>
+    <string name="app_name_geometry">Hình học &amp; Đại số</string>
+    <string name="app_name_clock">Đồng hồ bấm giờ</string>
+    <string name="app_name_dice">Xúc xắc</string>
+    <string name="app_name_question">Trình trả lời câu hỏi</string>
+    <string name="app_name_mindmap">Sơ đồ tư duy</string>
+    <string name="app_name_rich_text">Văn bản đa dạng thức</string>
+
+    <string name="toast_mute_all_mic">Đã tắt tiếng tất cả học viên</string>
+
+    <string name="clear_record">Xóa bản ghi</string>
+
+    <string name="error_jwt_sign_failed">Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại</string>
+    <string name="error_request_too_frequently">Yêu cầu quá thường xuyên</string>
+    <string name="error_request_common_fail">Yêu cầu thất bại</string>
+    <string name="request_common_success">Thao tác thành công</string>
+    <string name="error_string_known_network">Lỗi mạng không xác định (%1$s)</string>
+
+    <string name="error_user_not_found">Người dùng không tồn tại</string>
+    <string name="error_user_room_list_not_empty">Danh sách phòng không trống</string>
+    <string name="error_user_already_binding">Người dùng đã liên kết</string>
+    <string name="error_user_password_incorrect">Sai mật khẩu người dùng</string>
+    <string name="error_user_or_password_incorrect">Sai tên người dùng hoặc mật khẩu</string>
+
+    <string name="error_email_verification_code_invalid">Mã xác minh email không hợp lệ</string>
+    <string name="error_email_already_exist">Email đã tồn tại</string>
+    <string name="error_email_already_binding">Email đã được liên kết</string>
+    <string name="error_email_failed_to_send_code">Gửi mã xác minh email thất bại</string>
+
+    <string name="error_params_check_failed">Lỗi tham số</string>
+
+    <string name="error_verification_code_invalid">Mã xác minh không hợp lệ</string>
+    <string name="error_phone_already_binding">Số điện thoại đã được liên kết</string>
+    <string name="error_phone_already_exist">Số điện thoại đã tồn tại</string>
+    <string name="error_send_verification_code">Gửi mã xác minh thất bại</string>
+
+    <string name="error_pmi_not_started">Phòng chưa bắt đầu, vui lòng đợi giáo viên tham gia</string>
+
+    <string name="message_code_send_success">Mã xác minh đã được gửi</string>
+    <string name="message_reset_success">Đặt lại mật khẩu thành công</string>
+    <string name="message_set_password_success">Đặt mật khẩu thành công</string>
+
+    <string name="pay_room_reached_limit">Số lượng phòng miễn phí tạo trong tháng này đã đạt giới hạn, nâng cấp phiên bản để hưởng nhiều quyền lợi hơn</string>
+    <string name="pay_room_users_limit">Số người tham gia phòng phiên bản miễn phí đã đạt giới hạn, tạm thời không thể tham gia, vui lòng liên hệ giáo viên để giải quyết</string>
+    <string name="pay_room_expired">Phòng đã kết thúc</string>
+    <string name="room_not_started">Phòng chưa bắt đầu, có thể vào trước %1$d phút</string>
+    <string name="room_not_started_added">Phòng chưa bắt đầu, có thể vào trước %1$d phút. Đã thêm phòng này vào danh sách</string>
+    <string name="pay_time_limit_tip">Bạn đã tham gia phòng phiên bản miễn phí giới hạn %1$d phút</string>
+    <string name="pay_room_about_to_end">Phòng sắp đạt giới hạn thời lượng, sẽ kết thúc vào %1$s (sau %2$d phút)</string>
+</resources>

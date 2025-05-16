@@ -1,0 +1,19 @@
+{
+  "images" : [
+    {
+      "filename" : "eraserFilled@2x.png",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "eraserFilled (1).pdf",
+      "idiom" : "iphone"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
+  }
+}

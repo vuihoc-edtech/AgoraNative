@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:vh_agora_native/agora_native.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:agora_native/agora_native.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   final _agoraNativePlugin = AgoraNative();
-
+  bool saved = false;
+  String roomId = '2719 215 4979';
   @override
   void initState() {
     super.initState();
@@ -31,8 +32,8 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await _agoraNativePlugin.getPlatformVersion() ?? 'Unknown platform version';
+      platformVersion = await _agoraNativePlugin.getPlatformVersion() ??
+          'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -55,7 +56,34 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Running on: $_platformVersion\n'),
+              Text('Logged in: $saved'),
+              TextField(
+                onChanged: (value) {
+                  roomId = value;
+                },
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  final res = await _agoraNativePlugin.login();
+                  setState(() {
+                    saved = res;
+                  });
+                },
+                child: const Text("Login"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _agoraNativePlugin
+                      .joinClassRoom(roomId.trim().replaceAll(' ', ''));
+                },
+                child: const Text("Join Room"),
+              ),
+            ],
+          ),
         ),
       ),
     );

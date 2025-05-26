@@ -51,24 +51,6 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
     }
 
-    private fun initValues() {
-        channel.invokeMethod("env", null, object : Result {
-            override fun success(result: Any?) {
-                (result as? Map<*, *>)?.let {
-                    AppEnv.getInstance().envItem.serviceUrl ="https://" + it["baseUrl"] as String
-                }
-            }
-
-            override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
-                TODO("Not yet implemented")
-            }
-
-            override fun notImplemented() {
-                // Handle not implemented
-            }
-        })
-    }
-
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "getPlatformVersion" -> {
@@ -86,6 +68,31 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             "getGlobalUUID" -> {
                 result.success(AppKVCenter.getInstance().getSessionId())
+            }
+            "saveConfigs" -> {
+                val config = call.arguments as? Map<*, *>
+                val agora = config?.get("agora") as? Map<*, *>
+                val agoraId = agora?.get("appId") as? String
+                val baseUrl = config?.get("baseUrl") as? String
+                val cloudStorage = config?.get("cloudStorage") as? Map<*, *>
+                val accessKey = cloudStorage?.get("accessKey") as? String
+                val whiteboard = config?.get("whiteboard") as? Map<*, *>
+                val whiteboardAppId = whiteboard?.get("appId") as? String
+                AppEnv.getInstance().envItem.apply {
+                    if (agoraId != null) {
+                        agoraAppId = agoraId
+                    }
+                    if (baseUrl != null) {
+                        serviceUrl = baseUrl
+                    }
+                    if (accessKey != null) {
+                        ossKey = accessKey
+                    }
+                    if(whiteboardAppId != null) {
+                        whiteAppId = whiteboardAppId
+                    }
+                }
+                result.success(true)
             }
             else -> {
                 result.notImplemented()

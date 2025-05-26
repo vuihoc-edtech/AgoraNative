@@ -26,17 +26,11 @@ struct Env {
         "vh"
     }
     ///Mandatory
-    var ossAccessKeyId: String {
-        "LTAI5tRTgaUQqSs5SDUvLmBA"
-    }
+    var ossAccessKeyId: String = "LTAI5tRTgaUQqSs5SDUvLmBA"
 
-    var netlessAppId: String {
-        "Q9CKoASEEfCMH5n9aKKKyw/wsn4bnq3RHQkzA"
-    }
+    var netlessAppId: String = "Q9CKoASEEfCMH5n9aKKKyw/wsn4bnq3RHQkzA"
 
-    var agoraAppId: String {
-        "839e5d402e2a4371bd4a788bbab4f2d8"
-    }
+    var agoraAppId: String = "839e5d402e2a4371bd4a788bbab4f2d8"
     ///
     ///
     var version: String = "1.1.1"

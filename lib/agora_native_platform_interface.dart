@@ -39,7 +39,5 @@ abstract class AgoraNativePlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Map<String, String> getEnv() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
-  }
+  Future<bool> saveConfigs(Map<String, dynamic> configs);
 }

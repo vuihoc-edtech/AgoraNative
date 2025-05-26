@@ -10,17 +10,6 @@ class MethodChannelAgoraNative extends AgoraNativePlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel('agora_native');
 
-  MethodChannelAgoraNative() {
-    methodChannel.setMethodCallHandler((call) async {
-      switch (call.method) {
-        case 'env':
-          return getEnv();
-        default:
-          return '';
-      }
-    });
-  }
-
   @override
   Future<String?> getPlatformVersion() async {
     final version =
@@ -46,10 +35,8 @@ class MethodChannelAgoraNative extends AgoraNativePlatform {
   }
 
   @override
-  Map<String, String> getEnv() {
-    //TODO: should separate to debug and prod
-    return {
-      'baseUrl': Auth.baseUrl,
-    };
+  Future<bool> saveConfigs(Map<String, dynamic> configs) async {
+    final res = await methodChannel.invokeMethod<bool>("saveConfigs", configs);
+    return res ?? false;
   }
 }

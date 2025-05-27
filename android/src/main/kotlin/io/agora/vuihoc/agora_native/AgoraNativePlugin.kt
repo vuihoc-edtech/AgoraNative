@@ -83,7 +83,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                         agoraAppId = agoraId
                     }
                     if (baseUrl != null) {
-                        serviceUrl = baseUrl
+                        serviceUrl = "https://"+ baseUrl
                     }
                     if (accessKey != null) {
                         ossKey = accessKey

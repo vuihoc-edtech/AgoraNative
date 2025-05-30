@@ -140,10 +140,10 @@ class ToolComponent(
 
                 val handUpCount = handupUsers.size
 //                binding.userlistDot.isVisible = handUpCount > 0
-                binding.handupCount.isVisible = handUpCount > 0
-                binding.handupCount.text = "$handUpCount"
-                binding.layoutAcceptHandup.listEmpty.isVisible = handUpCount == 0
-                binding.layoutAcceptHandup.handupListContainer.isVisible = handUpCount > 0
+//                binding.handupCount.isVisible = handUpCount > 0
+//                binding.handupCount.text = "$handUpCount"
+//                binding.layoutAcceptHandup.listEmpty.isVisible = handUpCount == 0
+//                binding.layoutAcceptHandup.handupListContainer.isVisible = handUpCount > 0
             }
         }
 
@@ -169,11 +169,11 @@ class ToolComponent(
 //                binding.cloudservice.isVisible = it.allowDraw
 //                binding.takePhoto.isVisible = it.allowDraw
 
-                binding.handupLayout.isVisible = !it.isOnStage && !it.ban
-                binding.handup.isSelected = it.isRaiseHand
-
-                binding.acceptHandupLayout.isVisible = it.isOwner
-                binding.handupCountLayout.isVisible = it.isOwner
+//                binding.handupLayout.isVisible = !it.isOnStage && !it.ban
+//                binding.handup.isSelected = it.isRaiseHand
+//
+//                binding.acceptHandupLayout.isVisible = it.isOwner
+//                binding.handupCountLayout.isVisible = it.isOwner
 
                 binding.layoutSettings.switchVideo.isEnabled = it.isOnStage
                 binding.layoutSettings.switchAudio.isEnabled = it.isOnStage
@@ -300,13 +300,13 @@ class ToolComponent(
     }
 
     private fun showAcceptHandUpLayout() {
-        binding.layoutAcceptHandup.root.isVisible = true
-        binding.acceptHandup.isSelected = true
+//        binding.layoutAcceptHandup.root.isVisible = true
+//        binding.acceptHandup.isSelected = true
     }
 
     private fun hideAcceptHandUpLayout() {
-        binding.layoutAcceptHandup.root.isVisible = false
-        binding.acceptHandup.isSelected = false
+//        binding.layoutAcceptHandup.root.isVisible = false
+//        binding.acceptHandup.isSelected = false
     }
 
     private fun initView() {
@@ -370,18 +370,18 @@ class ToolComponent(
                     binding.stopRecord.isEnabled = true
                 }
             },
-            binding.handup to {
-                viewModel.raiseHand()
-            },
-            binding.acceptHandup to {
-                val target = !binding.layoutAcceptHandup.root.isVisible
-                if (target) {
-                    showAcceptHandUpLayout()
-                } else {
-                    hideAcceptHandUpLayout()
-                }
-                RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_ACCEPT_HANDUP, target)
-            },
+//            binding.handup to {
+//                viewModel.raiseHand()
+//            },
+//            binding.acceptHandup to {
+//                val target = !binding.layoutAcceptHandup.root.isVisible
+//                if (target) {
+//                    showAcceptHandUpLayout()
+//                } else {
+//                    hideAcceptHandUpLayout()
+//                }
+//                RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_ACCEPT_HANDUP, target)
+//            },
 //            binding.takePhoto to {
 //                launchTakePhoto()
 //            }
@@ -446,8 +446,8 @@ class ToolComponent(
         }
 
         acceptHandupAdapter = AcceptHandupAdapter(viewModel)
-        binding.layoutAcceptHandup.handupList.adapter = acceptHandupAdapter
-        binding.layoutAcceptHandup.handupList.layoutManager = LinearLayoutManager(activity)
+//        binding.layoutAcceptHandup.handupList.adapter = acceptHandupAdapter
+//        binding.layoutAcceptHandup.handupList.layoutManager = LinearLayoutManager(activity)
     }
 
     private fun handleExit() {

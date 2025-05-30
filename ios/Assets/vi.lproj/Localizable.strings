@@ -312,8 +312,8 @@
 "SwitchPrevColor" = "Chuyển sang màu trước đó";
 "Teacher" = "Giáo viên";
 "Teacher close class room alert detail" = "Lớp học đang tiếp diễn, bạn sẽ rời đi tạm thời hay kết thúc lớp học?";
-"TeacherRequestCamera" = "Giáo viên yêu cầu bật máy ảnh";
-"TeacherRequestMic" = "Giáo viên yêu cầu bật micrô";
+"TeacherRequestCamera" = "Giáo viên đề nghị con bật camera để giao tiếp";
+"TeacherRequestMic" = "Giáo viên đề nghị con bật mic để giao tiếp";
 "TeacherTurnOffCamera" = "Giáo viên đã tắt máy ảnh của bạn";
 "TeacherTurnOffMic" = "Giáo viên đã tắt micrô của bạn";
 "The ban was lifted" = "Lệnh cấm đã được dỡ bỏ";

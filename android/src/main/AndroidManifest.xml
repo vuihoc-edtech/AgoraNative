@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="io.agora.vuihoc.agora_native">
+  package="io.vuihoc.agora_native">
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -21,7 +21,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"  />
     <application>
         <activity
-            android:name="io.agora.flat.ui.activity.play.ClassRoomActivity"
+            android:name="io.vuihoc.agora_native.ui.activity.play.ClassRoomActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.FlatAndroid.Fullscreen"
             android:windowSoftInputMode="stateHidden|adjustNothing" />

@@ -1,4 +1,4 @@
-group = "io.agora.vuihoc.agora_native"
+group = "io.vuihoc.agora_native"
 version = "1.0-SNAPSHOT"
 
 buildscript {
@@ -35,7 +35,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
 //apply plugin: "androidx.navigation.safeargs"
 android {
-    namespace = "io.agora.vuihoc.agora_native"
+    namespace = "io.vuihoc.agora_native"
     compileSdk = 34
 
     compileOptions {

@@ -39,7 +39,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: io.agora.vuihoc.agora_native
+        package: io.vuihoc.agora_native
         pluginClass: AgoraNativePlugin
       ios:
         pluginClass: AgoraNativePlugin

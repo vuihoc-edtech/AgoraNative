@@ -66,12 +66,13 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
     }
     
     private func saveLoginInfo(_ argument: Dictionary<String, Any>) {
+        AuthStore.shared.logout();
         let name = argument["name"] as? String ?? ""
         let avatar = argument["avatar"] as? String ?? ""
         let userUUID = argument["userUUID"] as? String ?? ""
         let token = argument["token"] as? String ?? ""
         let user = User(name: name, avatar: avatar, userUUID: userUUID, token: token, hasPhone: false, hasPassword: false)
-        AuthStore.shared.user = user
+        AuthStore.shared.processLoginSuccessUserInfo(user)
     }
     
     private func saveConfigs(_ argument: Dictionary<String, Any>) {

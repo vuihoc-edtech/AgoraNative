@@ -5,7 +5,7 @@
     android:id="@+id/roomPlayRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.agora.flat.ui.activity.play.ClassRoomActivity">
+    tools:context=".ui.activity.play.ClassRoomActivity">
 
     <FrameLayout
         android:id="@+id/roomStateContainer"

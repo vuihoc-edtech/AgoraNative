@@ -3,8 +3,10 @@ package io.vuihoc.agora_native.ui.activity.play
 import android.widget.FrameLayout
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +20,7 @@ import io.vuihoc.agora_native.ui.manager.RoomOverlayManager
 import io.vuihoc.agora_native.ui.view.FooterAdapter
 import io.vuihoc.agora_native.util.folderName
 import io.vuihoc.agora_native.util.showToast
+import kotlinx.coroutines.launch
 
 class ClassCloudComponent(
     activity: ClassRoomActivity,
@@ -36,23 +39,29 @@ class ClassCloudComponent(
     }
 
     private fun observeState() {
-        lifecycleScope.launchWhenResumed {
-            RoomOverlayManager.observeShowId().collect { areaId ->
-                val visiable = areaId == RoomOverlayManager.AREA_ID_CLOUD_STORAGE
-                binding.layoutCloudStorage.root.isVisible = visiable
-                if (visiable) {
-                    viewModel.reloadFileList()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                RoomOverlayManager.observeShowId().collect { areaId ->
+                    val visiable = areaId == RoomOverlayManager.AREA_ID_CLOUD_STORAGE
+                    binding.layoutCloudStorage.root.isVisible = visiable
+                    if (visiable) {
+                        viewModel.reloadFileList()
+                    }
                 }
             }
+
         }
 
-        lifecycleScope.launchWhenResumed {
-            viewModel.state.collect {
-                cloudStorageAdapter.setDataSet(it.files)
-                binding.layoutCloudStorage.listEmpty.isVisible = it.files.isEmpty()
-                binding.layoutCloudStorage.cloudStorageList.isVisible = it.files.isNotEmpty()
-                footerAdapter.updateState(it.loadUiState.append)
-                updateTitleByDir(viewModel.state.value.dirPath)
+        lifecycleScope.launch {
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED)  {
+                viewModel.state.collect {
+                    cloudStorageAdapter.setDataSet(it.files)
+                    binding.layoutCloudStorage.listEmpty.isVisible = it.files.isEmpty()
+                    binding.layoutCloudStorage.cloudStorageList.isVisible = it.files.isNotEmpty()
+                    footerAdapter.updateState(it.loadUiState.append)
+                    updateTitleByDir(viewModel.state.value.dirPath)
+                }
             }
         }
     }

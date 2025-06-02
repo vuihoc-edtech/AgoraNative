@@ -17,8 +17,10 @@ import androidx.activity.viewModels
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import io.vuihoc.agora_native.Constants
@@ -66,29 +68,29 @@ class ToolComponent(
     private lateinit var rtcApi: RtcApi
     private lateinit var eventBus: EventBus
     private lateinit var userListAdapter: UserListAdapter
-    private lateinit var acceptHandupAdapter: AcceptHandupAdapter
+//    private lateinit var acceptHandupAdapter: AcceptHandupAdapter
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         injectApi()
         initView()
         observeState()
-        registerForActivityResult()
+//        registerForActivityResult()
     }
 
-    private fun registerForActivityResult() {
-        takePhotoLauncher =
-            activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                rtcApi.enableLocalVideo(true)
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val uri = result.data?.data ?: return@registerForActivityResult
-                    lifecycleScope.launch {
-                        val contentInfo = activity.contentInfo(uri) ?: return@launch
-                        eventBus.produceEvent(TakePhotoEvent(contentInfo))
-                    }
-                }
-            }
-    }
+//    private fun registerForActivityResult() {
+//        takePhotoLauncher =
+//            activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//                rtcApi.enableLocalVideo(true)
+//                if (result.resultCode == Activity.RESULT_OK) {
+//                    val uri = result.data?.data ?: return@registerForActivityResult
+//                    lifecycleScope.launch {
+//                        val contentInfo = activity.contentInfo(uri) ?: return@launch
+//                        eventBus.produceEvent(TakePhotoEvent(contentInfo))
+//                    }
+//                }
+//            }
+//    }
 
 //    private fun launchTakePhoto() {
 //        rtcApi.enableLocalVideo(false)
@@ -102,70 +104,76 @@ class ToolComponent(
     }
 
     private fun observeState() {
-        lifecycleScope.launchWhenResumed {
-            RoomOverlayManager.observeShowId().collect { areaId ->
-                if (areaId == RoomOverlayManager.AREA_ID_SETTING) {
-                    showSettingLayout()
-                } else {
-                    hideSettingLayout()
-                }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                RoomOverlayManager.observeShowId().collect { areaId ->
+                    if (areaId == RoomOverlayManager.AREA_ID_SETTING) {
+                        showSettingLayout()
+                    } else {
+                        hideSettingLayout()
+                    }
 //                binding.cloudservice.isSelected = areaId == RoomOverlayManager.AREA_ID_CLOUD_STORAGE
-                if (areaId == RoomOverlayManager.AREA_ID_USER_LIST) {
-                    showUserListLayout()
-                } else {
-                    hideUserListLayout()
-                }
+//                    if (areaId == RoomOverlayManager.AREA_ID_USER_LIST) {
+//                        showUserListLayout()
+//                    } else {
+//                        hideUserListLayout()
+//                    }
 
-                if (areaId == RoomOverlayManager.AREA_ID_ACCEPT_HANDUP) {
-                    showAcceptHandUpLayout()
-                } else {
-                    hideAcceptHandUpLayout()
+//                    if (areaId == RoomOverlayManager.AREA_ID_ACCEPT_HANDUP) {
+//                        showAcceptHandUpLayout()
+//                    } else {
+//                        hideAcceptHandUpLayout()
+//                    }
                 }
             }
+
         }
 
-        lifecycleScope.launchWhenResumed {
-            viewModel.students.collect {
-                userListAdapter.setData(it)
+        lifecycleScope.launch {
 
-                binding.layoutUserList.studentSize.text = activity.getString(
-                    R.string.user_list_student_size_format,
-                    "${it.size}"
-                )
-                binding.layoutUserList.userList.isVisible = it.isNotEmpty()
-                binding.layoutUserList.listEmpty.isVisible = it.isEmpty()
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.students.collect {
+                    userListAdapter.setData(it)
 
-                val handupUsers = it.filter { user -> user.isRaiseHand }
-                acceptHandupAdapter.setData(handupUsers)
+                    binding.layoutUserList.studentSize.text = activity.getString(
+                        R.string.user_list_student_size_format,
+                        "${it.size}"
+                    )
+                    binding.layoutUserList.userList.isVisible = it.isNotEmpty()
+                    binding.layoutUserList.listEmpty.isVisible = it.isEmpty()
 
-                val handUpCount = handupUsers.size
+//                val handupUsers = it.filter { user -> user.isRaiseHand }
+//                acceptHandupAdapter.setData(handupUsers)
+
+//                val handUpCount = handupUsers.size
 //                binding.userlistDot.isVisible = handUpCount > 0
 //                binding.handupCount.isVisible = handUpCount > 0
 //                binding.handupCount.text = "$handUpCount"
 //                binding.layoutAcceptHandup.listEmpty.isVisible = handUpCount == 0
 //                binding.layoutAcceptHandup.handupListContainer.isVisible = handUpCount > 0
+                }
             }
+
         }
 
-        lifecycleScope.launchWhenResumed {
-            viewModel.teacher.collect {
-                binding.layoutUserList.teacherAvatar.load(it?.avatarURL) {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_class_room_user_avatar) }
+        lifecycleScope.launch {
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.teacher.collect {
+                    binding.layoutUserList.teacherAvatar.load(it?.avatarURL) {
+                        crossfade(true)
+                        placeholder(R.drawable.ic_class_room_user_avatar) }
+                }
             }
+
         }
 
-//        lifecycleScope.launchWhenResumed {
-//            viewModel.recordState.collect { recordState ->
-//                val isRecording = recordState != null
-//                binding.startRecord.isVisible = !isRecording
-//                binding.stopRecord.isVisible = isRecording
-//            }
-//        }
+        lifecycleScope.launch {
 
-        lifecycleScope.launchWhenResumed {
-            viewModel.state.filterNotNull().collect {
-                binding.recordLayout.isVisible = it.isOwner && activity.isTabletMode()
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.state.filterNotNull().collect {
+                    binding.recordLayout.isVisible = it.isOwner && activity.isTabletMode()
 //                binding.cloudservice.isVisible = it.allowDraw
 //                binding.takePhoto.isVisible = it.allowDraw
 
@@ -175,80 +183,101 @@ class ToolComponent(
 //                binding.acceptHandupLayout.isVisible = it.isOwner
 //                binding.handupCountLayout.isVisible = it.isOwner
 
-                binding.layoutSettings.switchVideo.isEnabled = it.isOnStage
-                binding.layoutSettings.switchAudio.isEnabled = it.isOnStage
+                    binding.layoutSettings.switchVideo.isEnabled = it.isOnStage
+                    binding.layoutSettings.switchAudio.isEnabled = it.isOnStage
 
-                binding.layoutSettings.switchVideo.isChecked = it.videoOpen
-                binding.layoutSettings.switchAudio.isChecked = it.audioOpen
+                    binding.layoutSettings.switchVideo.isChecked = it.videoOpen
+                    binding.layoutSettings.switchAudio.isChecked = it.audioOpen
 
-                binding.layoutUserList.teacherName.text =
-                    activity.getString(R.string.user_list_teacher_name_format, it.ownerName)
-                binding.layoutUserList.stageOffAll.isVisible = it.isOwner
-                binding.layoutUserList.muteMicAll.isVisible = it.isOwner
+                    binding.layoutUserList.teacherName.text =
+                        activity.getString(R.string.user_list_teacher_name_format, it.ownerName)
+                    binding.layoutUserList.stageOffAll.isVisible = it.isOwner
+                    binding.layoutUserList.muteMicAll.isVisible = it.isOwner
+                }
             }
+
         }
 
         lifecycleScope.launch {
+
             RoomOverlayManager.observeShowId().collect { areaId ->
                 binding.message.isSelected = areaId == RoomOverlayManager.AREA_ID_MESSAGE
             }
+
         }
 
         lifecycleScope.launch {
+
             viewModel.messageCount.collect { count ->
                 binding.messageDot.isVisible = count > 0 &&
                         RoomOverlayManager.getShowId() != RoomOverlayManager.AREA_ID_MESSAGE
             }
+
         }
 
-        lifecycleScope.launchWhenResumed {
-            viewModel.classroomEvent.collect { event ->
-                when (event) {
-                    is NotifyDeviceOffReceived -> {
-                        if (event.camera == true) {
-                            activity.showToast(R.string.teacher_turn_off_camera)
-                        }
-                        if (event.mic == true) {
-                            activity.showToast(R.string.teacher_turn_off_mic)
-                        }
-                    }
+        lifecycleScope.launch {
 
-                    is RequestDeviceResponseReceived -> {
-                        if (event.camera == false) {
-                            activity.showToast(
-                                activity.getString(
-                                    R.string.refuse_turn_on_camera_format,
-                                    event.username
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED)  {
+                viewModel.classroomEvent.collect { event ->
+                    when (event) {
+                        is NotifyDeviceOffReceived -> {
+                            if (event.camera == true) {
+                                activity.showToast(R.string.teacher_turn_off_camera)
+                            }
+                            if (event.mic == true) {
+                                activity.showToast(R.string.teacher_turn_off_mic)
+                            }
+                        }
+
+                        is RequestDeviceResponseReceived -> {
+                            if (event.camera == false) {
+                                activity.showToast(
+                                    activity.getString(
+                                        R.string.refuse_turn_on_camera_format,
+                                        event.username
+                                    )
                                 )
-                            )
+                            }
+                            if (event.mic == false) {
+                                activity.showToast(activity.getString(R.string.refuse_turn_on_mic_format, event.username))
+                            }
                         }
-                        if (event.mic == false) {
-                            activity.showToast(activity.getString(R.string.refuse_turn_on_mic_format, event.username))
+
+                        is RequestDeviceSent -> {
+                            activity.showToast(R.string.teacher_send_request_device)
                         }
-                    }
 
-                    is RequestDeviceSent -> {
-                        activity.showToast(R.string.teacher_send_request_device)
-                    }
+                        is RequestDeviceReceived -> {
+                            handleRequestDevice(event)
+                        }
 
-                    is RequestDeviceReceived -> {
-                        handleRequestDevice(event)
-                    }
+                        RequestMuteAllSent -> {
+                            activity.showToast(R.string.toast_mute_all_mic)
+                        }
 
-                    RequestMuteAllSent -> {
-                        activity.showToast(R.string.toast_mute_all_mic)
-                    }
+                        is ExpirationEvent -> {
+                            val expiration = FlatFormatter.timeHM(event.expireAt)
+                            val minutes = event.leftMinutes
+                            activity.showToast(activity.getString(R.string.pay_room_about_to_end, expiration, minutes))
+                        }
 
-                    is ExpirationEvent -> {
-                        val expiration = FlatFormatter.timeHM(event.expireAt)
-                        val minutes = event.leftMinutes
-                        activity.showToast(activity.getString(R.string.pay_room_about_to_end, expiration, minutes))
+                        else -> {}
                     }
-
-                    else -> {}
                 }
             }
         }
+
+
+
+
+//         repeatOnLifecycle(Lifecycle.State.RESUMED) {
+//            viewModel.recordState.collect { recordState ->
+//                val isRecording = recordState != null
+//                binding.startRecord.isVisible = !isRecording
+//                binding.stopRecord.isVisible = isRecording
+//            }
+//        }
     }
 
     private fun handleRequestDevice(it: RequestDeviceReceived) {
@@ -445,7 +474,7 @@ class ToolComponent(
             viewModel.muteAllMic()
         }
 
-        acceptHandupAdapter = AcceptHandupAdapter(viewModel)
+//        acceptHandupAdapter = AcceptHandupAdapter(viewModel)
 //        binding.layoutAcceptHandup.handupList.adapter = acceptHandupAdapter
 //        binding.layoutAcceptHandup.handupList.layoutManager = LinearLayoutManager(activity)
     }
@@ -510,7 +539,7 @@ class ToolComponent(
 
             // 结束房间
             override fun onRightButtonClick() {
-            updateRoomsAndFinish()
+                updateRoomsAndFinish()
             }
 
             override fun onDismiss() {

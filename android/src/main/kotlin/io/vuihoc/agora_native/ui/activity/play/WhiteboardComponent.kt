@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 // import dagger.hilt.EntryPoint
 // import dagger.hilt.InstallIn
@@ -22,6 +24,7 @@ import io.vuihoc.agora_native.ui.manager.RoomOverlayManager
 import io.vuihoc.agora_native.util.getViewRect
 import io.vuihoc.agora_native.util.isDarkMode
 import io.vuihoc.agora_native.util.isTabletMode
+import kotlinx.coroutines.launch
 
 class WhiteboardComponent(
     activity: ClassRoomActivity,
@@ -46,16 +49,18 @@ class WhiteboardComponent(
     }
 
     private fun observeState() {
-        lifecycleScope.launchWhenResumed {
-            RoomOverlayManager.observeShowId().collect { areaId ->
-                if (areaId != RoomOverlayManager.AREA_ID_FASTBOARD) {
-                    boardRoom.hideAllOverlay()
-                }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED)  {
+                RoomOverlayManager.observeShowId().collect { areaId ->
+                    if (areaId != RoomOverlayManager.AREA_ID_FASTBOARD) {
+                        boardRoom.hideAllOverlay()
+                    }
 
-                binding.windowAppsLayout.root.isVisible = areaId == RoomOverlayManager.AREA_ID_APPS
+                    binding.windowAppsLayout.root.isVisible = areaId == RoomOverlayManager.AREA_ID_APPS
 
-                binding.clickHandleView.show(areaId != RoomOverlayManager.AREA_ID_NO_OVERLAY) {
-                    RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_NO_OVERLAY)
+                    binding.clickHandleView.show(areaId != RoomOverlayManager.AREA_ID_NO_OVERLAY) {
+                        RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_NO_OVERLAY)
+                    }
                 }
             }
         }

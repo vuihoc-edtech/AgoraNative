@@ -148,7 +148,7 @@ class ClassRoomViewModel(
             try {
                 loadAndInitRoomState()
             } catch (e: Exception) {
-                // logger.e(e, "fetch class room state error")
+               Log.d("Vuihoc_Log", "fetch class room state error $e")
                 roomErrorManager.notifyError("fetch class room state error", e)
             }
         }
@@ -182,7 +182,7 @@ class ClassRoomViewModel(
 
     private suspend fun initRoomState(roomInfo: RoomInfo, joinRoomInfo: RoomPlayInfo) {
         val isOwner = roomInfo.ownerUUID == currentUserUUID
-
+        Log.d("ClassRoomViewModel", "RoomInfo: $roomInfo $joinRoomInfo")
         val initState = ClassRoomState(
             userUUID = currentUserUUID,
             userName = currentUserName,
@@ -240,11 +240,11 @@ class ClassRoomViewModel(
 
         _state.value = initState
 
-        // logger.i("[ROOM] init room state: $initState")
+        Log.d("Vuihoc_Log","[ROOM] init room state: $initState")
     }
 
     private suspend fun joinBoard() {
-        // logger.i("[BOARD] start joining board room")
+        Log.d("Vuihoc_Log","[BOARD] start joining board room")
         Log.d("ClassRoomViewModel", "==============[BOARD] start joining board room")
         state.value?.let {
             boardRoom.join(it.boardUUID, it.boardToken, it.region, it.isOwner)
@@ -252,7 +252,8 @@ class ClassRoomViewModel(
     }
 
     private suspend fun joinRtm() {
-        // logger.i("[RTM] start join channel")
+        Log.d("Vuihoc_Log","[RTM] start join channel")
+        Log.d("ClassRoomViewModel", "[RTM] start join channel")
         state.value?.run {
             try {
                 rtmApi.login(rtmToken = rtmToken, channelId = roomUUID, userUUID = userUUID)
@@ -263,14 +264,15 @@ class ClassRoomViewModel(
                 userManager.initUsers(filterIds)
                 sendEnterRoomEvent()
             } catch (e: FlatException) {
-                // logger.e(e, "rtm join exception")
+               Log.d("Vuihoc_Log", "rtm join exception $e")
                 roomErrorManager.notifyError("rtm join exception", e)
             }
         }
     }
 
     private fun joinRtc() {
-        // logger.i("[RTC] start join rtc")
+        //LogjoinRtc
+         Log.d("ClassViewModel","[RTC] start join rtc")
         state.value?.run {
             val rtcJoinOptions = RtcJoinOptions(
                 token = rtcToken,
@@ -282,8 +284,8 @@ class ClassRoomViewModel(
             rtcVideoController.setupUid(uid = rtcUID, ssUid = rtcShareScreen.uid)
             rtcApi.joinChannel(rtcJoinOptions).also { result ->
                 when (result) {
-                    0 -> Log.d( "ClassRoomViewModel","\"[RTC] join rtc successful\"") // logger.i("[RTC] join rtc successful")
-                    else -> Log.d("ClassRoomViewModel", "\"[RTC] join rtc successful\"") // logger.w("[RTC] join rtc error: $result")
+                    0 -> Log.d( "ClassRoomViewModel","\"[RTC] join rtc successful\"")
+                    else -> Log.d("ClassRoomViewModel", "\"[RTC] join rtc successful\"")
                 }
             }
         }
@@ -296,12 +298,12 @@ class ClassRoomViewModel(
             }
         }
 
-        viewModelScope.launch {
-            syncedClassState.observeClassroomState().collect {
-                userManager.updateRaiseHandStatus(it.raiseHandUsers)
-                updateBanState(it.ban)
-            }
-        }
+//        viewModelScope.launch {
+//            syncedClassState.observeClassroomState().collect {
+//                userManager.updateRaiseHandStatus(it.raiseHandUsers)
+//                updateBanState(it.ban)
+//            }
+//        }
 
         viewModelScope.launch {
             syncedClassState.observeOnStage().collect {
@@ -332,7 +334,7 @@ class ClassRoomViewModel(
     }
 
     private suspend fun handleRtmEvent(event: ClassRtmEvent) {
-        // logger.i("[RTM] handle event $event")
+        Log.d("Vuihoc_Log","[RTM] handle event $event")
 
         when (event) {
             is RaiseHandEvent -> {
@@ -422,7 +424,7 @@ class ClassRoomViewModel(
             }
 
             else -> {
-                // logger.w("[RTM] event not handled: $event")
+                Log.d("Vuihoc_Log","[RTM] event not handled: $event")
             }
         }
     }
@@ -445,7 +447,7 @@ class ClassRoomViewModel(
     private fun observerUserState() {
         viewModelScope.launch {
             userManager.observeSelf().filterNotNull().collect {
-                // logger.i("[USERS] current user state changed $it, state: ${_state.value}")
+                Log.d("Vuihoc_Log","[USERS] current user state changed $it, state: ${_state.value}")
 
                 val state = _state.value ?: return@collect
                 try {
@@ -468,20 +470,21 @@ class ClassRoomViewModel(
                         audioOpen = it.audioOpen,
                     )
                 } catch (e: Exception) {
-                    // logger.e(e, "[USERS] self change error")
+                   Log.d("Vuihoc_Log", "[USERS] self change error $e")
                 }
             }
         }
 
         viewModelScope.launch {
             userManager.observeUsers().collect {
-                // logger.d("[USERS] users changed $it")
+                Log.d("Vuihoc_Log","[USERS] users changed $it")
                 val users = it.filter { user -> user.isOwner || user.isOnStage }.toMutableList()
                 val devicesMap = getUpdateDevices(videoUsers.value, users)
                 devicesMap.forEach { (rtcUID, state) ->
                     updateRtcStream(rtcUID, audioOpen = state.mic, videoOpen = state.camera)
                 }
                 _videoUsers.value = users
+
             }
         }
 
@@ -494,7 +497,7 @@ class ClassRoomViewModel(
                     if (ready) users else null
                 }.filterNotNull()
                     .onCompletion {
-                        // logger.i("[USERS] one to one observeUsers done")
+                        Log.d("Vuihoc_Log","[USERS] one to one observeUsers done")
                     }
                     .collect {
                         val users = it.filter { user -> user.isJoined && !user.isOwner }
@@ -515,7 +518,7 @@ class ClassRoomViewModel(
             if (!autoStageOn && !userManager.isOwner() && state.value!!.roomType == RoomType.SmallClass) {
                 syncedClassState.observeOnStage()
                     .onCompletion {
-                        // logger.i("[USERS] small class observeOnStage done")
+                        Log.d("Vuihoc_Log","[USERS] small class observeOnStage done")
                     }
                     .collect { onStageUsers ->
                         if (onStageUsers.keys.size < onStageLimit && onStageUsers[currentUserUUID] != true) {
@@ -625,17 +628,17 @@ class ClassRoomViewModel(
     }
 
     fun raiseHand() {
-        viewModelScope.launch {
-            userManager.currentUser?.run {
-                if (isOnStage || !userManager.isOwnerOnStage()) return@run
-                val raiseHand = !isRaiseHand
-                rtmApi.sendPeerCommand(
-                    RaiseHandEvent(roomUUID = roomUUID, raiseHand = raiseHand),
-                    userManager.ownerUUID
-                )
-                userManager.updateRaiseHandStatus(userUUID, raiseHand)
-            }
-        }
+//        viewModelScope.launch {
+//            userManager.currentUser?.run {
+//                if (isOnStage || !userManager.isOwnerOnStage()) return@run
+//                val raiseHand = !isRaiseHand
+//                rtmApi.sendPeerCommand(
+//                    RaiseHandEvent(roomUUID = roomUUID, raiseHand = raiseHand),
+//                    userManager.ownerUUID
+//                )
+//                userManager.updateRaiseHandStatus(userUUID, raiseHand)
+//            }
+//        }
     }
 
     private fun startClass() {
@@ -645,7 +648,7 @@ class ClassRoomViewModel(
                 rtmApi.sendChannelCommand(RoomStateEvent(roomUUID = roomUUID, status = RoomStatus.Started))
                 _state.value = state.copy(roomStatus = RoomStatus.Started)
             } else {
-                // logger.e("start class error")
+               Log.d("Vuihoc_Log","start class error")
             }
         }
     }
@@ -712,22 +715,22 @@ class ClassRoomViewModel(
     }
 
     fun acceptRaiseHand(uuid: String) {
-        viewModelScope.launch {
-            if (!userManager.isOwner()) return@launch
-            if (userManager.getOnStageCount() < onStageLimit) {
-                syncedClassState.updateOnStage(uuid, true)
-                syncedClassState.updateRaiseHand(uuid, false)
-            } else {
-                // notify
-            }
-        }
+//        viewModelScope.launch {
+//            if (!userManager.isOwner()) return@launch
+//            if (userManager.getOnStageCount() < onStageLimit) {
+//                syncedClassState.updateOnStage(uuid, true)
+//                syncedClassState.updateRaiseHand(uuid, false)
+//            } else {
+//                // notify
+//            }
+//        }
     }
 
     fun cancelRaiseHand(uuid: String) {
-        viewModelScope.launch {
-            if (!userManager.isOwner()) return@launch
-            syncedClassState.updateRaiseHand(uuid, false)
-        }
+//        viewModelScope.launch {
+//            if (!userManager.isOwner()) return@launch
+//            syncedClassState.updateRaiseHand(uuid, false)
+//        }
     }
 
     fun getInviteInfo(): InviteInfo? {
@@ -930,6 +933,4 @@ class ClassRoomViewModelFactory(
             syncedClassState = syncedClassState,
         ) as T
     }
-
-
 }

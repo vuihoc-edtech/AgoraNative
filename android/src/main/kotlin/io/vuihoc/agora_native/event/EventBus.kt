@@ -1,5 +1,6 @@
 package io.vuihoc.agora_native.event
 
+import android.util.Log
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
@@ -11,6 +12,7 @@ class EventBus {
     val events = _events.asSharedFlow()
 
     suspend fun produceEvent(event: Event) {
+        Log.d("EventBus", "produceEvent $event")
         _events.emit(event)
     }
 

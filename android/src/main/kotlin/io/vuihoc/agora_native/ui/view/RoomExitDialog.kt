@@ -3,12 +3,15 @@ package io.vuihoc.agora_native.ui.view
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import io.vuihoc.agora_native.Constants
 import io.vuihoc.agora_native.R
 import io.vuihoc.agora_native.databinding.DialogRoomExitBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 class RoomExitDialog : ClassDialogFragment(R.layout.dialog_room_exit) {
     private lateinit var binding: DialogRoomExitBinding
@@ -32,13 +35,15 @@ class RoomExitDialog : ClassDialogFragment(R.layout.dialog_room_exit) {
             dismissAllowingStateLoss()
         }
 
-        lifecycleScope.launchWhenStarted {
-            var second = 5
-            tickerFlow(1000).collect {
-                binding.centerButton.text = getString(R.string.exit_room_i_known_format, second)
-                if (--second < 0) {
-                    listener?.onFinish()
-                    dismissAllowingStateLoss()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                var second = 5
+                tickerFlow(1000).collect {
+                    binding.centerButton.text = getString(R.string.exit_room_i_known_format, second)
+                    if (--second < 0) {
+                        listener?.onFinish()
+                        dismissAllowingStateLoss()
+                    }
                 }
             }
         }

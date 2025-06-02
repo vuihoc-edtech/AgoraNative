@@ -4,8 +4,6 @@ import io.vuihoc.agora_native.common.android.I18NFetcher
 import io.vuihoc.agora_native.data.AppKVCenter
 import io.vuihoc.agora_native.data.Result
 import io.vuihoc.agora_native.data.ServiceFetcher
-import io.vuihoc.agora_native.data.manager.JoinRoomRecordManager
-import io.vuihoc.agora_native.data.model.JoinRoomRecord
 import io.vuihoc.agora_native.data.model.JoinRoomReq
 import io.vuihoc.agora_native.data.model.NetworkRoomUser
 import io.vuihoc.agora_native.data.model.PureRoomReq
@@ -21,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 class RoomRepository(
     private val serviceFetcher: ServiceFetcher = ServiceFetcher.getInstance(),
-    private val joinRoomRecordManager: JoinRoomRecordManager = JoinRoomRecordManager.getInstance(),
+//    private val joinRoomRecordManager: JoinRoomRecordManager = JoinRoomRecordManager.getInstance(),
     private val appKVCenter: AppKVCenter = AppKVCenter.getInstance(),
     private val i18NFetcher: I18NFetcher = I18NFetcher.getInstance(),
 ) {
@@ -54,7 +52,7 @@ class RoomRepository(
                     } else {
                         this.title
                     }
-                    joinRoomRecordManager.addRecord(JoinRoomRecord(title, inviteCode))
+//                    joinRoomRecordManager.addRecord(JoinRoomRecord(title, inviteCode))
                 }
             }
         }

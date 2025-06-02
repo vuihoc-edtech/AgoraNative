@@ -1,6 +1,7 @@
 package io.vuihoc.agora_native.common.rtm
 
 import android.content.Context
+import android.util.Log
 import io.vuihoc.agora_native.common.FlatException
 import io.vuihoc.agora_native.common.FlatRtmException
 import io.vuihoc.agora_native.data.AppEnv
@@ -69,14 +70,14 @@ class AgoraRtm(
                 .build()
             rtmClient = RtmClient.create(config)
         } catch (e: Exception) {
-            // logger.e(e, "[RTM] agora rtm SDK init fatal error!")
+           Log.d("Vuihoc_Log", "[RTM] agora rtm SDK init fatal error! $e")
         }
     }
 
     override fun onMessageEvent(messageEvent: MessageEvent) {
         val publisherId = messageEvent.publisherId
         val messageData = messageEvent.message.data
-        // logger.d("[RTM] message received from $publisherId message:$messageData")
+        Log.d("Vuihoc_Log","[RTM] message received from $publisherId message:$messageData")
         val parseAndNotify: (String) -> Unit = { parsedMessage ->
             rtmListeners.forEach { it.onClassEvent(ClassRtmEvent.parse(parsedMessage, publisherId)) }
         }
@@ -102,7 +103,7 @@ class AgoraRtm(
     }
 
     override fun onPresenceEvent(event: PresenceEvent) {
-        // logger.d("[RTM] presence event $event")
+        Log.d("Vuihoc_Log","[RTM] presence event $event")
         if (currentChannel != event.channelName) return
 
         val channelName = event.channelName
@@ -130,15 +131,15 @@ class AgoraRtm(
             RtmConstants.RtmPresenceEventType.REMOTE_TIMEOUT -> notifyLeft(publisherId)
 
             RtmConstants.RtmPresenceEventType.REMOTE_STATE_CHANGED -> {
-                // logger.i("[RTM] presence event remote state changed")
+                Log.d("Vuihoc_Log","[RTM] presence event remote state changed")
             }
 
             RtmConstants.RtmPresenceEventType.ERROR_OUT_OF_SERVICE -> {
-                // logger.w("[RTM] presence event error out of service")
+                Log.d("Vuihoc_Log","[RTM] presence event error out of service")
             }
 
             RtmConstants.RtmPresenceEventType.NONE -> {
-                // logger.w("[RTM] presence event none")
+                Log.d("Vuihoc_Log","[RTM] presence event none")
             }
         }
     }
@@ -148,14 +149,14 @@ class AgoraRtm(
         state: RtmConstants.RtmConnectionState,
         reason: RtmConstants.RtmConnectionChangeReason
     ) {
-        // logger.i("[RTM] connection state changes to $state reason:$reason")
+        Log.d("Vuihoc_Log","[RTM] connection state changes to $state reason:$reason")
         if (reason == RtmConstants.RtmConnectionChangeReason.SAME_UID_LOGIN) {
             rtmListeners.forEach { it.onRemoteLogin() }
         }
     }
 
     override fun onTokenPrivilegeWillExpire(channelName: String) {
-        // logger.w("[RTM] token privilege will expire $channelName")
+        Log.d("Vuihoc_Log","[RTM] token privilege will expire $channelName")
     }
 
     override suspend fun login(rtmToken: String, channelId: String, userUUID: String): Boolean {
@@ -207,7 +208,7 @@ class AgoraRtm(
                 nextPage = result.nextPage
             } while (!nextPage.isNullOrEmpty())
         } catch (e: Exception) {
-            // logger.e(e, "[RTM] getMembers error")
+           Log.d("Vuihoc_Log", "[RTM] getMembers error $e")
         }
 
         return users.map { RtmMember(it.userId, channelName) }
@@ -234,7 +235,7 @@ class AgoraRtm(
     }
 
     override suspend fun sendChannelMessage(msg: String): Boolean = suspendCoroutine { cont ->
-        // logger.d("[RTM] sendChannelMessage $msg")
+        Log.d("Vuihoc_Log","[RTM] sendChannelMessage $msg")
         val options = PublishOptions().apply {
             customType = "CHANNEL_CHAT"
         }
@@ -250,7 +251,7 @@ class AgoraRtm(
     }
 
     override suspend fun sendChannelCommand(event: ClassRtmEvent) = suspendCoroutine { cont ->
-        // logger.d("[RTM] sendChannelCommand ${ClassRtmEvent.toText(event)}")
+        Log.d("Vuihoc_Log","[RTM] sendChannelCommand ${ClassRtmEvent.toText(event)}")
         val options = PublishOptions().apply {
             customType = "CHANNEL_COMMAND"
         }
@@ -267,7 +268,7 @@ class AgoraRtm(
     }
 
     override suspend fun sendPeerCommand(event: ClassRtmEvent, peerId: String) = suspendCoroutine { cont ->
-        // logger.d("[RTM] sendPeerCommand ${ClassRtmEvent.toText(event)}")
+        Log.d("Vuihoc_Log","[RTM] sendPeerCommand ${ClassRtmEvent.toText(event)}")
         val message = ClassRtmEvent.toText(event).toByteArray()
         val options = PublishOptions().apply {
             setChannelType(RtmChannelType.USER)
@@ -340,7 +341,7 @@ class AgoraRtm(
         }
         rtmListeners.add(listener)
         awaitClose {
-            // logger.d("[RTM] rtm event flow closed")
+            Log.d("Vuihoc_Log","[RTM] rtm event flow closed")
             rtmListeners.remove(listener)
         }
     }

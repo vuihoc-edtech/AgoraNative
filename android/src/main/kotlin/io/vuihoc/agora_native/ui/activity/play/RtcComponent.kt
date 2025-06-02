@@ -8,6 +8,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.media.SoundPool
+import android.util.Log
 import android.view.DragEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -19,8 +20,10 @@ import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -72,7 +75,9 @@ class RtcComponent(
         fun getRequiredPermissions(): Array<String> {
             return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
                 arrayOf(
-                    Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.BLUETOOTH_CONNECT
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.BLUETOOTH_CONNECT
                 )
             } else {
                 arrayOf(
@@ -114,8 +119,9 @@ class RtcComponent(
 
     private fun injectApi() {
         rtcApi = AgoraRtc.getInstance()
-        windowsDragManager = WindowsDragManager(activity, rtcVideoController = rtcVideoController, syncedState = syncedState)
-
+        windowsDragManager = WindowsDragManager(
+            activity, rtcVideoController = rtcVideoController, syncedState = syncedState
+        )
     }
 
     private fun actionAfterPermission() {
@@ -126,109 +132,135 @@ class RtcComponent(
     }
 
     private fun observeState() {
-        lifecycleScope.launchWhenResumed {
-            viewModel.videoUsers.collect { users ->
-                // logger.i("[RTC] videoUsers changed to ${users.size}")
-                adapter.updateUsers(users)
-                updateUserWindows(users)
-                // 处理用户进出时的显示
-                if (userCallOut != null) {
-                    val findUser = users.find { it.isJoined && it.isOnStage && it.userUUID == userCallOut!!.userUUID }
-                    if (findUser == null) {
-                        clearCallOutAndNotify()
-                        fullScreenAnimator.hide()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.videoUsers.collect { users ->
+                    Log.d("Vuihoc_Log","[RTC] videoUsers changed to ${users.size}")
+                    Log.d("Vuihoc_Log", users.toString())
+                    adapter.updateUsers(users)
+                    updateUserWindows(users)
+                    if (userCallOut != null) {
+                        val findUser =
+                            users.find { it.isJoined && it.isOnStage && it.userUUID == userCallOut!!.userUUID }
+                        if (findUser == null) {
+                            clearCallOutAndNotify()
+                            fullScreenAnimator.hide()
+                        } else {
+                            userCallOut = findUser
+                            updateCallOutUser()
+                        }
+                    }
+
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.noOptPermission.collect {
+                    activity.showToast(R.string.class_room_no_operate_permission)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                RoomOverlayManager.observeShowId().collect { areaId ->
+                    if (areaId != RoomOverlayManager.AREA_ID_VIDEO_OP_CALL_OUT) {
+                        clearCallOut()
+                    }
+
+                    videoListBinding.clickHandleView.show(areaId != RoomOverlayManager.AREA_ID_NO_OVERLAY) {
+                        RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_NO_OVERLAY)
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.videoAreaShown.collect { shown ->
+                    if (shown) {
+                        videoAreaAnimator.show()
                     } else {
-                        userCallOut = findUser
-                        updateCallOutUser()
-                    }
-                }
-
-            }
-        }
-
-        lifecycleScope.launchWhenResumed {
-            viewModel.noOptPermission.collect {
-                activity.showToast(R.string.class_room_no_operate_permission)
-            }
-        }
-
-        lifecycleScope.launchWhenResumed {
-            RoomOverlayManager.observeShowId().collect { areaId ->
-                if (areaId != RoomOverlayManager.AREA_ID_VIDEO_OP_CALL_OUT) {
-                    clearCallOut()
-                }
-
-                videoListBinding.clickHandleView.show(areaId != RoomOverlayManager.AREA_ID_NO_OVERLAY) {
-                    RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_NO_OVERLAY)
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenResumed {
-            viewModel.videoAreaShown.collect { shown ->
-                if (shown) {
-                    videoAreaAnimator.show()
-                } else {
-                    videoAreaAnimator.hide()
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenResumed {
-            rtcApi.observeRtcEvent().collect { event ->
-                // logger.i("[RTC] event: $event")
-
-                when (event) {
-                    is RtcEvent.UserJoined -> lifecycleScope.launch {
-                        rtcVideoController.handlerJoined(event.uid)
-                    }
-
-                    is RtcEvent.UserOffline -> lifecycleScope.launch {
-                        rtcVideoController.handleOffline(event.uid)
-                    }
-
-                    is RtcEvent.VolumeIndication -> {
-                        adapter.updateVolume(event.speakers)
-                    }
-
-                    else -> {
-
+                        videoAreaAnimator.hide()
                     }
                 }
             }
         }
 
-        lifecycleScope.launchWhenResumed {
-            viewModel.classroomEvent.collect { event ->
-                when (event) {
-                    is RewardReceived -> {
-                        handleReward(event.userUUID)
-                    }
+        lifecycleScope.launch {
 
-                    else -> {}
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                rtcApi.observeRtcEvent().collect { event ->
+                    Log.d("Vuihoc_Log","[RTC] event: $event")
+
+                    when (event) {
+                        is RtcEvent.UserJoined -> lifecycleScope.launch {
+                            rtcVideoController.handlerJoined(event.uid)
+                        }
+
+                        is RtcEvent.UserOffline -> lifecycleScope.launch {
+                            rtcVideoController.handleOffline(event.uid)
+                        }
+
+                        is RtcEvent.VolumeIndication -> {
+                            adapter.updateVolume(event.speakers)
+                        }
+
+                        else -> {
+
+                        }
+                    }
+                }
+            }
+        }
+        lifecycleScope.launch {
+
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.classroomEvent.collect { event ->
+                    when (event) {
+                        is RewardReceived -> {
+                            handleReward(event.userUUID)
+                        }
+
+                        else -> {}
+                    }
                 }
             }
         }
 
-        observeUserWindows()
+        lifecycleScope.launch {
+
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                combine(
+                    syncedState.observeUserWindows(), viewModel.videoUsersMap
+                ) { userWindows, videoUsers ->
+                    Pair(userWindows, videoUsers)
+                }.collect { pair ->
+                    windowsState = pair.first
+                    val videoUsers = pair.second
+
+                    fullOnStage = windowsState.grid.isNotEmpty()
+                    userWindowsBinding.maskView.isVisible = fullOnStage
+                    animateStateChanged(
+                        windowsDragManager.getWindowsMap(),
+                        getWindowsUiState(windowsState),
+                        videoUsers
+                    )
+                }
+            }
+        }
     }
 
     private var windowsState: UserWindows = UserWindows()
-
-    private fun observeUserWindows() {
-        lifecycleScope.launchWhenResumed {
-            combine(syncedState.observeUserWindows(), viewModel.videoUsersMap) { userWindows, videoUsers ->
-                Pair(userWindows, videoUsers)
-            }.collect { pair ->
-                windowsState = pair.first
-                val videoUsers = pair.second
-
-                fullOnStage = windowsState.grid.isNotEmpty()
-                userWindowsBinding.maskView.isVisible = fullOnStage
-                animateStateChanged(windowsDragManager.getWindowsMap(), getWindowsUiState(windowsState), videoUsers)
-            }
-        }
-    }
 
     private fun getWindowsUiState(windows: UserWindows): MutableMap<String, UserWindowUiState> {
         val targetState = mutableMapOf<String, UserWindowUiState>()
@@ -286,7 +318,9 @@ class RtcComponent(
             val needAnimate = toUpdate.any {
                 val a = state[it]!!
                 val b = targetState[it]!!
-                abs(a.height - b.height) > scaledTouchSlop || abs(a.width - b.width) > scaledTouchSlop || abs(a.centerX - b.centerX) > scaledTouchSlop || abs(
+                abs(a.height - b.height) > scaledTouchSlop || abs(a.width - b.width) > scaledTouchSlop || abs(
+                    a.centerX - b.centerX
+                ) > scaledTouchSlop || abs(
                     a.centerY - b.centerY
                 ) > scaledTouchSlop
             }
@@ -316,7 +350,8 @@ class RtcComponent(
         dragAnimator.show()
     }
 
-    private val expandWidth = activity.resources.getDimensionPixelSize(R.dimen.room_class_video_area_width)
+    private val expandWidth =
+        activity.resources.getDimensionPixelSize(R.dimen.room_class_video_area_width)
 
     private fun updateVideoContainer(value: Float) {
         val layoutParams = videoListBinding.root.layoutParams
@@ -348,14 +383,16 @@ class RtcComponent(
     }
 
     private fun initView() {
-        fullScreenBinding = ComponentFullscreenBinding.inflate(activity.layoutInflater, fullScreenLayout, true)
+        fullScreenBinding =
+            ComponentFullscreenBinding.inflate(activity.layoutInflater, fullScreenLayout, true)
         fullScreenBinding.exitFullScreen.setOnClickListener(onClickListener)
         fullScreenBinding.fullAudioOpt.setOnClickListener(onClickListener)
         fullScreenBinding.fullVideoOpt.setOnClickListener(onClickListener)
         fullScreenBinding.root.setOnClickListener { /* disable click pass through */ }
         fullScreenBinding.root.isVisible = false
 
-        videoListBinding = ComponentVideoListBinding.inflate(activity.layoutInflater, rootView, true)
+        videoListBinding =
+            ComponentVideoListBinding.inflate(activity.layoutInflater, rootView, true)
         videoListBinding.videoOpt.setOnClickListener(onClickListener)
         videoListBinding.audioOpt.setOnClickListener(onClickListener)
         videoListBinding.enterFullScreen.setOnClickListener(onClickListener)
@@ -439,7 +476,13 @@ class RtcComponent(
 
         videoListBinding.videoList.layoutManager = LinearLayoutManager(activity)
         videoListBinding.videoList.adapter = adapter
-        videoListBinding.videoList.addItemDecoration(PaddingItemDecoration(vertical = activity.dp2px(4)))
+        videoListBinding.videoList.addItemDecoration(
+            PaddingItemDecoration(
+                vertical = activity.dp2px(
+                    4
+                )
+            )
+        )
 
         videoAreaAnimator = SimpleAnimator(onUpdate = ::updateVideoContainer,
             onShowStart = { videoListBinding.root.isVisible = true },
@@ -541,7 +584,7 @@ class RtcComponent(
         val right = start.right + (end.right - start.right) * value
         val top = start.top + (end.top - start.top) * value
         val bottom = start.bottom + (end.bottom - start.bottom) * value
-        // logger.d("left:$left,right:$right,top:$top,bottom:$bottom")
+        Log.d("Vuihoc_Log","left:$left,right:$right,top:$top,bottom:$bottom")
 
         fullScreenBinding.fullVideoView.run {
             val lp = layoutParams as ViewGroup.MarginLayoutParams
@@ -562,8 +605,10 @@ class RtcComponent(
         }
 
         fullScreenBinding.fullScreenAvatar.run {
-            val sizeFrom = activity.resources.getDimensionPixelSize(R.dimen.room_class_video_user_avatar_size_normal)
-            val sizeTo = activity.resources.getDimensionPixelSize(R.dimen.room_class_video_user_avatar_size_fullscreen)
+            val sizeFrom =
+                activity.resources.getDimensionPixelSize(R.dimen.room_class_video_user_avatar_size_normal)
+            val sizeTo =
+                activity.resources.getDimensionPixelSize(R.dimen.room_class_video_user_avatar_size_fullscreen)
 
             val lp = layoutParams as ViewGroup.MarginLayoutParams
             lp.width = (sizeFrom + sizeTo * value).toInt()
@@ -573,12 +618,15 @@ class RtcComponent(
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
+        Log.d("Vuihoc_Log", "Rtc destroy")
         rtcApi.leaveChannel()
     }
 
     private fun checkPermission(actionAfterPermission: () -> Unit) {
         val permissions = getRequiredPermissions().filter { permission ->
-            ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                activity, permission
+            ) != PackageManager.PERMISSION_GRANTED
         }.toTypedArray()
 
         if (permissions.isEmpty()) {
@@ -586,7 +634,7 @@ class RtcComponent(
             return
         }
 
-        // logger.d("[RTC] checkPermission request $permissions")
+        Log.d("Vuihoc_Log","[RTC] checkPermission request $permissions")
 
         activity.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { it ->
             val allGranted = it.mapNotNull { it.key }.size == it.size
@@ -608,10 +656,11 @@ class RtcComponent(
     private val atomIndex = AtomicInteger(0)
 
     private val onDragListener = View.OnDragListener { _, event ->
-        // logger.i("RtcComponent", "onDragListener ${event.action}")
+        Log.d("Vuihoc_Log","onDragListener ${event.action}")
         when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
-                val user = adapter.findUserByUuid(windowsDragManager.currentUUID()) ?: return@OnDragListener false
+                val user = adapter.findUserByUuid(windowsDragManager.currentUUID())
+                    ?: return@OnDragListener false
                 addNewUserWindow(
                     user, UserWindowUiState(
                         centerX = event.x,
@@ -715,7 +764,8 @@ class RtcComponent(
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initUserWindowsLayout() {
-        userWindowsBinding = ComponentUserWindowsBinding.inflate(activity.layoutInflater, userWindowsLayout, true)
+        userWindowsBinding =
+            ComponentUserWindowsBinding.inflate(activity.layoutInflater, userWindowsLayout, true)
         userWindowsBinding.root.setOnDragListener(onDragListener)
         userWindowsContainer = userWindowsBinding.userWindowsContainer
         userWindowsContainer.addOnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
@@ -846,7 +896,8 @@ class RtcComponent(
     private fun animateResetMaximize(uuid: String) {
         val from = windowsDragManager.getWindowRect(uuid)
         val to = windowsState.grid.indexOf(uuid).takeIf { it >= 0 }?.let {
-            WindowsDragManager.getMaximizeWindowsInfo(windowsState.grid.size)[it].toUserWindowUiState().getRect()
+            WindowsDragManager.getMaximizeWindowsInfo(windowsState.grid.size)[it].toUserWindowUiState()
+                .getRect()
         } ?: return
 
         val r = Rect()

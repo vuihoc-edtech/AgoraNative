@@ -19,7 +19,7 @@ sealed class RtcEvent {
 
     data class UserJoined(val uid: Int, val elapsed: Int) : RtcEvent()
 
-    class VolumeIndication(val speakers: List<AudioVolumeInfo>, val totalVolume: Int) : RtcEvent()
+    class VolumeIndication(val speakers: List<AudioVolumeInfo>) : RtcEvent()
 
     class NetworkStatus(val quality: NetworkQuality) : RtcEvent()
 

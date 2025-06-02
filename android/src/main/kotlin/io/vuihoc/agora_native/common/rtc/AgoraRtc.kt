@@ -1,6 +1,7 @@
 package io.vuihoc.agora_native.common.rtc
 
 import android.content.Context
+import android.util.Log
 import io.vuihoc.agora_native.data.AppEnv
 import io.vuihoc.agora_native.interfaces.RtcApi
 import io.vuihoc.agora_native.interfaces.StartupInitializer
@@ -15,10 +16,11 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class AgoraRtc(val appEnv: AppEnv = AppEnv.getInstance()) : RtcApi, StartupInitializer {
+class AgoraRtc : RtcApi, StartupInitializer {
     private lateinit var rtcEngine: RtcEngine
     private val eventHandler: RTCEventHandler = RTCEventHandler()
     private var currentUid = 0
+    private val appEnv: AppEnv = AppEnv.getInstance()
 
     override fun init(context: Context) {
         try {
@@ -26,14 +28,15 @@ class AgoraRtc(val appEnv: AppEnv = AppEnv.getInstance()) : RtcApi, StartupIniti
                 mContext = context
                 mAppId = appEnv.agoraAppId
                 mEventHandler = eventHandler
+                mAutoRegisterAgoraExtensions = false
+
             }
             rtcEngine = RtcEngine.create(config)
-            setupVideoConfig()
             // rtcEngine.setLogFile(FileUtil.initializeLogFile(this))
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
+        setupVideoConfig()
 
     }
 
@@ -51,13 +54,13 @@ class AgoraRtc(val appEnv: AppEnv = AppEnv.getInstance()) : RtcApi, StartupIniti
         rtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
     }
 
-    fun rtcEngine(): RtcEngine {
-        return rtcEngine
-    }
+//    fun rtcEngine(): RtcEngine {
+//        return rtcEngine
+//    }
 
     override fun joinChannel(options: RtcJoinOptions): Int {
         currentUid = options.uid
-        // logger.i("[RTC] create media options by state: video=${options.videoOpen}, audio=${options.audioOpen}")
+        Log.d("AgoraRTC","[RTC] create media options by state: toke=${options.token}, channel=${options.channel}, uid=${options.uid} video=${options.videoOpen}, audio=${options.audioOpen}")
         val mediaOptions = ChannelMediaOptions().apply {
             clientRoleType =
                 if (options.videoOpen || options.audioOpen) Constants.CLIENT_ROLE_BROADCASTER else Constants.CLIENT_ROLE_AUDIENCE
@@ -120,7 +123,7 @@ class AgoraRtc(val appEnv: AppEnv = AppEnv.getInstance()) : RtcApi, StartupIniti
                 val info = speakers.map {
                     AudioVolumeInfo(uid = it.uid, volume = it.volume, vad = it.vad)
                 }
-                trySend(RtcEvent.VolumeIndication(info, totalVolume))
+                trySend(RtcEvent.VolumeIndication(info))
             }
 
             override fun onNetworkQuality(uid: Int, txQuality: Int, rxQuality: Int) {
@@ -134,28 +137,28 @@ class AgoraRtc(val appEnv: AppEnv = AppEnv.getInstance()) : RtcApi, StartupIniti
             }
 
             override fun onPermissionError(permission: Int) {
-                // logger.e("[RTC] permission error: $permission")
+               Log.d("Vuihoc_Log","[RTC] permission error: $permission")
             }
 
             override fun onRemoteAudioStateChanged(uid: Int, state: Int, reason: Int, elapsed: Int) {
-                // logger.i("[RTC] remote audio state changed: $uid, $state, $reason, $elapsed")
+                Log.d("Vuihoc_Log","[RTC] remote audio state changed: $uid, $state, $reason, $elapsed")
             }
 
             override fun onRemoteVideoStateChanged(uid: Int, state: Int, reason: Int, elapsed: Int) {
-                // logger.i("[RTC] remote video state changed: $uid, $state, $reason, $elapsed")
+                Log.d("Vuihoc_Log","[RTC] remote video state changed: $uid, $state, $reason, $elapsed")
             }
 
             override fun onUserMuteAudio(uid: Int, muted: Boolean) {
-                // logger.i("[RTC] user mute audio: $uid, $muted")
+                Log.d("Vuihoc_Log","[RTC] user mute audio: $uid, $muted")
             }
 
             override fun onUserMuteVideo(uid: Int, muted: Boolean) {
-                // logger.i("[RTC] user mute video: $uid, $muted")
+                Log.d("Vuihoc_Log","[RTC] user mute video: $uid, $muted")
             }
         }
         eventHandler.addListener(listener)
         awaitClose {
-            // logger.i("[RTC] rtc event flow closed")
+            Log.d("Vuihoc_Log","[RTC] rtc event flow closed")
             eventHandler.removeListener(listener)
         }
     }

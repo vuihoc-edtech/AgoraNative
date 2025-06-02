@@ -5,10 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.LocaleList
-import androidx.annotation.StringRes
 import androidx.core.content.edit
-import io.vuihoc.agora_native.R
-import java.util.*
+import java.util.Locale
 
 object LanguageManager {
     private const val KEY_LANGUAGE = "key_language"
@@ -18,11 +16,11 @@ object LanguageManager {
     /**
      * language: Country code
      */
-    enum class Item(val language: String, val locale: Locale?, @StringRes val display: Int) {
-        Default("", null, R.string.language_follow_system),
-        English("en", Locale.ENGLISH, R.string.language_english),
-        Chinese("zh", Locale.CHINA, R.string.language_chinese),
-        Vietnamese("vi", Locale("vi","VN"),R.string.language_vietnam ),
+    enum class Item(val language: String, val locale: Locale?) {
+        Default("", null),
+        English("en", Locale.ENGLISH),
+        Chinese("zh", Locale.CHINA),
+        Vietnamese("vi", Locale("vi","VN")),
         ;
 
         companion object {
@@ -36,7 +34,7 @@ object LanguageManager {
         store = context.getSharedPreferences("flat_language", Context.MODE_PRIVATE)
     }
 
-    fun current(): String {
+    private fun current(): String {
         return "vi"
     }
 
@@ -46,9 +44,9 @@ object LanguageManager {
         }
     }
 
-    fun currentLocale(): Locale {
-        return getLocale(current())
-    }
+//    fun currentLocale(): Locale {
+//        return getLocale(current())
+//    }
 
     fun onAttach(context: Context): Context {
         val language = current()

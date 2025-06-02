@@ -3,6 +3,7 @@ package io.vuihoc.agora_native.common.board
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.herewhite.sdk.domain.Promise
 import com.herewhite.sdk.domain.RoomPhase
@@ -92,6 +93,7 @@ class AgoraBoardRoom(
             isLog = true
             netlessUA = flatNetlessUA
             isEnableSyncedStore = true
+//            useMultiViews = false
         }
 
         fastRoomOptions.roomParams = fastRoomOptions.roomParams.apply {
@@ -107,7 +109,7 @@ class AgoraBoardRoom(
 
         fastRoom?.addListener(object : FastRoomListener {
             override fun onRoomPhaseChanged(phase: RoomPhase) {
-                // logger.i("[BOARD] room phase change to ${phase.name}")
+                Log.d("Vuihoc_Log","[BOARD] room phase change to ${phase.name}")
                 when (phase) {
                     RoomPhase.connecting -> boardPhase.value = BoardPhase.Connecting
                     RoomPhase.connected -> boardPhase.value = BoardPhase.Connected
@@ -117,7 +119,7 @@ class AgoraBoardRoom(
             }
 
             override fun onRoomReadyChanged(fastRoom: FastRoom) {
-                // logger.i("[BOARD] room ready changed ${fastRoom.isReady}")
+                Log.d("Vuihoc_Log","[BOARD] room ready changed ${fastRoom.isReady}")
                 if (syncedClassState is WhiteSyncedState && fastRoom.isReady) {
                     syncedClassState.resetRoom(fastRoom)
                 }
@@ -138,7 +140,7 @@ class AgoraBoardRoom(
         }
 
         fastRoom?.setErrorHandler {
-            // logger.e("[BOARD] error ${it.message}")
+           Log.d("Vuihoc_Log","[BOARD] error ${it.message}")
         }
 
         val fastResource = object : FastResource() {
@@ -169,6 +171,7 @@ class AgoraBoardRoom(
         setDarkMode(darkMode)
         fastRoom?.join()
         fastboard.setWhiteboardRatio(null)
+
     }
 
     private fun getCollectorStyle(): HashMap<String, String> {
@@ -184,7 +187,7 @@ class AgoraBoardRoom(
     }
 
     override fun setDarkMode(dark: Boolean) {
-        // logger.i("[BOARD] set dark mode $dark, fastboard ${::fastboard.isInitialized}")
+        Log.d("Vuihoc_Log","[BOARD] set dark mode $dark, fastboard ${::fastboard.isInitialized}")
         this.darkMode = dark
         if (::fastboard.isInitialized) {
             val fastStyle = fastboard.fastStyle.apply { isDarkMode = dark }
@@ -198,26 +201,26 @@ class AgoraBoardRoom(
     }
 
     override suspend fun setWritable(writable: Boolean): Boolean = suspendCoroutine {
-        // logger.i("[BoardRoom] set writable $writable, when isWritable ${fastRoom?.isWritable}")
+        Log.d("Vuihoc_Log","[BoardRoom] set writable $writable, when isWritable ${fastRoom?.isWritable}")
         if (fastRoom?.isWritable == writable) {
             it.resume(writable)
             return@suspendCoroutine
         }
         fastRoom?.room?.setWritable(writable, object : Promise<Boolean> {
             override fun then(success: Boolean) {
-                // logger.i("[BoardRoom] set writable result $success")
+                Log.d("Vuihoc_Log","[BoardRoom] set writable result $success")
                 it.resume(success)
             }
 
             override fun catchEx(t: SDKError) {
-                // logger.w("[BoardRoom] set writable error ${t.jsStack}")
+                Log.d("Vuihoc_Log","[BoardRoom] set writable error ${t.jsStack}")
                 it.resumeWithException(t)
             }
         }) ?: it.resumeWithException(FlatBoardException("[BoardRoom] room not ready"))
     }
 
     override suspend fun setAllowDraw(allow: Boolean) {
-        // logger.i("[BoardRoom] set allow draw $allow, when isWritable ${fastRoom?.isWritable}")
+        Log.d("Vuihoc_Log","[BoardRoom] set allow draw $allow, when isWritable ${fastRoom?.isWritable}")
         if (fastRoom?.isWritable == true) {
             fastRoom?.room?.disableOperations(!allow)
             fastRoom?.room?.disableWindowOperation(!allow)

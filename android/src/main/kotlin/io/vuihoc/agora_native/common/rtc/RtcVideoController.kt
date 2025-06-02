@@ -6,7 +6,6 @@ import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import io.vuihoc.agora_native.interfaces.RtcApi
 import io.agora.rtc2.video.VideoCanvas
-import io.agora.rtc2.RtcEngine
 import kotlin.collections.set
 
 
@@ -14,9 +13,9 @@ class RtcVideoController(private val rtcApi: RtcApi) {
     private var textureMap = HashMap<Int, TextureView>()
 
     var shareScreenContainer: FrameLayout? = null
-    var localUid: Int = 0
-    var shareScreenUid: Int = 0
-    var fullScreenUid: Int = 0
+    private var localUid: Int = 0
+    private var shareScreenUid: Int = 0
+    private var fullScreenUid: Int = 0
 
     fun setupUid(uid: Int, ssUid: Int) {
         localUid = uid
@@ -43,7 +42,7 @@ class RtcVideoController(private val rtcApi: RtcApi) {
             return
         }
         if (textureMap[uid] == null) {
-            textureMap[uid] = RtcEngine.CreateTextureView(container.context)
+            textureMap[uid] = TextureView(container.context)
         }
 
         val textureView = textureMap[uid]!!
@@ -65,9 +64,9 @@ class RtcVideoController(private val rtcApi: RtcApi) {
         FrameLayout.LayoutParams.MATCH_PARENT
     )
 
-    private fun releaseVideo(uid: Int) {
-        setupVideoByVideoCanvas(uid, VideoCanvas(null, VideoCanvas.RENDER_MODE_HIDDEN, uid))
-    }
+//    private fun releaseVideo(uid: Int) {
+//        setupVideoByVideoCanvas(uid, VideoCanvas(null, VideoCanvas.RENDER_MODE_HIDDEN, uid))
+//    }
 
     private fun setupVideo(textureView: View, uid: Int) {
         setupVideoByVideoCanvas(uid, VideoCanvas(textureView, VideoCanvas.RENDER_MODE_HIDDEN, uid))
@@ -93,7 +92,7 @@ class RtcVideoController(private val rtcApi: RtcApi) {
     fun handlerJoined(uid: Int) {
         if (uid == shareScreenUid) {
             shareScreenContainer?.run {
-                val textureView = RtcEngine.CreateTextureView(context)
+                val textureView = TextureView(context)
                 rtcApi.setupRemoteVideo(VideoCanvas(textureView, VideoCanvas.RENDER_MODE_FIT, uid))
                 addView(textureView, generateLayoutParams())
                 isVisible = true

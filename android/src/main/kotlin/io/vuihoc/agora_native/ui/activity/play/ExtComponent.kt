@@ -6,8 +6,10 @@ import android.widget.FrameLayout
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -30,6 +32,7 @@ import io.vuihoc.agora_native.util.delayAndFinish
 import io.vuihoc.agora_native.util.isDarkMode
 import io.vuihoc.agora_native.util.showToast
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 /**
  * display common loading, toast, dialog, global layout change.
@@ -51,81 +54,117 @@ class ExtComponent(
     }
 
     private fun initView() {
-        extensionBinding = ComponentExtensionBinding.inflate(activity.layoutInflater, rootView, true)
-        roomStateBinding = ComponentRoomStateBinding.inflate(activity.layoutInflater, roomStateContainer, true)
+        extensionBinding =
+            ComponentExtensionBinding.inflate(activity.layoutInflater, rootView, true)
+        roomStateBinding =
+            ComponentRoomStateBinding.inflate(activity.layoutInflater, roomStateContainer, true)
     }
 
     private fun observeState() {
-        lifecycleScope.launchWhenCreated {
-            classRoomViewModel.loginThirdParty()
-        }
-
-        lifecycleScope.launchWhenResumed {
-            viewModel.state.collect {
-                showLoading(it.loading)
-                it.error?.run {
-                    handleErrorMessage(it.error)
-                    viewModel.clearError()
-                }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                classRoomViewModel.loginThirdParty()
             }
+
         }
 
-        lifecycleScope.launchWhenResumed {
-            classRoomViewModel.state.filterNotNull().collect {
-                if (it.roomStatus == RoomStatus.Stopped) {
-                    showRoomExitDialog(activity.getString(R.string.exit_room_stopped_message))
-                }
+        lifecycleScope.launch {
 
-                // TODO current version does not have an end time limit
-                roomStateBinding.timeStateLayout.updateTimeStateData(
-                    TimeStateData(
-                        it.beginTime,
-                        Long.MAX_VALUE,
-                        10 * 60 * 1000,
-                    )
-                )
-            }
-        }
-
-        lifecycleScope.launchWhenResumed {
-            classRoomViewModel.classroomEvent.collect { event ->
-                when (event) {
-                    RemoteLoginEvent -> {
-                        showRoomExitDialog(activity.getString(R.string.exit_remote_login_message))
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.state.collect {
+                    showLoading(it.loading)
+                    it.error?.run {
+                        handleErrorMessage(it.error)
+                        viewModel.clearError()
                     }
+                }
+            }
+        }
 
-                    RoomKickedEvent -> {
+        lifecycleScope.launch {
+
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                classRoomViewModel.state.filterNotNull().collect {
+                    if (it.roomStatus == RoomStatus.Stopped) {
                         showRoomExitDialog(activity.getString(R.string.exit_room_stopped_message))
                     }
 
-                    else -> {}
+                    // TODO current version does not have an end time limit
+                    roomStateBinding.timeStateLayout.updateTimeStateData(
+                        TimeStateData(
+                            it.beginTime,
+                            Long.MAX_VALUE,
+                            10 * 60 * 1000,
+                        )
+                    )
                 }
             }
         }
 
-        lifecycleScope.launchWhenResumed {
-            classRoomViewModel.rtcEvent.collect { event ->
-                when (event) {
-                    is RtcEvent.NetworkStatus -> {
-                        when (event.quality) {
-                            NetworkQuality.Unknown, NetworkQuality.Excellent -> {
-                                roomStateBinding.networkStateIcon.setColorFilter(ContextCompat.getColor(activity, R.color.flat_green_6))
-                            }
-                            NetworkQuality.Good -> {
-                                roomStateBinding.networkStateIcon.setColorFilter(ContextCompat.getColor(activity, R.color.flat_yellow_6))
-                            }
-                            NetworkQuality.Bad-> {
-                                roomStateBinding.networkStateIcon.setColorFilter(ContextCompat.getColor(activity, R.color.flat_red_6))
+        lifecycleScope.launch {
+
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                classRoomViewModel.classroomEvent.collect { event ->
+                    when (event) {
+                        RemoteLoginEvent -> {
+                            showRoomExitDialog(activity.getString(R.string.exit_remote_login_message))
+                        }
+
+                        RoomKickedEvent -> {
+                            showRoomExitDialog(activity.getString(R.string.exit_room_stopped_message))
+                        }
+
+                        else -> {}
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                classRoomViewModel.rtcEvent.collect { event ->
+                    when (event) {
+                        is RtcEvent.NetworkStatus -> {
+                            when (event.quality) {
+                                NetworkQuality.Unknown, NetworkQuality.Excellent -> {
+                                    roomStateBinding.networkStateIcon.setColorFilter(
+                                        ContextCompat.getColor(
+                                            activity,
+                                            R.color.flat_green_6
+                                        )
+                                    )
+                                }
+
+                                NetworkQuality.Good -> {
+                                    roomStateBinding.networkStateIcon.setColorFilter(
+                                        ContextCompat.getColor(
+                                            activity,
+                                            R.color.flat_yellow_6
+                                        )
+                                    )
+                                }
+
+                                NetworkQuality.Bad -> {
+                                    roomStateBinding.networkStateIcon.setColorFilter(
+                                        ContextCompat.getColor(
+                                            activity,
+                                            R.color.flat_red_6
+                                        )
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    is RtcEvent.LastmileDelay -> {
-                        roomStateBinding.networkDelay.text = activity.getString(R.string.room_class_network_delay, event.delay)
-                    }
+                        is RtcEvent.LastmileDelay -> {
+                            roomStateBinding.networkDelay.text =
+                                activity.getString(R.string.room_class_network_delay, event.delay)
+                        }
 
-                    else -> {
+                        else -> {
 
+                        }
                     }
                 }
             }

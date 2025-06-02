@@ -50,7 +50,7 @@ class ServiceFetcher(
     }
 
     fun fetchMessageService(): MessageService {
-        return getApiService<MessageService>("https://api.agora.io/dev/")
+        return getApiService<MessageService>(appEnv.flatServiceUrl)
     }
 
     fun fetchMiscService(): MiscService {

@@ -70,7 +70,7 @@
 //        override fun onDisplayRemoved(displayId: Int) = Unit
 //        override fun onDisplayChanged(displayId: Int) = view?.let { view ->
 //            if (displayId == this@CameraFragment.displayId) {
-//                // logger.d("[$TAG] Rotation changed: ${view.display.rotation}")
+//                Log.d("Vuihoc_Log","[$TAG] Rotation changed: ${view.display.rotation}")
 //                imageCapture?.targetRotation = view.display.rotation
 //                imageAnalyzer?.targetRotation = view.display.rotation
 //            }
@@ -181,10 +181,10 @@
 //
 //        // Get screen metrics used to setup camera for full screen resolution
 //        val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity()).bounds
-//        // logger.d("[$TAG] Screen metrics: ${metrics.width()} x ${metrics.height()}")
+//        Log.d("Vuihoc_Log","[$TAG] Screen metrics: ${metrics.width()} x ${metrics.height()}")
 //
 //        val screenAspectRatio = aspectRatio(metrics.width(), metrics.height())
-//        // logger.d("[$TAG] Preview aspect ratio: $screenAspectRatio")
+//        Log.d("Vuihoc_Log","[$TAG] Preview aspect ratio: $screenAspectRatio")
 //
 //        val rotation = fragmentCameraBinding.viewFinder.display.rotation
 //
@@ -224,7 +224,7 @@
 //            observeCameraState(camera?.cameraInfo!!)
 //        } catch (exc: Exception) {
 //            activity?.showToast("Use case binding failed")
-//            // logger.e("Use case binding failed", exc)
+//           Log.d("Vuihoc_Log","Use case binding failed", exc)
 //        }
 //    }
 //
@@ -234,10 +234,10 @@
 //
 //    private fun observeCameraState(cameraInfo: CameraInfo) {
 //        cameraInfo.cameraState.observe(viewLifecycleOwner) { cameraState ->
-//            // logger.i("camera state updated: $cameraState")
+//            Log.d("Vuihoc_Log","camera state updated: $cameraState")
 //            cameraState.error?.let { error ->
 //                activity?.showToast("camera encounters an error")
-//                // logger.e("camera encounters an error: $error")
+//               Log.d("Vuihoc_Log","camera encounters an error: $error")
 //            }
 //        }
 //    }
@@ -302,7 +302,7 @@
 //                            post { isEnabled = true }
 //                        }
 //
-//                        // logger.e("[$TAG] Photo capture failed: ${exc.message}", exc)
+//                       Log.d("Vuihoc_Log","[$TAG] Photo capture failed: ${exc.message}", exc)
 //                    }
 //
 //                    override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -311,7 +311,7 @@
 //                        }
 //
 //                        val savedUri = output.savedUri ?: return
-//                        // logger.d("[$TAG] Photo capture succeeded: $savedUri")
+//                        Log.d("Vuihoc_Log","[$TAG] Photo capture succeeded: $savedUri")
 //
 //                        // Implicit broadcasts will be ignored for devices running API level >= 24
 //                        // so if you only target API level 24+ you can remove this statement

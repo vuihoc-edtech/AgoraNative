@@ -1,5 +1,6 @@
 package io.vuihoc.agora_native.common.board
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
@@ -43,7 +44,7 @@ class WhiteSyncedState : SyncedClassState {
     private var inited = false
 
     fun resetRoom(fastRoom: FastRoom) {
-        // logger.i("[SyncedState] resetRoom, inited: $inited")
+        Log.d("Vuihoc_Log","[SyncedState] resetRoom, inited: $inited")
         if (inited) {
             clean()
         }
@@ -61,7 +62,7 @@ class WhiteSyncedState : SyncedClassState {
             _whiteboardFlow.value = it
         }
 
-        connectStorage(CLASSROOM_STORAGE, ClassroomState::class.java, gson.toJson(ClassroomState())) {
+        connectStorage(ClassroomState::class.java, gson.toJson(ClassroomState())) {
             _classroomStateFlow.value = ClassroomState(
                 raiseHandUsers = it.raiseHandUsers,
                 ban = it.ban,
@@ -97,44 +98,45 @@ class WhiteSyncedState : SyncedClassState {
     private fun connectUserWindowsStorage() {
         syncedStore.connectStorage(USER_WINDOWS, "{\"grid\": []}", object : Promise<String> {
             override fun then(value: String) {
-                // logger.i("[SyncedState] $USER_WINDOWS initial state: $value")
+                Log.d("Vuihoc_Log","[SyncedState] $USER_WINDOWS initial state: $value")
                 try {
                     _userWindowsFlow.value = parseUserWindowsState(value)
                 } catch (e: Exception) {
-                    // logger.e("[SyncedState] $USER_WINDOWS initial error: $e")
+                   Log.d("Vuihoc_Log","[SyncedState] $USER_WINDOWS initial error: $e")
                 }
             }
 
             override fun catchEx(t: SDKError) {
-                // logger.e("[SyncedState] $USER_WINDOWS catchEx error: $t")
+               Log.d("Vuihoc_Log","[SyncedState] $USER_WINDOWS catchEx error: $t")
             }
         })
 
         syncedStore.addOnStateChangedListener(USER_WINDOWS) { value, diff ->
-            // logger.i("[SyncedState] $USER_WINDOWS updated: value: $value diff: $diff")
+            Log.d("Vuihoc_Log","[SyncedState] $USER_WINDOWS updated: value: $value diff: $diff")
             _userWindowsFlow.value = parseUserWindowsState(value)
         }
     }
 
     private fun <T> connectStorage(
-        storage: String,
         type: Class<T>,
         defaultJson: String = "{}",
         block: (T) -> Unit
     ) {
+        val storage: String = CLASSROOM_STORAGE
+
         syncedStore.connectStorage(storage, defaultJson, object : Promise<String> {
             override fun then(value: String) {
-                // logger.i("[SyncedState] $storage initial state: $value")
+                Log.d("Vuihoc_Log","[SyncedState] $storage initial state: $value")
                 block(gson.fromJson(value, type))
             }
 
             override fun catchEx(t: SDKError) {
-                // logger.e("[SyncedState] $storage catchEx error: $t")
+               Log.d("Vuihoc_Log","[SyncedState] $storage catchEx error: $t")
             }
         })
 
-        syncedStore.addOnStateChangedListener(storage) { value, diff ->
-            // logger.i("[SyncedState] $storage updated: value: $value diff: $diff")
+        syncedStore.addOnStateChangedListener(storage) { value, diff->
+            Log.d("Vuihoc_Log","[SyncedState] $storage updated: value: $value diff: $diff")
             block(gson.fromJson(value, type))
         }
     }
@@ -147,17 +149,17 @@ class WhiteSyncedState : SyncedClassState {
     ) {
         syncedStore.connectStorage(storage, defaultJson, object : Promise<String> {
             override fun then(state: String) {
-                // logger.i("[SyncedState] $storage initial state: $state")
+                Log.d("Vuihoc_Log","[SyncedState] $storage initial state: $state")
                 block(getMapState(state, itemType))
             }
 
             override fun catchEx(t: SDKError) {
-                // logger.e("[SyncedState] $storage catchEx error: $t")
+               Log.d("Vuihoc_Log","[SyncedState] $storage catchEx error: $t")
             }
         })
 
         syncedStore.addOnStateChangedListener(storage) { value, diff ->
-            // logger.i("[SyncedState] $storage updated: value: $value diff: $diff")
+            Log.d("Vuihoc_Log","[SyncedState] $storage updated: value: $value diff: $diff")
             block(getMapState(value, itemType))
         }
     }
@@ -172,7 +174,7 @@ class WhiteSyncedState : SyncedClassState {
                 }
             }
         } catch (e: Exception) {
-            // logger.e(e, "[SyncedState] onStage users parse error!")
+           Log.d("Vuihoc_Log", "[SyncedState] onStage users parse error! $e")
         }
         return onStageUsers
     }

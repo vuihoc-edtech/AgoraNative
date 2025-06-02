@@ -11,7 +11,6 @@ import io.vuihoc.agora_native.common.rtc.AudioVolumeInfo
 import io.vuihoc.agora_native.data.model.RoomUser
 import io.vuihoc.agora_native.databinding.ItemClassRtcVideoBinding
 import io.vuihoc.agora_native.ui.manager.WindowsDragManager
-import io.vuihoc.agora_native.ui.view.FlatDrawables
 import io.vuihoc.agora_native.util.dp2px
 import io.vuihoc.agora_native.util.loadAvatarAny
 import kotlin.math.abs

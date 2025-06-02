@@ -144,8 +144,8 @@ dependencies {
     // for local fastboard debug
     implementation('com.github.netless-io:fastboard-android:nl_2.0.0-alpha.5')
 
-    implementation 'io.agora.rtc:full-rtc-basic:4.3.0'
-    implementation 'io.agora:agora-rtm:2.2.0'
+    implementation 'io.agora.rtc:full-rtc-basic:4.5.2'
+    implementation 'io.agora:agora-rtm:2.2.4'
 
     // WindowManager
     implementation "androidx.exifinterface:exifinterface:1.3.6"

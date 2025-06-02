@@ -44,7 +44,7 @@ class MessageQuery(
             return messages
         }
         querying = true
-        if (hasMore && messageCache.lastOrNull()?.ts ?: 0 < targetTime) {
+        if (hasMore && (messageCache.lastOrNull()?.ts ?: 0) < targetTime) {
             val msgs = rtmApi.getTextHistory(roomUUID, startTime, endTime, PAGE_LIMIT, offset)
             if (msgs.size < PAGE_LIMIT) {
                 hasMore = false

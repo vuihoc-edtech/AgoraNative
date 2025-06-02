@@ -3,18 +3,15 @@ package io.vuihoc.agora_native.common.android
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
-import io.vuihoc.agora_native.R
 
 
 object DarkModeManager {
-    enum class Mode(val type: String, @StringRes val display: Int) {
-        Auto("auto", R.string.dark_mode_auto),
-        Light("light", R.string.dark_mode_light),
-        Dark("dark", R.string.dark_mode_dark),
-        ;
+    enum class Mode(val type: String) {
+        Auto("auto"),
+        Light("light"),
+        Dark("dark");
 
         companion object {
             fun of(mode: String?): Mode {

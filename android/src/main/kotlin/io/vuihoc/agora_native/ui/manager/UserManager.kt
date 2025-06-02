@@ -1,6 +1,7 @@
 package io.vuihoc.agora_native.ui.manager
 
 // import dagger.hilt.android.scopes.ActivityRetainedScoped
+import android.util.Log
 import io.vuihoc.agora_native.common.board.DeviceState
 import io.vuihoc.agora_native.data.model.NetworkRoomUser
 import io.vuihoc.agora_native.data.model.RoomUser
@@ -86,6 +87,7 @@ class UserManager(
     }
 
     suspend fun initUsers(uuids: List<String>) {
+        Log.d("Vuihoc_Log", "uuids: $uuids")
         val usersInfo = userQuery.loadUsers(uuids)
         usersInfo.forEach { (uuid, roomUser) ->
             val user = usersCache[uuid]?.copy(
@@ -99,6 +101,8 @@ class UserManager(
                 roomUser.avatarURL,
             )
             updateUserCache(user)
+            Log.d("UserManager", roomUser.toString())
+            Log.d("UserManager", user.toString())
         }
         sortAndNotify(usersCache)
     }
@@ -256,18 +260,18 @@ class UserManager(
         }
         updateAndNotifyUser(updateUsers)
     }
-
-    fun updateRaiseHandStatus(uuid: String, isRaiseHand: Boolean) {
-        usersCache[uuid]?.run { updateAndNotifyUser(copy(isRaiseHand = isRaiseHand)) }
-    }
-
-    fun updateRaiseHandStatus(status: List<String>) {
-        this.raiseHandState = status
-        val updateUsers = users.map {
-            it.copy(isRaiseHand = status.contains(it.userUUID))
-        }
-        updateAndNotifyUser(updateUsers)
-    }
+//
+//    fun updateRaiseHandStatus(uuid: String, isRaiseHand: Boolean) {
+//        usersCache[uuid]?.run { updateAndNotifyUser(copy(isRaiseHand = isRaiseHand)) }
+//    }
+//
+//    fun updateRaiseHandStatus(status: List<String>) {
+//        this.raiseHandState = status
+//        val updateUsers = users.map {
+//            it.copy(isRaiseHand = status.contains(it.userUUID))
+//        }
+//        updateAndNotifyUser(updateUsers)
+//    }
 
     fun isUserSelf(userId: String): Boolean {
         return userId == selfUUID
@@ -277,9 +281,9 @@ class UserManager(
         return uuid == ownerUUID
     }
 
-    fun isOwnerOnStage(): Boolean {
-        return creator?.isJoined ?: false
-    }
+//    fun isOwnerOnStage(): Boolean {
+//        return creator?.isJoined ?: false
+//    }
 
     fun getOnStageCount(): Int {
         return users.count { it.isOnStage }

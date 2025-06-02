@@ -5,15 +5,6 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.herewhite.sdk.WhiteboardView
-import io.vuihoc.agora_native.common.Navigator
-import io.vuihoc.agora_native.common.android.I18NFetcher
-import io.vuihoc.agora_native.common.board.DeviceState
-import io.vuihoc.agora_native.common.rtc.AgoraRtc
-import io.vuihoc.agora_native.common.rtm.AgoraRtm
-import io.vuihoc.agora_native.data.AppEnv
-import io.vuihoc.agora_native.data.AppKVCenter
-import io.vuihoc.agora_native.data.manager.JoinRoomRecordManager
-import io.vuihoc.agora_native.data.model.UserInfo
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -21,6 +12,14 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import io.vuihoc.agora_native.common.Navigator
+import io.vuihoc.agora_native.common.android.I18NFetcher
+import io.vuihoc.agora_native.common.board.DeviceState
+import io.vuihoc.agora_native.common.rtc.AgoraRtc
+import io.vuihoc.agora_native.common.rtm.AgoraRtm
+import io.vuihoc.agora_native.data.AppEnv
+import io.vuihoc.agora_native.data.AppKVCenter
+import io.vuihoc.agora_native.data.model.UserInfo
 import java.util.UUID
 
 /** AgoraNativePlugin */
@@ -36,11 +35,9 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "agora_native")
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
-        AppKVCenter.getInstance().initStore(context)
         AppKVCenter.getInstance().updateSessionId(UUID.randomUUID().toString())
-        JoinRoomRecordManager.init(context)
         I18NFetcher.init(context)
-        WhiteboardView.setEntryUrl("https://vuihoc-edtech.github.io/white_board_with_apps/")
+//        WhiteboardView.setEntryUrl("https://vuihoc-edtech.github.io/white_board_with_apps/")
 
     }
 
@@ -56,7 +53,6 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
             "saveLoginInfo" -> {
                 val user = call.arguments as Map<String, Any>
                 val success = saveLoginInfo(user)
-                postLogin()
                 result.success(success)
             }
             "getGlobalUUID" -> {
@@ -90,6 +86,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                         whiteAppId = whiteboardAppId
                     }
                 }
+                postLogin()
                 result.success(true)
             }
             else -> {
@@ -114,7 +111,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     private fun joinClassRoom(uuid: String, result: Result) {
             if(activity != null) {
                 AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
-                Navigator.launchRoomPlayActivity(activity!!, uuid, null, true)
+                Navigator.launchRoomPlayActivity(activity!!, uuid, null, false)
                 result.success(true)
 //                CoroutineScope(Dispatchers.Main).launch {
 //                    try {

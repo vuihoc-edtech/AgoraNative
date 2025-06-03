@@ -72,7 +72,7 @@ enum ClassroomFactory {
 //            fastRoomConfiguration.customWhiteboardUrl = URL(fileURLWithPath: indexPath).absoluteString
 //        }
         //TODO: This link is whiteboard_rebuild with apps
-        fastRoomConfiguration.customWhiteboardUrl = "https://vuihoc-edtech.github.io/white_board_with_apps/"
+//        fastRoomConfiguration.customWhiteboardUrl = "https://vuihoc-edtech.github.io/white_board_with_apps/"
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
 

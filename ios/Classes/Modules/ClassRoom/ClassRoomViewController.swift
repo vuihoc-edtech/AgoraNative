@@ -801,23 +801,24 @@ class ClassRoomViewController: UIViewController {
     }
 
     func leaveUIHierarchy() {
-        if #available(iOS 13.0, *) {
-            if let session = view.window?.windowScene?.session,
-               view.window?.rootViewController === self
-            {
-                UIApplication.shared.requestSceneSessionDestruction(session,
-                                                                    options: nil)
-                return
-            }
-        } 
-        if let presenting = presentingViewController {
-            presenting.dismiss(animated: true, completion: nil)
-        }
+//        if #available(iOS 13.0, *) {
+//            if let session = view.window?.windowScene?.session,
+//               view.window?.rootViewController === self
+//            {
+//                UIApplication.shared.requestSceneSessionDestruction(session,
+//                                                                    options: nil)
+//                return
+//            }
+//        } 
+        self.dismiss(animated: true, completion: nil)
     }
 
     func stopSubModulesAndLeaveUIHierarchy() {
+        customLog("before leave")
         stopSubModules(cleanRtc: true)
+        customLog("after clean rtc")
         leaveUIHierarchy()
+        customLog("after leave")
     }
 
     // MARK: - Scene

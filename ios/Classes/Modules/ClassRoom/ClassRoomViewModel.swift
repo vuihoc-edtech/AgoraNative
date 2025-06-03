@@ -12,7 +12,7 @@ import RxSwift
 
 class ClassRoomViewModel {
     private var stateHandler: ClassroomStateHandler!
-
+    
     let preferredDeviceState: DeviceState
     let alertProvider: AlertProvider
     let commandChannelRequest: Single<RtmChannelProvider>
@@ -30,7 +30,7 @@ class ClassRoomViewModel {
                 users.filter(\.status.isSpeak)
             }
     }
-
+    
     var currentUser: Observable<RoomUser> {
         members
             .map { [weak self] m in
@@ -39,7 +39,7 @@ class ClassRoomViewModel {
             }
             .distinctUntilChanged()
     }
-
+    
     func transWhiteboardPermissionUpdate(whiteboardEnable _: Observable<Bool>) -> Driver<String> {
         currentUser
             .map(\.status.whiteboard)
@@ -50,7 +50,7 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: "")
     }
-
+    
     // Show tips when user's whiteboard permission is ready
     func transOnStageUpdate(whiteboardEnable: Observable<Bool>) -> Observable<String> {
         Observable
@@ -77,7 +77,7 @@ class ClassRoomViewModel {
                 }
             }
     }
-
+    
     var raiseHandHide: Observable<Bool> {
         Observable.combineLatest(currentUser,
                                  banState)
@@ -88,7 +88,7 @@ class ClassRoomViewModel {
             return currentUser.status.isSpeak
         }
     }
-
+    
     var whiteboardPermission: Observable<WhiteboardPermission> {
         let isBigClass = roomType == .bigClass
         let classroomAllowWhiteboardWritable = !isBigClass
@@ -99,25 +99,25 @@ class ClassRoomViewModel {
             )
         }
     }
-
+    
     var isRaisingHand: Observable<Bool> {
         currentUser.map(\.status.isRaisingHand)
     }
-
+    
     var roomStopped: Observable<Void> {
         stateHandler.roomStartStatus
             .filter { $0 == .Stopped }
             .mapToVoid()
             .asObservable()
     }
-
+    
     var showUsersResPoint: Observable<Bool> {
         members
             .map { users -> Bool in
                 users.contains(where: \.status.isRaisingHand)
             }
     }
-
+    
     init(stateHandler: ClassroomStateHandler,
          initDeviceState: DeviceState,
          isOwner: Bool,
@@ -140,14 +140,14 @@ class ClassRoomViewModel {
         self.alertProvider = alertProvider
         self.preferredDeviceState = preferredDeviceState
     }
-
+    
     struct InitRoomOutput {
         let initRoomResult: Single<Void>
         let roomError: Observable<ClassroomStateError>
         /// enable when user is an owner and roomType is oneToOne
         let autoPickMemberOnStageOnce: Single<RoomUser?>?
     }
-
+    
     func initialRoomStatus() -> InitRoomOutput {
         let initRoom = stateHandler.setup()
             .flatMap { [weak self] _ -> Single<Void> in
@@ -159,11 +159,11 @@ class ClassRoomViewModel {
                     return .just(())
                 }
             }
-
+        
         let shareInitRoom = initRoom
             .asObservable()
             .share(replay: 1, scope: .whileConnected)
-
+        
         let autoPickMemberOnStageOnce: Single<RoomUser?>?
         if roomType.allowAutoOnstage, !isOwner {
             autoPickMemberOnStageOnce = shareInitRoom
@@ -175,7 +175,7 @@ class ClassRoomViewModel {
                     stateHandler.checkIfSpeakUserOverMaxCount(),
                     resultSelector: { user, allowSpeakMore -> RoomUser? in
                         allowSpeakMore ? user : nil
-                })
+                    })
                 .flatMap({ [weak self] user -> Observable<RoomUser?> in
                     guard let self else { return .error("self not exist") }
                     if let user {
@@ -189,12 +189,12 @@ class ClassRoomViewModel {
         } else {
             autoPickMemberOnStageOnce = nil
         }
-
+        
         let error = stateHandler.error.asObservable()
-
+        
         return .init(initRoomResult: shareInitRoom.asSingle(), roomError: error, autoPickMemberOnStageOnce: autoPickMemberOnStageOnce)
     }
-
+    
     struct ChatChannelInitValue {
         let channel: RtmChannelProvider
         let userNameProvider: UserInfoQueryProvider
@@ -204,23 +204,23 @@ class ClassRoomViewModel {
         let banMessagePublisher: PublishRelay<Bool>
         let chatButtonShowRedPoint: Driver<Bool>
     }
-
+    
     struct ChatInput {
         let chatButtonTap: ControlEvent<Void>
         let chatControllerPresentedFetch: () -> Driver<Bool>
     }
-
+    
     func initChatChannel(_ input: ChatInput) -> Single<ChatChannelInitValue> {
         let channel = commandChannelRequest
             .asObservable()
             .share(replay: 1, scope: .forever)
-
+        
         let provider = stateHandler.memberNameQueryProvider()
         let isBanned = banState.asDriver(onErrorJustReturn: true)
         let notice = stateHandler.chatNoticePublisher.asObservable()
         let toast = stateHandler.toastNoticePublisher.asObservable()
         let banMessagePublisher = stateHandler.banMessagePublisher
-
+        
         let newMessageWhenChatControllerHide = channel
             .flatMap { channel -> Observable<Void> in
                 channel.newMessagePublish.asObservable().mapToVoid()
@@ -231,22 +231,22 @@ class ClassRoomViewModel {
             .map { !$0 }
             .asDriver(onErrorJustReturn: false)
         let tapChat = input.chatButtonTap.map { false }.asDriver(onErrorJustReturn: false)
-
+        
         let chatButtonShowRedPoint = Driver.of(newMessageWhenChatControllerHide, tapChat)
             .merge()
-
+        
         return channel.asSingle()
             .map { channel -> ChatChannelInitValue in
-                .init(channel: channel,
-                      userNameProvider: provider,
-                      notice: notice,
-                      toast: toast,
-                      isBanned: isBanned,
-                      banMessagePublisher: banMessagePublisher,
-                      chatButtonShowRedPoint: chatButtonShowRedPoint)
+                    .init(channel: channel,
+                          userNameProvider: provider,
+                          notice: notice,
+                          toast: toast,
+                          isBanned: isBanned,
+                          banMessagePublisher: banMessagePublisher,
+                          chatButtonShowRedPoint: chatButtonShowRedPoint)
             }
     }
-
+    
     func transformBanClick(_ input: ControlEvent<Void>) -> Observable<Bool> {
         input
             .withLatestFrom(stateHandler.banState, resultSelector: { _, ban in !ban })
@@ -257,7 +257,7 @@ class ClassRoomViewModel {
                     .map { ban }
             }
     }
-
+    
     func observableRewards() -> Observable<UInt> {
         stateHandler.rewardPublisher
             .withLatestFrom(members, resultSelector: { uuid, members in
@@ -267,7 +267,7 @@ class ClassRoomViewModel {
             .map { $0! }
             .asObservable()
     }
-
+    
     func transformRaiseHandClick(_ input: ControlEvent<Void>) -> Driver<Bool> {
         guard !isOwner else { return .just(false) }
         return input
@@ -285,7 +285,7 @@ class ClassRoomViewModel {
                     .map { !status.isRaisingHand }
             }
     }
-
+    
     func listeningDeviceNotifyOff() -> Driver<String> {
         stateHandler.notifyDeviceOffPublisher
             .map { type -> String in
@@ -298,13 +298,13 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: "")
     }
-
+    
     func listeningDeviceResponse() -> Driver<String> {
         stateHandler.requestDeviceResponsePublisher
             .map(\.toast)
             .asDriver(onErrorJustReturn: "")
     }
-
+    
     func listeningDeviceRequest() -> Driver<Void> {
         let micAlert = AlertModel(title: localizeStrings("Alert"),
                                   message: localizeStrings("TeacherRequestMic"),
@@ -373,7 +373,7 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: ())
     }
-
+    
     struct UserListInput {
         let allMuteTap: Observable<Void>
         let stopInteractingTap: Observable<Void>
@@ -384,7 +384,7 @@ class ClassRoomViewModel {
         let tapSomeUserMic: Observable<String>
         let tapSomeUserReward: Observable<String>
     }
-
+    
     func transformUserListInput(_ input: UserListInput) -> Driver<String> {
         let allMuteTask = input.allMuteTap
             .flatMap { [unowned self] _ -> Single<String> in
@@ -393,7 +393,7 @@ class ClassRoomViewModel {
                     .send(command: .allMute)
                     .map { localizeStrings("All mute toast") }
             }.asDriver(onErrorJustReturn: "all mute task error")
-
+        
         let rewardTask = input.tapSomeUserReward
             .flatMap { [unowned self] userUUID -> Single<String> in
                 guard self.isOwner else { return .just("") }
@@ -401,7 +401,7 @@ class ClassRoomViewModel {
                     .send(command: .sendReward(toUserUUID: userUUID))
                     .map { "" }
             }.asDriver(onErrorJustReturn: "all mute task error")
-
+        
         let stopTask = input.stopInteractingTap
             .flatMap { [unowned self] _ -> Single<String> in
                 guard self.isOwner else { return .just("") }
@@ -409,7 +409,7 @@ class ClassRoomViewModel {
                     .send(command: .stopInteraction)
                     .map { "" }
             }.asDriver(onErrorJustReturn: "stop interaction error")
-
+        
         let onStageTask = Observable.merge(input.tapSomeUserRaiseHand, input.tapSomeUserOnStage)
             .flatMap { [unowned self] user -> Single<String> in
                 if user.status.isSpeak {
@@ -434,13 +434,13 @@ class ClassRoomViewModel {
                 }
                 return .just("")
             }.asDriver(onErrorJustReturn: "stage task error")
-
+        
         let cancelRaiseHandTask = input.tapSomeUserRaiseHand
             .filter { [unowned self] in $0.rtmUUID == self.userUUID && $0.status.isRaisingHand }
             .flatMap { [unowned self] _ in self.stateHandler.send(command: .updateRaiseHand(false)) }
             .map { _ in "" }
             .asDriver(onErrorJustReturn: "")
-
+        
         let whiteboardTask = input.tapSomeUserWhiteboard
             .flatMap { [unowned self] user -> Single<String> in
                 if user.status.whiteboard {
@@ -458,7 +458,7 @@ class ClassRoomViewModel {
                 }
                 return .just("")
             }.asDriver(onErrorJustReturn: "whiteboard task error")
-
+        
         let cameraTask = input
             .tapSomeUserCamera
             .withLatestFrom(onStageUsers) { uuid, users in
@@ -477,11 +477,11 @@ class ClassRoomViewModel {
                         return ""
                     }
                     .catch { error in
-                        .just(error.localizedDescription)
+                            .just(error.localizedDescription)
                     }
                 return sending
             }.asDriver(onErrorJustReturn: "Camera task error")
-
+        
         let micTask = input
             .tapSomeUserMic
             .withLatestFrom(onStageUsers) { uuid, users in
@@ -500,11 +500,11 @@ class ClassRoomViewModel {
                         return ""
                     }
                     .catch { error in
-                        .just(error.localizedDescription)
+                            .just(error.localizedDescription)
                     }
                 return sending
             }.asDriver(onErrorJustReturn: "Mic task error")
-
+        
         return Driver.of(allMuteTask,
                          stopTask,
                          onStageTask,
@@ -514,7 +514,7 @@ class ClassRoomViewModel {
                          cancelRaiseHandTask,
                          rewardTask).merge()
     }
-
+    
     /// Return should dismiss
     func transformLogoutTap(_ tap: Observable<TapSource>) -> Observable<Bool> {
         tap
@@ -523,9 +523,9 @@ class ClassRoomViewModel {
                     let teacherStartAlert = AlertModel(title: localizeStrings("Close options"),
                                                        message: localizeStrings("Teacher close class room alert detail"),
                                                        preferredStyle: .actionSheet, actionModels: [
-                                                           .init(title: localizeStrings("Leaving for now"), style: .default, handler: nil),
-                                                           .init(title: localizeStrings("End the class"), style: .destructive, handler: nil),
-                                                           .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil),
+                                                        .init(title: localizeStrings("Leaving for now"), style: .default, handler: nil),
+                                                        .init(title: localizeStrings("End the class"), style: .destructive, handler: nil),
+                                                        .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil),
                                                        ])
                     return self.alertProvider
                         .showActionSheet(with: teacherStartAlert, source: source)
@@ -535,8 +535,8 @@ class ClassRoomViewModel {
                                                   message: localizeStrings("Class exit confirming detail"),
                                                   preferredStyle: .actionSheet,
                                                   actionModels: [
-                                                      .init(title: localizeStrings("out"), style: .default, handler: nil),
-                                                      .init(title: localizeStrings("studyContinue"), style: .cancel, handler: nil),
+                                                    .init(title: localizeStrings("out"), style: .default, handler: nil),
+                                                    .init(title: localizeStrings("studyContinue"), style: .cancel, handler: nil),
                                                   ])
                     return self.alertProvider
                         .showActionSheet(with: studentAlert, source: source)
@@ -561,7 +561,7 @@ class ClassRoomViewModel {
                 }
             }
     }
-
+    
     var isUserStopClass = false
     var recordModel: RecordModel?
     struct RecordingOutput {
@@ -569,10 +569,10 @@ class ClassRoomViewModel {
         let loading: Observable<Bool>
         let layoutUpdate: Observable<Void>
     }
-
+    
     func transformRecordTap(_ tap: ControlEvent<Void>) -> RecordingOutput {
         let loading = BehaviorRelay<Bool>.init(value: true)
-
+        
         func startAlert() -> Observable<Bool> {
             alertProvider
                 .showAlert(with: .init(message: localizeStrings("TurnOnRecordAlertTip"), preferredStyle: .alert, actionModels: [
@@ -583,7 +583,7 @@ class ClassRoomViewModel {
                 .map { $0.style == .default }
                 .filter { $0 }
         }
-
+        
         func finishAlert() -> Observable<Bool> {
             alertProvider
                 .showAlert(with: .init(message: localizeStrings("TurnOffReocrdAlertTip"), preferredStyle: .alert, actionModels: [
@@ -594,7 +594,7 @@ class ClassRoomViewModel {
                 .map { $0.style == .default }
                 .filter { $0 }
         }
-
+        
         let userOperation = tap
             .asObservable()
             .flatMap { [unowned self] _ -> Observable<Bool> in
@@ -624,7 +624,7 @@ class ClassRoomViewModel {
                         }).map { _ in true }
                 }
             }
-
+        
         let recording = RecordModel
             .fetchSavedRecordModel().do(onSuccess: { [weak self] model in
                 self?.recordModel = model
@@ -633,7 +633,7 @@ class ClassRoomViewModel {
             .map { $0 != nil }
             .asObservable()
             .concat(userOperation)
-
+        
         let layoutUpdate = onStageUsers
             .distinctUntilChanged()
             .filter { [weak self] _ in
@@ -643,10 +643,10 @@ class ClassRoomViewModel {
             .flatMap { [unowned self] users -> Observable<Void> in
                 self.recordModel!.updateLayout(users: users)
             }
-
+        
         return .init(recording: recording, loading: loading.asObservable(), layoutUpdate: layoutUpdate)
     }
-
+    
     func destroy(sender: Any) {
         // Manual deinit it to remove update timer. In case of memory leak
         recordModel = nil

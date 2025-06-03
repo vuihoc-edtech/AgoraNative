@@ -61,15 +61,7 @@ class ClassroomCoordinator: NSObject {
             .subscribe(with: self, onSuccess: { _, vc in
                 result(true)
                 guard let main = AgoraNativePlugin.topViewController() else { return }
-                if let _ = main.presentedViewController {
-                    main.showActivityIndicator()
-                    main.dismiss(animated: true) {
-                        main.stopActivityIndicator()
-                        main.present(vc, animated: true)
-                    }
-                } else {
-                    main.present(vc, animated: true)
-                }
+                main.present(vc, animated: true)
             }, onFailure: { weakSelf, error in
                 result(false)
                 weakSelf.currentClassroomUUID = nil

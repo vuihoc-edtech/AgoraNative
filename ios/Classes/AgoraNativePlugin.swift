@@ -119,3 +119,10 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
         return resourceBundle
     }()
 }
+
+func customLog(_ message: String) {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "HH:mm:ss.SSS"
+    let timestamp = formatter.string(from: Date())
+    print("[\(timestamp)] \(message)")
+}

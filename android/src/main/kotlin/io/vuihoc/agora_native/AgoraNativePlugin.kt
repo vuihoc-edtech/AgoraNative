@@ -2,6 +2,7 @@ package io.vuihoc.agora_native
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.herewhite.sdk.WhiteboardView
@@ -51,6 +52,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                 joinClassRoom(roomUUID, result)
             }
             "saveLoginInfo" -> {
+                Log.d("AgoraNativePlugin","saveLoginInfo")
                 val user = call.arguments as Map<String, Any>
                 val success = saveLoginInfo(user)
                 result.success(success)
@@ -59,7 +61,9 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success(AppKVCenter.getInstance().getSessionId())
             }
             "saveConfigs" -> {
+
                 val config = call.arguments as? Map<*, *>
+                Log.d("AgoraNativePlugin","saveConfigs ${config.toString()}")
                 val agora = config?.get("agora") as? Map<*, *>
                 val agoraId = agora?.get("appId") as? String
                 val baseUrl = config?.get("baseUrl") as? String
@@ -100,10 +104,15 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     private fun saveLoginInfo(user: Map<String, Any>) : Boolean {
-        val gson = Gson()
         AppKVCenter.getInstance().setToken(user["token"] as String)
-        val userJson = gson.toJson(user)
-        val userInfo = gson.fromJson(userJson, UserInfo::class.java)
+        Log.d("AgoraNativePlugin", user.toString())
+        val userInfo = UserInfo(
+            name = user["name"] as String,
+            avatar = user["avatar"] as String,
+            uuid = user["userUUID"] as String,
+            hasPhone = user["hasPhone"] as? Boolean ?: false,
+            hasPassword = user["hasPassword"] as? Boolean ?: false,
+        )
         AppKVCenter.getInstance().setUserInfo(userInfo)
         return true
     }

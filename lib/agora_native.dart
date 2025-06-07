@@ -40,7 +40,8 @@ class AgoraNative {
     try {
       if (res["status"] == 0) {
         final user = User.fromJson(res["data"]);
-        final saved = AgoraNativePlatform.instance.saveLoginInfo(user.toJson());
+        final saved =
+            await AgoraNativePlatform.instance.saveLoginInfo(user.toJson());
         if (user.token != null) {
           final configs = await Auth.shared.getCofigs(user.token!);
           if (configs['data'] != null) {

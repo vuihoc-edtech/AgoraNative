@@ -8,4 +8,5 @@ data class UserInfo(
     @SerializedName("userUUID") val uuid: String,
     val hasPhone: Boolean = false,
     val hasPassword: Boolean = false,
+    val token: String = ""
 )

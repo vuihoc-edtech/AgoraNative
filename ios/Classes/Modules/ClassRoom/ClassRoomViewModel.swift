@@ -379,7 +379,7 @@ class ClassRoomViewModel {
         let stopInteractingTap: Observable<Void>
         let tapSomeUserOnStage: Observable<RoomUser>
         let tapSomeUserWhiteboard: Observable<RoomUser>
-        let tapSomeUserRaiseHand: Observable<RoomUser>
+//        let tapSomeUserRaiseHand: Observable<RoomUser>
         let tapSomeUserCamera: Observable<String>
         let tapSomeUserMic: Observable<String>
         let tapSomeUserReward: Observable<String>
@@ -410,7 +410,7 @@ class ClassRoomViewModel {
                     .map { "" }
             }.asDriver(onErrorJustReturn: "stop interaction error")
         
-        let onStageTask = Observable.merge(input.tapSomeUserRaiseHand, input.tapSomeUserOnStage)
+        let onStageTask = input.tapSomeUserOnStage
             .flatMap { [unowned self] user -> Single<String> in
                 if user.status.isSpeak {
                     if user.rtmUUID == self.userUUID || self.isOwner {
@@ -435,11 +435,11 @@ class ClassRoomViewModel {
                 return .just("")
             }.asDriver(onErrorJustReturn: "stage task error")
         
-        let cancelRaiseHandTask = input.tapSomeUserRaiseHand
-            .filter { [unowned self] in $0.rtmUUID == self.userUUID && $0.status.isRaisingHand }
-            .flatMap { [unowned self] _ in self.stateHandler.send(command: .updateRaiseHand(false)) }
-            .map { _ in "" }
-            .asDriver(onErrorJustReturn: "")
+//        let cancelRaiseHandTask = input.tapSomeUserRaiseHand
+//            .filter { [unowned self] in $0.rtmUUID == self.userUUID && $0.status.isRaisingHand }
+//            .flatMap { [unowned self] _ in self.stateHandler.send(command: .updateRaiseHand(false)) }
+//            .map { _ in "" }
+//            .asDriver(onErrorJustReturn: "")
         
         let whiteboardTask = input.tapSomeUserWhiteboard
             .flatMap { [unowned self] user -> Single<String> in
@@ -511,7 +511,7 @@ class ClassRoomViewModel {
                          whiteboardTask,
                          cameraTask,
                          micTask,
-                         cancelRaiseHandTask,
+//                         cancelRaiseHandTask,
                          rewardTask).merge()
     }
     

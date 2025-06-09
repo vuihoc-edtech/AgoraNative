@@ -54,7 +54,7 @@ class ClassRoomViewController: UIViewController {
     let inviteViewController: () -> UIViewController
     let userListViewController: ClassRoomUsersViewController
     var chatVC: ChatViewController?
-    lazy var raiseHandListViewController = RaiseHandListViewController()
+//    lazy var raiseHandListViewController = RaiseHandListViewController()
 
     // MARK: - LifeCycle
 
@@ -458,15 +458,15 @@ class ClassRoomViewController: UIViewController {
             self?.usersButton.isSelected = false
         }
 
-        let raiseHandCheckAll = raiseHandListViewController.checkAllPublisher
-            .asObservable()
-            .flatMap { [weak self] _ -> Observable<Void> in
-                guard let self else { return .error("self not exist") }
-                return self.rx.dismiss(animated: false).asObservable()
-            }
+//        let raiseHandCheckAll = raiseHandListViewController.checkAllPublisher
+//            .asObservable()
+//            .flatMap { [weak self] _ -> Observable<Void> in
+//                guard let self else { return .error("self not exist") }
+//                return self.rx.dismiss(animated: false).asObservable()
+//            }
 
         // Click raisehand list check all or click users will trigger user list viewcontroller
-        Observable.merge(usersButton.rx.tap.asObservable(), raiseHandCheckAll)
+        usersButton.rx.tap.asObservable()
             .subscribe(with: self, onNext: { weakSelf, _ in
                 if weakSelf.traitCollection.hasCompact {
                     weakSelf.present(weakSelf.userListViewController, animated: true)
@@ -513,11 +513,11 @@ class ClassRoomViewController: UIViewController {
                                                stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
                                                tapSomeUserWhiteboard: whiteboardTap,
-                                               tapSomeUserRaiseHand:
-                                               Observable.merge([
-                                                   userListViewController.raiseHandTap.asObservable(),
-                                                   raiseHandListViewController.acceptRaiseHandPublisher.asObservable(),
-                                               ]),
+//                                               tapSomeUserRaiseHand:
+//                                               Observable.merge([
+//                                                   userListViewController.raiseHandTap.asObservable(),
+//                                                   raiseHandListViewController.acceptRaiseHandPublisher.asObservable(),
+//                                               ]),
                                                tapSomeUserCamera: tapSomeUserCamera,
                                                tapSomeUserMic: tapSomeUserMic,
                                                tapSomeUserReward: rtcListViewController.rewardsClick.asObservable()))

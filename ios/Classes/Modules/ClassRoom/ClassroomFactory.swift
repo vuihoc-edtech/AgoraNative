@@ -148,7 +148,7 @@ enum ClassroomFactory {
                                             basicInfo.isOwner && isLocalUser(rtcUid)
                                         })
         let rtcViewController = RtcViewController(viewModel: rtcViewModel)
-
+        rtcViewController.ownerUID = playInfo.ownerUUID
         let alertProvider = DefaultAlertProvider()
         let vm = ClassRoomViewModel(stateHandler: imp,
                                     initDeviceState: initDeviceState,

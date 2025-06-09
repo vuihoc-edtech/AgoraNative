@@ -124,7 +124,7 @@ class UserWindowLayout @JvmOverloads constructor(
         } else {
             roomUser.avatarURL.ifEmpty { R.drawable.img_user_left }
         }
-        binding.avatar.loadAvatarAny(data)
+        binding.avatar.loadAvatarAny(data, isTeacher = roomUser.isOwner)
         binding.avatarLayout.isVisible = !roomUser.isJoined || !roomUser.videoOpen
         binding.userOffline.isVisible = !roomUser.isJoined
 

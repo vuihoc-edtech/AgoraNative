@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.widget.FrameLayout
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import io.vuihoc.agora_native.R
@@ -56,7 +57,7 @@ class UserVideoAdapter(
         }
 
         val binding = viewHolder.binding
-        binding.avatar.loadAvatarAny(avatar)
+        binding.avatar.loadAvatarAny(avatar, isTeacher = itemData.isOwner)
         binding.avatarLayout.isVisible = (!itemData.isJoined || !itemData.videoOpen) && !onboard
         binding.userOffline.isVisible = !itemData.isJoined
 

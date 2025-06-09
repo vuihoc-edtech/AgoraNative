@@ -10,9 +10,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.annotation.RequiresApi
+import androidx.appcompat.content.res.AppCompatResources
 import coil.imageLoader
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
+import io.vuihoc.agora_native.R
 
 fun ViewGroup.inflate(@LayoutRes resource: Int, root: ViewGroup, attachToRoot: Boolean): View {
     return LayoutInflater.from(context).inflate(resource, root, attachToRoot)
@@ -27,7 +29,12 @@ fun View.renderTo(rect: Rect) {
     this.layoutParams = layoutParams
 }
 
-fun ImageView.loadAvatarAny(data: Any) {
+fun ImageView.loadAvatarAny(data: Any, isTeacher: Boolean) {
+    if (isTeacher) {
+        // Directly set default image from resources, skipping any image loading
+        setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.mascot))
+        return
+    }
     val request = ImageRequest.Builder(context)
         .data(data)
         .target(this)

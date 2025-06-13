@@ -50,7 +50,7 @@ class ClassroomStatusBar: UIView {
     }
     
     deinit {
-        print("classroomStatusbar deinit")
+        customLog("classroomStatusbar deinit")
     }
     
     override func willMove(toWindow newWindow: UIWindow?) {

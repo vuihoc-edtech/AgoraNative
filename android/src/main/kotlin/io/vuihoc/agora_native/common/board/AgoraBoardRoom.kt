@@ -58,7 +58,7 @@ class AgoraBoardRoom(
     private val flatNetlessUA: List<String> by lazy {
         listOf(
             "fastboard/${Fastboard.VERSION}",
-            "FLAT/NETLESS@${activityContext.getAppVersion()}",
+            "FLAT/NETLESS@2.12.0",
         )
     }
 

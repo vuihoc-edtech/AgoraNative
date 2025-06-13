@@ -40,7 +40,7 @@ class AgoraRtm: NSObject, RtmProvider {
 
     deinit {
         agoraKit.removeDelegate(self)
-        print("\(self) deinit")
+        customLog("\(self) deinit")
     }
 
     func sendP2PMessageFromArray(_ array: [(data: Data, uuid: String)]) -> Single<Void> {

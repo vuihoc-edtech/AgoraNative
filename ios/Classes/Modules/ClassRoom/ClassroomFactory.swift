@@ -50,10 +50,12 @@ enum ClassroomFactory {
 //            let productName = env.name.replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: " ", with: "_")
 //            let str: String
 //            str = isFlat ? "FLAT/NETLESS_\(env.region)@\(env.version)" : "FLAT/\(productName)_\(env.region)@\(env.version)"
-            let str = "FLAT/NETLESS_\(env.region)@\(env.version)"
+            let str = "FLAT/NETLESS@\(env.version)"
+            ua.append("fastboard/\(Fastboard.version())")
             ua.append(str)
             fastRoomConfiguration.whiteSdkConfiguration.setValue(ua, forKey: "netlessUA")
         }
+        
         fastRoomConfiguration.whiteSdkConfiguration.enableSyncedStore = true
         fastRoomConfiguration.whiteSdkConfiguration.disableNewPencilStroke = !(PerferrenceManager.shared.preferences[.pencilTail] ?? true)
         let isOwner = basicInfo.isOwner
@@ -72,7 +74,7 @@ enum ClassroomFactory {
 //            fastRoomConfiguration.customWhiteboardUrl = URL(fileURLWithPath: indexPath).absoluteString
 //        }
         //TODO: This link is whiteboard_rebuild with apps
-//        fastRoomConfiguration.customWhiteboardUrl = "https://vuihoc-edtech.github.io/white_board_with_apps/"
+        fastRoomConfiguration.customWhiteboardUrl = "https://vuihoc-edtech.github.io/white_board_with_apps/"
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
 

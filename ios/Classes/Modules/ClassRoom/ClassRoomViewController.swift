@@ -147,7 +147,7 @@ class ClassRoomViewController: UIViewController {
     }
 
     deinit {
-        print("\(self) deinit")
+        customLog("\(self) deinit")
     }
 
     override func viewDidLoad() {
@@ -814,11 +814,13 @@ class ClassRoomViewController: UIViewController {
     }
 
     func stopSubModulesAndLeaveUIHierarchy() {
-        customLog("before leave")
-        stopSubModules(cleanRtc: true)
-        customLog("after clean rtc")
         leaveUIHierarchy()
         customLog("after leave")
+        DispatchQueue.global().async { [weak self] in
+            customLog("before leave")
+            self?.stopSubModules(cleanRtc: true)
+            customLog("after clean rtc")
+        }
     }
 
     // MARK: - Scene

@@ -33,7 +33,7 @@ struct Env {
     var agoraAppId: String = "839e5d402e2a4371bd4a788bbab4f2d8"
     ///
     ///
-    var version: String = "1.1.1"
+    var version: String = "2.12.0"
     
     var region: String = "sg"
 

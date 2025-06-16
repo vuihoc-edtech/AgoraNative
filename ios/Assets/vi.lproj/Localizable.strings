@@ -393,7 +393,7 @@
 "inviteDescribe" = " mời bạn tham gia lớp học Flat";
 "latency" = "Độ trễ";
 "network" = "Mạng";
-"offline" = "ngoại tuyến";
+"offline" = "Chưa vào";
 "onOffStageTips" = "Bạn đã bị xóa khỏi sân khấu";
 "onStageNoMicTips" = "Bạn đã được phê duyệt lên sân khấu. Nhưng micrô chưa bật";
 "onStageTips" = "Bạn đã được phê duyệt lên sân khấu. Và micrô đã được bật";

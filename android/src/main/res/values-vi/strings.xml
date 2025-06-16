@@ -331,7 +331,7 @@
     <string name="turn_off_mic">Đã tắt micro của học viên này</string>
     <string name="teacher_turn_off_camera">Giáo viên đã tắt camera của bạn</string>
     <string name="teacher_turn_off_mic">Giáo viên đã tắt micro của bạn</string>
-    <string name="user_offline">Đã rời</string>
+    <string name="user_offline">Chưa vào</string>
     <string name="onstage_size_limited">Đã hết chỗ trên bục, vui lòng mời học viên khác xuống trước</string>
     <string name="handup_list_empty">Chưa có học viên nào giơ tay</string>
     <string name="user_list_empty">Chưa có học viên nào</string>

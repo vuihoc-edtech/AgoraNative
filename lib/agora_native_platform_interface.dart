@@ -24,20 +24,26 @@ abstract class AgoraNativePlatform extends PlatformInterface {
   }
 
   Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('getPlatformVersion() has not been implemented.');
   }
 
   Future<bool> joinClassRoom(String roomUUID) {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('joinClassRoom() has not been implemented.');
   }
 
   Future<bool> saveLoginInfo(Map<String, dynamic> user) {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('saveLoginInfo() has not been implemented.');
   }
 
   Future<String> getGlobalUUID() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('getGlobalUUID() has not been implemented.');
   }
 
-  Future<bool> saveConfigs(Map<String, dynamic> configs);
+  Future<bool> saveConfigs(Map<String, dynamic> configs) {
+    throw UnimplementedError('saveConfigs() has not been implemented.');
+  }
+
+  Future<bool> setBotUsers(List<String> users) {
+    throw UnimplementedError('saveBotUsers() has not been implemented.');
+  }
 }

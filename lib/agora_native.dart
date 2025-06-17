@@ -14,17 +14,6 @@ class AgoraNative {
     return AgoraNativePlatform.instance.joinClassRoom(roomUUID);
   }
 
-  Future<bool> login() async {
-    final res =
-        await Auth.shared.loginWithEmail("ndql1996@gmail.com", "Abc123123");
-    if (res["status"] == 0) {
-      final user = User.fromJson(res["data"]);
-      final saved = AgoraNativePlatform.instance.saveLoginInfo(user.toJson());
-      return saved;
-    }
-    return false;
-  }
-
   Future<bool> loginWithToken(String token) async {
     final res = await Auth.shared.loginCheck(token);
     if (res["status"] == 0) {
@@ -86,8 +75,9 @@ class AgoraNative {
     return false;
   }
 
-  String get baseUrl => Auth.baseUrl;
-  set baseUrl(String url) {
+  static String get baseUrl => Auth.baseUrl;
+
+  static set baseUrl(String url) {
     Auth.baseUrl = url;
   }
 }

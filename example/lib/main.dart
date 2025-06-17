@@ -68,10 +68,10 @@ class _MyAppState extends State<MyApp> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  final res = await _agoraNativePlugin.login();
-                  setState(() {
-                    saved = res;
-                  });
+                  // final res = await _agoraNativePlugin.login();
+                  // setState(() {
+                  //   saved = res;
+                  // });
                 },
                 child: const Text("Login"),
               ),

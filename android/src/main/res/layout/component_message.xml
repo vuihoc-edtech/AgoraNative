@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.agora.flat.ui.view.MessageListView
+    <io.vuihoc.agora_native.ui.view.MessageListView
         android:id="@+id/message_lv"
         android:layout_width="@dimen/room_class_overlay_width"
         android:layout_height="match_parent"

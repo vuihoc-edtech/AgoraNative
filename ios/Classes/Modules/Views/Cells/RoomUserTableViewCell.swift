@@ -34,7 +34,11 @@ class RoomUserTableViewCell: UITableViewCell {
     var cacheUser: RoomUser?
     func update(user: RoomUser, isUserSelf: Bool, isOwner: Bool) {
         cacheUser = user
-        avatarImageView.kf.setImage(with: user.avatarURL)
+        if isOwner {
+            avatarImageView.image = UIImage.fromPlugin(named: "mascot")
+        } else {
+            avatarImageView.kf.setImage(with: user.avatarURL)
+        }
         nameLabel.text = user.name
         statusLabel.isHidden = !(user.status.isSpeak && !user.isOnline) // OnStage and not in the room
         onStageSwitch.isOn = user.status.isSpeak

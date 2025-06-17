@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 
 class Auth {
   Auth._();
-  static const baseUrl = 'dev-class-api.rinoedu.ai';
+  static String baseUrl = 'dev-class-api.rinoedu.ai';
   static final _instance = Auth._();
   static Auth shared = _instance;
   Future<Map<String, dynamic>> loginWithEmail(
@@ -76,6 +76,25 @@ class Auth {
         'Content-Type': 'application/json; charset=utf-8',
       },
       body: jsonEncode({'token': token}),
+    );
+
+    if (response.statusCode == 200) {
+      // Handle successful login
+      final responseData = jsonDecode(response.body);
+      return responseData as Map<String, dynamic>;
+    } else {
+      // Handle error
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getCofigs(String token) async {
+    final response = await http.get(
+      Uri.parse('https://$baseUrl/v2/region/configs'),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer $token'
+      },
     );
 
     if (response.statusCode == 200) {

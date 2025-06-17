@@ -32,7 +32,7 @@ class ClassRoomUsersViewController: UIViewController {
         didSet {
             guard teacher != oldValue else { return }
             if let teacher {
-                teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
+                teachAvatarImageView.image = UIImage.fromPlugin(named: "mascot")
                 teacherLabel.text = localizeStrings("Teacher") + ": " + teacher.name
                 teacherOfflineLabel.isHidden = teacher.isOnline
             }

@@ -51,27 +51,60 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
             result(true)
         case "getGlobalUUID":
             result(globalSessionId)
+        case "saveConfigs":
+            guard let arguments = call.arguments as? Dictionary<String, Any> else {
+                result(false)
+                break
+            }
+            
+            saveConfigs(arguments)
+            result(true)
+            break
         default:
             result(FlutterMethodNotImplemented)
         }
     }
     
     private func saveLoginInfo(_ argument: Dictionary<String, Any>) {
+        AuthStore.shared.logout();
         let name = argument["name"] as? String ?? ""
         let avatar = argument["avatar"] as? String ?? ""
         let userUUID = argument["userUUID"] as? String ?? ""
         let token = argument["token"] as? String ?? ""
         let user = User(name: name, avatar: avatar, userUUID: userUUID, token: token, hasPhone: false, hasPassword: false)
-        AuthStore.shared.user = user
+        AuthStore.shared.processLoginSuccessUserInfo(user)
     }
     
-    private static func initValues(_ channel: FlutterMethodChannel) {
-        channel.invokeMethod("env", arguments: nil, result: { result in
-            if let res = result as? Dictionary<String, String> {
-                print("AgoraNativePlugin baseURL: \(res)")
-                env.baseURL = res["baseUrl"] ?? ""
+    private func saveConfigs(_ argument: Dictionary<String, Any>) {
+        let agora = argument["agora"] as? [String: Any]
+        let agoraAppId = agora?["appId"] as? String ?? ""
+        
+        let cloud = argument["cloudStorage"] as? [String: Any]
+        let accessKey = cloud?["accessKey"] as? String ?? ""
+        
+        let whiteboard = argument["whiteboard"] as? [String: Any]
+        let whiteboardAppId = whiteboard?["appId"] as? String ?? ""
+        
+        let baseUrl = argument["baseUrl"] as? String ?? ""
+        if !agoraAppId.isEmpty {
+            AgoraNativePlugin.env.agoraAppId = agoraAppId
+        }
+        
+        if !accessKey.isEmpty {
+            AgoraNativePlugin.env.ossAccessKeyId = accessKey
+        }
+        
+        if !whiteboardAppId.isEmpty {
+            AgoraNativePlugin.env.netlessAppId = whiteboardAppId
+        }
+        
+        if !baseUrl.isEmpty {
+            if baseUrl.contains("https://") {
+                AgoraNativePlugin.env.baseURL = baseUrl
+            } else {
+                AgoraNativePlugin.env.baseURL = "https://\(baseUrl)"
             }
-        })
+        }
     }
     
     static let resourceBundle: Bundle = {
@@ -85,4 +118,11 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
 
         return resourceBundle
     }()
+}
+
+func customLog(_ message: String) {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "HH:mm:ss.SSS"
+    let timestamp = formatter.string(from: Date())
+    print("[\(timestamp)] \(message)")
 }

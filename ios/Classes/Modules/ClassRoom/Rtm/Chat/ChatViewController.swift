@@ -201,8 +201,8 @@ class ChatViewController: UIViewController {
         let button = UIButton(type: .custom)
         if #available(iOS 13.0, *) {
             button.setTraitRelatedBlock { button in
-                let normalColor = UIColor.color(type: .text, .strong).resolvedColor(with: button.traitCollection)
-                let disabledColor = UIColor.color(type: .text, .weak).resolvedColor(with: button.traitCollection)
+                let disabledColor = UIColor.color(type: .text, .strong).resolvedColor(with: button.traitCollection)
+                let normalColor = UIColor.color(type: .text, .weak).resolvedColor(with: button.traitCollection)
                 
                 button.setImage(UIImage.fromPlugin(named: "send_message")?.tintColor(normalColor), for: .normal)
                 button.setImage(UIImage.fromPlugin(named: "send_message")?.tintColor(disabledColor), for: .disabled)

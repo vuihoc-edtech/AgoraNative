@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.agora.flat.ui.activity.play.ClassRoomActivity">
+    tools:context=".ui.activity.play.ClassRoomActivity">
 
     <io.agora.board.fast.FastboardView
         android:id="@+id/fastboard_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <io.agora.flat.ui.view.room.ClickHandleView
+    <io.vuihoc.agora_native.ui.view.room.ClickHandleView
         android:id="@+id/clickHandleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

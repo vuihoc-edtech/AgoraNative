@@ -121,7 +121,7 @@ class FastboardViewController: UIViewController {
     }
 
     deinit {
-        print("\(self), deinit")
+        customLog("\(self), deinit")
     }
 
     override func viewDidLoad() {
@@ -405,7 +405,7 @@ extension FastboardViewController: FastRoomDelegate {
     }
 }
 
-extension FastRoomPhase: CustomStringConvertible {
+extension FastRoomPhase: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .connecting:
@@ -439,7 +439,7 @@ extension FastboardViewController: UIGestureRecognizerDelegate {
 extension FastboardViewController: WhiteCommonCallbackDelegate {
     func logger(_ dict: [AnyHashable: Any]) {
         if let str = dict["[WhiteWKConsole]"] as? String {
-            print("Whiteboard-WKConsole: \(str)")
+            customLog("Whiteboard-WKConsole: \(str)")
         } else {
             dict.keys.enumerated().map(\.element).forEach { key in
                 if let strKey = key as? String,

@@ -54,7 +54,7 @@ class ClassRoomViewController: UIViewController {
     let inviteViewController: () -> UIViewController
     let userListViewController: ClassRoomUsersViewController
     var chatVC: ChatViewController?
-    lazy var raiseHandListViewController = RaiseHandListViewController()
+//    lazy var raiseHandListViewController = RaiseHandListViewController()
 
     // MARK: - LifeCycle
 
@@ -147,7 +147,7 @@ class ClassRoomViewController: UIViewController {
     }
 
     deinit {
-        print("\(self) deinit")
+        customLog("\(self) deinit")
     }
 
     override func viewDidLoad() {
@@ -282,29 +282,29 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindRaiseHandList() {
-        let raiseHandUsers = viewModel.members
-            .map { ms in
-                ms.filter(\.status.isRaisingHand)
-            }
-        raiseHandListViewController.raiseHandUsers = raiseHandUsers
-
-        raiseHandUsers
-            .asDriver(onErrorJustReturn: [])
-            .map(\.count)
-            .drive(with: self, onNext: { weakSelf, c in
-                weakSelf.raiseHandListButton.isSelected = c > 0
-                weakSelf.raiseHandListButton.updateBadgeHide(c <= 0, count: c)
-            })
-            .disposed(by: rx.disposeBag)
-
-        raiseHandListButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { weakSelf, _ in
-                weakSelf.popoverViewController(viewController: weakSelf.raiseHandListViewController,
-                                               fromSource: weakSelf.raiseHandListButton,
-                                               permittedArrowDirections: .none)
-            })
-            .disposed(by: rx.disposeBag)
+//        let raiseHandUsers = viewModel.members
+//            .map { ms in
+//                ms.filter(\.status.isRaisingHand)
+//            }
+//        raiseHandListViewController.raiseHandUsers = raiseHandUsers
+//
+//        raiseHandUsers
+//            .asDriver(onErrorJustReturn: [])
+//            .map(\.count)
+//            .drive(with: self, onNext: { weakSelf, c in
+//                weakSelf.raiseHandListButton.isSelected = c > 0
+//                weakSelf.raiseHandListButton.updateBadgeHide(c <= 0, count: c)
+//            })
+//            .disposed(by: rx.disposeBag)
+//
+//        raiseHandListButton.rx.tap
+//            .asDriver()
+//            .drive(with: self, onNext: { weakSelf, _ in
+//                weakSelf.popoverViewController(viewController: weakSelf.raiseHandListViewController,
+//                                               fromSource: weakSelf.raiseHandListButton,
+//                                               permittedArrowDirections: .none)
+//            })
+//            .disposed(by: rx.disposeBag)
     }
 
     func bindRecording() {
@@ -340,18 +340,18 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindUserRaiseHand() {
-        viewModel.transformRaiseHandClick(raiseHandButton.rx.tap)
-            .drive()
-            .disposed(by: rx.disposeBag)
+//        viewModel.transformRaiseHandClick(raiseHandButton.rx.tap)
+//            .drive()
+//            .disposed(by: rx.disposeBag)
 
-        viewModel.raiseHandHide
-            .asDriver(onErrorJustReturn: true)
-            .drive(raiseHandButton.rx.isHidden)
-            .disposed(by: rx.disposeBag)
+//        viewModel.raiseHandHide
+//            .asDriver(onErrorJustReturn: true)
+//            .drive(raiseHandButton.rx.isHidden)
+//            .disposed(by: rx.disposeBag)
 
-        viewModel.isRaisingHand.asDriver(onErrorJustReturn: false)
-            .drive(raiseHandButton.rx.isSelected)
-            .disposed(by: rx.disposeBag)
+//        viewModel.isRaisingHand.asDriver(onErrorJustReturn: false)
+//            .drive(raiseHandButton.rx.isSelected)
+//            .disposed(by: rx.disposeBag)
 
         viewModel.transWhiteboardPermissionUpdate(whiteboardEnable: fastboardViewController.roomPermission.map(\.writable).asObservable())
             .drive(with: self, onNext: { weakSelf, toastString in
@@ -458,15 +458,15 @@ class ClassRoomViewController: UIViewController {
             self?.usersButton.isSelected = false
         }
 
-        let raiseHandCheckAll = raiseHandListViewController.checkAllPublisher
-            .asObservable()
-            .flatMap { [weak self] _ -> Observable<Void> in
-                guard let self else { return .error("self not exist") }
-                return self.rx.dismiss(animated: false).asObservable()
-            }
+//        let raiseHandCheckAll = raiseHandListViewController.checkAllPublisher
+//            .asObservable()
+//            .flatMap { [weak self] _ -> Observable<Void> in
+//                guard let self else { return .error("self not exist") }
+//                return self.rx.dismiss(animated: false).asObservable()
+//            }
 
         // Click raisehand list check all or click users will trigger user list viewcontroller
-        Observable.merge(usersButton.rx.tap.asObservable(), raiseHandCheckAll)
+        usersButton.rx.tap.asObservable()
             .subscribe(with: self, onNext: { weakSelf, _ in
                 if weakSelf.traitCollection.hasCompact {
                     weakSelf.present(weakSelf.userListViewController, animated: true)
@@ -513,11 +513,11 @@ class ClassRoomViewController: UIViewController {
                                                stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
                                                tapSomeUserWhiteboard: whiteboardTap,
-                                               tapSomeUserRaiseHand:
-                                               Observable.merge([
-                                                   userListViewController.raiseHandTap.asObservable(),
-                                                   raiseHandListViewController.acceptRaiseHandPublisher.asObservable(),
-                                               ]),
+//                                               tapSomeUserRaiseHand:
+//                                               Observable.merge([
+//                                                   userListViewController.raiseHandTap.asObservable(),
+//                                                   raiseHandListViewController.acceptRaiseHandPublisher.asObservable(),
+//                                               ]),
                                                tapSomeUserCamera: tapSomeUserCamera,
                                                tapSomeUserMic: tapSomeUserMic,
                                                tapSomeUserReward: rtcListViewController.rewardsClick.asObservable()))
@@ -555,12 +555,12 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindWhiteboard() {
-//        fastboardViewController.bind(observablePermission: viewModel.whiteboardPermission)
-//            .subscribe(with: self, onNext: { weakSelf, permission in
-////                weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: permission.inputEnable)
-////                weakSelf.rightToolBar.forceUpdate(button: weakSelf.takePhotoButton, visible: permission.inputEnable)
-//            })
-//            .disposed(by: rx.disposeBag)
+        fastboardViewController.bind(observablePermission: viewModel.whiteboardPermission)
+            .subscribe(with: self, onNext: { weakSelf, permission in
+//                weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: permission.inputEnable)
+//                weakSelf.rightToolBar.forceUpdate(button: weakSelf.takePhotoButton, visible: permission.inputEnable)
+            })
+            .disposed(by: rx.disposeBag)
 
         fastboardViewController.appsClickHandler = { [weak self] room, button in
             guard let self else { return }
@@ -698,7 +698,7 @@ class ClassRoomViewController: UIViewController {
         view.addSubview(container)
         rtcListViewController.didMove(toParent: self)
         fastboardViewController.didMove(toParent: self)
-
+            
         let isiPhone = UIDevice.current.userInterfaceIdiom == .phone
 
         draggingDridMaskView.snp.makeConstraints { make in
@@ -771,21 +771,21 @@ class ClassRoomViewController: UIViewController {
             make.centerY.equalTo(fastboardViewController.view)
         }
 
-        if !isOwner {
-            view.addSubview(raiseHandButton)
-            raiseHandButton.snp.makeConstraints { make in
-                make.width.height.equalTo(raiseHandButtonWidth())
-                make.centerX.equalTo(rightToolBar)
-                make.top.equalTo(rightToolBar.snp.bottom).offset(12)
-            }
-        } else {
-            view.addSubview(raiseHandListButton)
-            raiseHandListButton.snp.makeConstraints { make in
-                make.width.height.equalTo(raiseHandButtonWidth())
-                make.centerX.equalTo(rightToolBar)
-                make.top.equalTo(rightToolBar.snp.bottom).offset(12)
-            }
-        }
+//        if !isOwner {
+//            view.addSubview(raiseHandButton)
+//            raiseHandButton.snp.makeConstraints { make in
+//                make.width.height.equalTo(raiseHandButtonWidth())
+//                make.centerX.equalTo(rightToolBar)
+//                make.top.equalTo(rightToolBar.snp.bottom).offset(12)
+//            }
+//        } else {
+//            view.addSubview(raiseHandListButton)
+//            raiseHandListButton.snp.makeConstraints { make in
+//                make.width.height.equalTo(raiseHandButtonWidth())
+//                make.centerX.equalTo(rightToolBar)
+//                make.top.equalTo(rightToolBar.snp.bottom).offset(12)
+//            }
+//        }
     }
 
     // Clean rtc may made crash when app is terminating.
@@ -801,23 +801,26 @@ class ClassRoomViewController: UIViewController {
     }
 
     func leaveUIHierarchy() {
-        if #available(iOS 13.0, *) {
-            if let session = view.window?.windowScene?.session,
-               view.window?.rootViewController === self
-            {
-                UIApplication.shared.requestSceneSessionDestruction(session,
-                                                                    options: nil)
-                return
-            }
-        } 
-        if let presenting = presentingViewController {
-            presenting.dismiss(animated: true, completion: nil)
-        }
+//        if #available(iOS 13.0, *) {
+//            if let session = view.window?.windowScene?.session,
+//               view.window?.rootViewController === self
+//            {
+//                UIApplication.shared.requestSceneSessionDestruction(session,
+//                                                                    options: nil)
+//                return
+//            }
+//        } 
+        self.dismiss(animated: true, completion: nil)
     }
 
     func stopSubModulesAndLeaveUIHierarchy() {
-        stopSubModules(cleanRtc: true)
         leaveUIHierarchy()
+        customLog("after leave")
+        DispatchQueue.global().async { [weak self] in
+            customLog("before leave")
+            self?.stopSubModules(cleanRtc: true)
+            customLog("after clean rtc")
+        }
     }
 
     // MARK: - Scene
@@ -899,20 +902,20 @@ class ClassRoomViewController: UIViewController {
 //        return button
 //    }()
 
-    lazy var raiseHandListButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setupBadgeView(rightInset: -6, topInset: -6, width: 20)
-        button.setImage(UIImage.fromPlugin(named: "raisehand_normal"), for: .normal)
-        button.setImage(UIImage.fromPlugin(named: "raisehand_selected"), for: .selected)
-        return button
-    }()
-
-    lazy var raiseHandButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage.fromPlugin(named: "raisehand_normal"), for: .normal)
-        button.setImage(UIImage.fromPlugin(named: "raisehand_selected"), for: .selected)
-        return button
-    }()
+//    lazy var raiseHandListButton: UIButton = {
+//        let button = UIButton(type: .custom)
+//        button.setupBadgeView(rightInset: -6, topInset: -6, width: 20)
+//        button.setImage(UIImage.fromPlugin(named: "raisehand_normal"), for: .normal)
+//        button.setImage(UIImage.fromPlugin(named: "raisehand_selected"), for: .selected)
+//        return button
+//    }()
+//
+//    lazy var raiseHandButton: UIButton = {
+//        let button = UIButton(type: .custom)
+//        button.setImage(UIImage.fromPlugin(named: "raisehand_normal"), for: .normal)
+//        button.setImage(UIImage.fromPlugin(named: "raisehand_selected"), for: .selected)
+//        return button
+//    }()
 
     lazy var chatButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)

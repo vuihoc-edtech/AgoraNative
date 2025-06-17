@@ -16,6 +16,11 @@ class RtcVideoItemView: UIView {
         contentView.largeAvatarImageView.kf.setImage(with: avatar)
         contentView.avatarImageView.kf.setImage(with: avatar)
     }
+    
+    func updateTeacherImage() {
+        contentView.largeAvatarImageView.image = UIImage.fromPlugin(named: "mascot")
+        contentView.avatarImageView.image = UIImage.fromPlugin(named: "mascot")
+    }
 
     // MARK: - Action
 

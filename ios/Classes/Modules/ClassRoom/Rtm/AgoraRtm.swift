@@ -40,7 +40,7 @@ class AgoraRtm: NSObject, RtmProvider {
 
     deinit {
         agoraKit.removeDelegate(self)
-        print("\(self) deinit")
+        customLog("\(self) deinit")
     }
 
     func sendP2PMessageFromArray(_ array: [(data: Data, uuid: String)]) -> Single<Void> {
@@ -180,8 +180,10 @@ extension AgoraRtm: AgoraRtmClientDelegate {
         switch state {
         case .connected:
             self.state.accept(.connected)
+            break
         case .connecting:
             self.state.accept(.connecting)
+            break
         case .reconnecting:
             self.state.accept(.reconnecting)
             DispatchQueue.global().asyncAfter(deadline: .now() + reconnectTimeoutInterval) { [weak self] in
@@ -193,6 +195,11 @@ extension AgoraRtm: AgoraRtmClientDelegate {
                 }
             }
         case .disconnected:
+            if reason == .changedSameUidLogin {
+                print("remote login")
+                error.accept(.remoteLogin)
+            }
+        case .failed:
             if reason == .changedSameUidLogin {
                 print("remote login")
                 error.accept(.remoteLogin)
@@ -211,7 +218,7 @@ extension AgoraRtm: AgoraRtmClientDelegate {
     }
 }
 
-extension AgoraRtmClientConnectionState: CustomStringConvertible {
+extension AgoraRtmClientConnectionState: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .disconnected:
@@ -230,7 +237,7 @@ extension AgoraRtmClientConnectionState: CustomStringConvertible {
     }
 }
 
-extension AgoraRtmClientConnectionChangeReason: CustomStringConvertible {
+extension AgoraRtmClientConnectionChangeReason: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .changedConnecting:

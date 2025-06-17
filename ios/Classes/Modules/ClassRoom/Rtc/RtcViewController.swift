@@ -67,7 +67,7 @@ class RtcViewController: UIViewController {
     var isGridNow = false
     var rtcMinimalSize: CGSize = .zero
     var draggers: [UInt: ViewDragger] = [:]
-
+    var ownerUID = ""
     var draggingPossibleTargetView: DraggingPossibleTargetView? {
         willSet {
             stopTargetViewHint()
@@ -210,7 +210,12 @@ class RtcViewController: UIViewController {
                 volumeBag: DisposeBag)
     {
         itemView.heroID = nil
-        itemView.update(avatar: user.avatarURL)
+        if user.rtmUUID == ownerUID {
+            itemView.updateTeacherImage()
+        } else {
+            itemView.update(avatar: user.avatarURL)
+        }
+        
         itemView.backLabel.text = user.name
         itemView.contentView.nameLabel.text = user.name
         itemView.contentView.offlineMaskLabel.isHidden = user.isOnline

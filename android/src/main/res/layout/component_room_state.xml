@@ -62,7 +62,7 @@
             android:layout_width="24dp"
             android:layout_height="0dp" />
 
-        <io.agora.flat.ui.view.TimeStateLayout
+        <io.vuihoc.agora_native.ui.view.TimeStateLayout
             android:id="@+id/time_state_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

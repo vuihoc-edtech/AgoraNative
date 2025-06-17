@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/item_class_rtc_video" />
 
-    <io.agora.flat.ui.view.room.ClickHandleView
+    <io.vuihoc.agora_native.ui.view.room.ClickHandleView
         android:id="@+id/clickHandleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

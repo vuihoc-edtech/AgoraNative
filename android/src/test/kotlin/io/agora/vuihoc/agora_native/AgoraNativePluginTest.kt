@@ -1,4 +1,4 @@
-package io.agora.vuihoc.agora_native
+package io.vuihoc.agora_native
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

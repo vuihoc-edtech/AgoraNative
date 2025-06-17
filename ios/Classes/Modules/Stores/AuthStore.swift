@@ -11,8 +11,6 @@ import UIKit
 import RxSwift
 
 let avatarUpdateNotificationName: Notification.Name = .init(rawValue: "avatarUpdateNotification")
-let loginSuccessNotificationName: Notification.Name = .init("loginSuccessNotification")
-let logoutNotificationName: Notification.Name = .init("logoutNotification")
 let jwtExpireNotificationName: Notification.Name = .init("jwtExpireNotification")
 
 typealias LoginHandler = (Result<User, Error>) -> Void
@@ -21,20 +19,7 @@ class AuthStore {
     private let userDefaultKey = "AuthStore_user"
 
     static let shared = AuthStore()
-    private init() {
-        if let data = UserDefaults.standard.data(forKey: userDefaultKey) {
-            do {
-                user = try JSONDecoder().decode(User.self, from: data)
-                flatGenerator.token = user?.token
-                observeFirstJWTExpire()
-            } catch {
-              // Logger may not be ready...
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                  print("decode user error, \(error)")
-              }
-            }
-        }
-    }
+
     
     var unsetDefaultProfileUserUUID: String {
         get {
@@ -57,8 +42,6 @@ class AuthStore {
 
     func logout() {
         user = nil
-        UserDefaults.standard.removeObject(forKey: userDefaultKey)
-        NotificationCenter.default.post(name: logoutNotificationName, object: nil)
     }
 
     func processBindPhoneSuccess() {
@@ -72,7 +55,6 @@ class AuthStore {
     func processLoginSuccessUserInfo(_ user: User, relogin: Bool = true) {
         do {
             let data = try JSONEncoder().encode(user)
-            UserDefaults.standard.setValue(data, forKey: userDefaultKey)
         } catch {
             print("encode user error \(error)")
         }

@@ -37,10 +37,23 @@ class AgoraNative {
 
   Future<bool> loginWithTokenVH(String token) async {
     final res = await Auth.shared.loginVHToken(token);
-    if (res["status"] == 0) {
-      final user = User.fromJson(res["data"]);
-      final saved = AgoraNativePlatform.instance.saveLoginInfo(user.toJson());
-      return saved;
+    try {
+      if (res["status"] == 0) {
+        final user = User.fromJson(res["data"]);
+        final saved =
+            await AgoraNativePlatform.instance.saveLoginInfo(user.toJson());
+        if (user.token != null) {
+          final configs = await Auth.shared.getCofigs(user.token!);
+          if (configs['data'] != null) {
+            final data = configs['data'] as Map<String, dynamic>;
+            data.addAll({'baseUrl': Auth.baseUrl});
+            await AgoraNativePlatform.instance.saveConfigs(data);
+          }
+        }
+        return saved;
+      }
+    } catch (e, st) {
+      log(e.toString(), stackTrace: st);
     }
     return false;
   }
@@ -61,6 +74,7 @@ class AgoraNative {
 
   Future<bool> joinRoomVH(String token, String roomId) async {
     final res = await loginWithTokenVH(token);
+
     if (res) {
       try {
         final joined = joinClassRoom(roomId);
@@ -70,5 +84,10 @@ class AgoraNative {
       }
     }
     return false;
+  }
+
+  String get baseUrl => Auth.baseUrl;
+  set baseUrl(String url) {
+    Auth.baseUrl = url;
   }
 }

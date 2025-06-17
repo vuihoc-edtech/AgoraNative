@@ -29,7 +29,7 @@ class AgoraRtmChannelImp: NSObject, RtmChannelProvider {
 
     deinit {
         sharedAgoraKit.removeDelegate(self)
-        print("\(self), channelId \(channelId) deinit")
+        customLog("\(self), channelId \(channelId) deinit")
     }
 
     func sendRawData(_ data: Data) -> RxSwift.Single<Void> {

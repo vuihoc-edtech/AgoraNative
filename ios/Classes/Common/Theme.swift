@@ -104,17 +104,17 @@ enum WhiteboardStyle {
         }
     }
     
-    var teleboxTheme: WhiteTeleBoxManagerThemeConfig? {
-        switch self {
-        case .default:
-            return nil
-        case .hex(let string):
-            let config = WhiteTeleBoxManagerThemeConfig()
-            config.managerStageBackground = string
-            config.managerContainerBackground = string
-            return config
-        }
-    }
+//    var teleboxTheme: WhiteTeleBoxManagerThemeConfig? {
+//        switch self {
+//        case .default:
+//            return nil
+//        case .hex(let string):
+//            let config = WhiteTeleBoxManagerThemeConfig()
+//            config.managerStageBackground = string
+//            config.managerContainerBackground = string
+//            return config
+//        }
+//    }
     
     init(string: String) {
         if string.starts(with: "#") {
@@ -232,14 +232,14 @@ class Theme {
             }
         }
 
-        if let teleboxTheme = whiteboardStyle.teleboxTheme {
-            flatTheme.teleboxTheme = teleboxTheme
-        }
+//        if let teleboxTheme = whiteboardStyle.teleboxTheme {
+//            flatTheme.teleboxTheme = teleboxTheme
+//        }
         flatTheme.panelItemAssets.normalIconColor = .color(type: .text)
         flatTheme.panelItemAssets.selectedBackgroundEdgeinset = hasCompact ? .zero : .init(inset: -4)
         flatTheme.panelItemAssets.selectedBackgroundCornerRadius = hasCompact ? 0 : 8
         flatTheme.panelItemAssets.selectedIconBgColor = hasCompact ? .clear : .color(type: .primary, .weak)
-        flatTheme.panelItemAssets.selectedColorItemBgColor = .color(type: .primary, .weak)
+//        flatTheme.panelItemAssets.selectedColorItemBgColor = .color(type: .primary, .weak)
 
         flatTheme.controlBarAssets.borderColor = .borderColor
         flatTheme.controlBarAssets.effectStyle = nil

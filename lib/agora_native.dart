@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:vh_agora_native/user_agora.dart';
 
 import 'agora_native_platform_interface.dart';
@@ -20,11 +22,16 @@ class AgoraNative {
   }
 
   //Step 3
-  Future<bool> setBotUsers(List<String> users) {
-    return AgoraNativePlatform.instance.setBotUsers(users);
+  Future<void> setBotUsers(List<String> users) async {
+    await AgoraNativePlatform.instance.setBotUsers(users);
   }
 
   //Step 4
+  Future<void> setWhiteboardBackground(Color color) async {
+    await AgoraNativePlatform.instance.setWhiteBoardBackground(color);
+  }
+
+  //Step 5
   Future<bool> joinClassRoom(String roomUUID) {
     return AgoraNativePlatform.instance.joinClassRoom(roomUUID);
   }

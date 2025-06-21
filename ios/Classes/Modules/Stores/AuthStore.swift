@@ -53,16 +53,7 @@ class AuthStore {
     }
 
     func processLoginSuccessUserInfo(_ user: User, relogin: Bool = true) {
-        do {
-            let data = try JSONEncoder().encode(user)
-        } catch {
-            print("encode user error \(error)")
-        }
         self.user = user
-//        if relogin {
-//            NotificationCenter.default.post(name: loginSuccessNotificationName, object: nil, userInfo: ["user": user])
-//            observeFirstJWTExpire()
-//        }
     }
 
     func observeFirstJWTExpire() {

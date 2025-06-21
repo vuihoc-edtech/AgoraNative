@@ -138,10 +138,10 @@ dependencies {
     implementation 'com.airbnb.android:lottie:5.2.0'
 
     // Agora
-    implementation("com.github.netless-io:whiteboard-android:nl_2.17.0-alpha.15")
+    implementation("com.github.netless-io:whiteboard-android:2.16.104")
 
     // for local fastboard debug
-    implementation('com.github.netless-io:fastboard-android:nl_2.0.0-alpha.5')
+    implementation('com.github.netless-io:fastboard-android:1.7.2')
 
     implementation 'io.agora.rtc:full-rtc-basic:4.5.2'
     implementation 'io.agora:agora-rtm:2.2.4'

@@ -1,5 +1,6 @@
 package io.vuihoc.agora_native.util
 
+import androidx.annotation.ColorInt
 import com.herewhite.sdk.domain.Region
 import io.vuihoc.agora_native.R
 import io.vuihoc.agora_native.data.model.CLOUD_ROOT_DIR
@@ -143,4 +144,12 @@ fun String.toRegion(): Region {
         "gb-lon" -> Region.gb_lon
         else -> Region.cn
     }
+}
+
+fun Int.toHex(): String {
+    return String.format("#%08X", this)
+}
+
+fun Int.toRgbHex(): String {
+    return String.format("#%06X", this and 0xFFFFFF)
 }

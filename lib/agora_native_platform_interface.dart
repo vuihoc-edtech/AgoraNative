@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'agora_native_method_channel.dart';
@@ -43,7 +45,11 @@ abstract class AgoraNativePlatform extends PlatformInterface {
     throw UnimplementedError('saveConfigs() has not been implemented.');
   }
 
-  Future<bool> setBotUsers(List<String> users) {
+  Future<void> setBotUsers(List<String> users) {
+    throw UnimplementedError('saveBotUsers() has not been implemented.');
+  }
+
+  Future<void> setWhiteBoardBackground(Color color) {
     throw UnimplementedError('saveBotUsers() has not been implemented.');
   }
 }

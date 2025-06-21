@@ -66,13 +66,20 @@ class MethodChannelAgoraNative extends AgoraNativePlatform {
   }
 
   @override
-  Future<bool> setBotUsers(List<String> users) async {
+  Future<void> setBotUsers(List<String> users) async {
     try {
-      final res = await methodChannel.invokeMethod("setBotUsers", users);
-      return res ?? false;
+      await methodChannel.invokeMethod("setBotUsers", users);
     } catch (e, st) {
       log('setBotUsers error: ${st.toString()}');
-      return false;
+    }
+  }
+
+  @override
+  Future<void> setWhiteBoardBackground(Color color) async {
+    try {
+      await methodChannel.invokeMethod('setWhiteBoardBackground', color.value);
+    } catch (e, st) {
+      log('setWhiteBoardBackground: ${st.toString()}');
     }
   }
 }

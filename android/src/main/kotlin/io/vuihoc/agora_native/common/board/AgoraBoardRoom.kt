@@ -1,5 +1,6 @@
 package io.vuihoc.agora_native.common.board
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
@@ -32,6 +33,8 @@ import io.vuihoc.agora_native.util.dp
 import io.vuihoc.agora_native.util.getAppVersion
 import io.vuihoc.agora_native.util.px2dp
 import io.vuihoc.agora_native.R
+import io.vuihoc.agora_native.data.AppKVCenter
+import io.vuihoc.agora_native.util.toRgbHex
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -72,6 +75,7 @@ class AgoraBoardRoom(
         fastRoom?.rootRoomController = rootRoomController
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override suspend fun join(
         roomUUID: String,
         roomToken: String,
@@ -99,17 +103,14 @@ class AgoraBoardRoom(
         fastRoomOptions.roomParams = fastRoomOptions.roomParams.apply {
             windowParams.prefersColorScheme = if (darkMode) Dark else Light
             windowParams.collectorStyles = getCollectorStyle()
-            windowParams.scrollVerticalOnly = true
-            windowParams.stageStyle = "box-shadow: 0 0 0"
-
             disableEraseImage = true
         }
 
         fastRoom = fastboard.createFastRoom(fastRoomOptions)
-
+        fastboardView.whiteboardView.settings.javaScriptEnabled = true
         fastRoom?.addListener(object : FastRoomListener {
             override fun onRoomPhaseChanged(phase: RoomPhase) {
-                Log.d("Vuihoc_Log","[BOARD] room phase change to ${phase.name}")
+                Log.d(TAG,"[BOARD] room phase change to ${phase.name}")
                 when (phase) {
                     RoomPhase.connecting -> boardPhase.value = BoardPhase.Connecting
                     RoomPhase.connected -> boardPhase.value = BoardPhase.Connected
@@ -119,9 +120,13 @@ class AgoraBoardRoom(
             }
 
             override fun onRoomReadyChanged(fastRoom: FastRoom) {
-                Log.d("Vuihoc_Log","[BOARD] room ready changed ${fastRoom.isReady}")
+                Log.d(TAG,"[BOARD] room ready changed ${fastRoom.isReady}")
                 if (syncedClassState is WhiteSyncedState && fastRoom.isReady) {
                     syncedClassState.resetRoom(fastRoom)
+                }
+
+                if(fastRoom.isReady) {
+                    setBoardBackground()
                 }
             }
 
@@ -140,7 +145,7 @@ class AgoraBoardRoom(
         }
 
         fastRoom?.setErrorHandler {
-           Log.d("Vuihoc_Log","[BOARD] error ${it.message}")
+           Log.d(TAG,"[BOARD] error ${it.message}")
         }
 
         val fastResource = object : FastResource() {
@@ -174,6 +179,23 @@ class AgoraBoardRoom(
 
     }
 
+    private fun setBoardBackground() {
+        val color = AppKVCenter.getInstance().whiteboardBackground.toRgbHex()
+        Log.d(TAG, "set background Board $color")
+        val js = """
+                    (function() {
+                        const stage = document.getElementsByClassName("telebox-manager-stage")[0];
+                        if (stage) {
+                            stage.style.backgroundColor = "$color";
+                            console.log("$TAG: background color set directly");
+                        } else {
+                            console.log("$TAG: stage not found");
+                        }
+                    })();
+                """.trimIndent()
+        fastboardView.whiteboardView.evaluateJavascript(js, null)
+    }
+
     private fun getCollectorStyle(): HashMap<String, String> {
         val styleMap = HashMap<String, String>()
         styleMap["top"] = "${activityContext.dp(R.dimen.flat_gap_2_0)}px"
@@ -187,7 +209,7 @@ class AgoraBoardRoom(
     }
 
     override fun setDarkMode(dark: Boolean) {
-        Log.d("Vuihoc_Log","[BOARD] set dark mode $dark, fastboard ${::fastboard.isInitialized}")
+        Log.d(TAG,"[BOARD] set dark mode $dark, fastboard ${::fastboard.isInitialized}")
         this.darkMode = dark
         if (::fastboard.isInitialized) {
             val fastStyle = fastboard.fastStyle.apply { isDarkMode = dark }
@@ -201,26 +223,26 @@ class AgoraBoardRoom(
     }
 
     override suspend fun setWritable(writable: Boolean): Boolean = suspendCoroutine {
-        Log.d("Vuihoc_Log","[BoardRoom] set writable $writable, when isWritable ${fastRoom?.isWritable}")
+        Log.d(TAG,"[BoardRoom] set writable $writable, when isWritable ${fastRoom?.isWritable}")
         if (fastRoom?.isWritable == writable) {
             it.resume(writable)
             return@suspendCoroutine
         }
         fastRoom?.room?.setWritable(writable, object : Promise<Boolean> {
             override fun then(success: Boolean) {
-                Log.d("Vuihoc_Log","[BoardRoom] set writable result $success")
+                Log.d(TAG,"[BoardRoom] set writable result $success")
                 it.resume(success)
             }
 
             override fun catchEx(t: SDKError) {
-                Log.d("Vuihoc_Log","[BoardRoom] set writable error ${t.jsStack}")
+                Log.d(TAG,"[BoardRoom] set writable error ${t.jsStack}")
                 it.resumeWithException(t)
             }
         }) ?: it.resumeWithException(FlatBoardException("[BoardRoom] room not ready"))
     }
 
     override suspend fun setAllowDraw(allow: Boolean) {
-        Log.d("Vuihoc_Log","[BoardRoom] set allow draw $allow, when isWritable ${fastRoom?.isWritable}")
+        Log.d(TAG,"[BoardRoom] set allow draw $allow, when isWritable ${fastRoom?.isWritable}")
         if (fastRoom?.isWritable == true) {
             fastRoom?.room?.disableOperations(!allow)
             fastRoom?.room?.disableWindowOperation(!allow)
@@ -289,5 +311,9 @@ class AgoraBoardRoom(
     private fun String.toFastRegion(): FastRegion {
         val region = FastRegion.values().find { it.name.lowercase().replace('_', '-') == this }
         return region ?: FastRegion.CN_HZ
+    }
+
+    companion object {
+        const val TAG = "VHLog AgoraBoardRoom"
     }
 }

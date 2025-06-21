@@ -1,4 +1,4 @@
-class User {
+class UserAgora {
   String? name;
   String? avatar;
   String? userUuid;
@@ -6,7 +6,7 @@ class User {
   bool? hasPhone;
   bool? hasPassword;
 
-  User({
+  UserAgora({
     this.name,
     this.avatar,
     this.userUuid,
@@ -15,7 +15,7 @@ class User {
     this.hasPassword,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserAgora.fromJson(Map<String, dynamic> json) => UserAgora(
         name: json['name'] as String?,
         avatar: json['avatar'] as String?,
         userUuid: json['userUUID'] as String?,

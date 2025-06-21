@@ -14,6 +14,8 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import io.vuihoc.agora_native.common.FlatException
+import io.vuihoc.agora_native.common.FlatNetException
 import io.vuihoc.agora_native.common.Navigator
 import io.vuihoc.agora_native.common.android.I18NFetcher
 import io.vuihoc.agora_native.common.board.DeviceState
@@ -31,12 +33,12 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 /** AgoraNativePlugin */
-class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
+class AgoraNativePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
-    private lateinit var channel : MethodChannel
+    private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private var activity: Activity? = null
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -53,19 +55,23 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
             "getPlatformVersion" -> {
                 result.success("Android ${android.os.Build.VERSION.RELEASE}")
             }
+
             "joinClassRoom" -> {
                 val roomUUID = call.arguments as String
                 joinClassRoom(roomUUID, result)
             }
+
             "saveLoginInfo" -> {
-                Log.d(TAG,"saveLoginInfo")
+                Log.d(TAG, "saveLoginInfo")
                 val user = call.arguments as Map<String, Any>
                 val success = saveLoginInfo(user)
                 result.success(success)
             }
+
             "getGlobalUUID" -> {
                 result.success(AppKVCenter.getInstance().getSessionId())
             }
+
             "saveConfigs" -> {
                 saveConfigs(call, result)
             }
@@ -86,6 +92,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                     AppKVCenter.getInstance().whiteboardBackground = raw.toInt();
                 }
             }
+
             else -> {
                 result.notImplemented()
             }
@@ -98,7 +105,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private fun saveConfigs(call: MethodCall, result: Result) {
         val config = call.arguments as? Map<*, *>
-        Log.d(TAG,"saveConfigs ${config.toString()}")
+        Log.d(TAG, "saveConfigs ${config.toString()}")
         val agora = config?.get("agora") as? Map<*, *>
         val agoraId = agora?.get("appId") as? String
         val baseUrl = config?.get("baseUrl") as? String
@@ -121,7 +128,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
             if (accessKey != null) {
                 ossKey = accessKey
             }
-            if(whiteboardAppId != null) {
+            if (whiteboardAppId != null) {
                 whiteAppId = whiteboardAppId
             }
         }
@@ -130,7 +137,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         result.success(true)
     }
 
-    private fun saveLoginInfo(user: Map<String, Any>) : Boolean {
+    private fun saveLoginInfo(user: Map<String, Any>): Boolean {
         AppKVCenter.getInstance().setToken(user["token"] as String)
         Log.d(TAG, user.toString())
         val userInfo = UserInfo(
@@ -145,30 +152,35 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     private fun joinClassRoom(uuid: String, result: Result) {
-            if(activity != null) {
+        if (activity != null) {
 //                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
 //                Navigator.launchRoomPlayActivity(activity!!, uuid, null, false)
 //                result.success(true)
-                CoroutineScope(Dispatchers.Main).launch {
-                    try {
-                        when (val res = RoomRepository.getInstance().joinRoom(uuid)) {
-                            is Success -> {
-                                result.success(true)
-                                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
-                                Navigator.launchRoomPlayActivity(activity!!, res.data)
-                            }
+            CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    when (val res = RoomRepository.getInstance().joinRoom(uuid)) {
+                        is Success -> {
+                            result.success(1)
+                            AppKVCenter.getInstance()
+                                .setDeviceStatePreference(DeviceState(camera = true, mic = true))
+                            Navigator.launchRoomPlayActivity(activity!!, res.data)
+                        }
 
-                            is Failure -> {
-                                result.success(false)
-                                Toast.makeText(context, "join room error", Toast.LENGTH_SHORT).show()
+                        is Failure -> {
+                            if (res.exception is FlatNetException) {
+                                result.success(res.exception.code)
+                            } else {
+                                result.success(-2)
+
                             }
                         }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        // Handle unexpected error
                     }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    // Handle unexpected error
                 }
             }
+        }
 
     }
 

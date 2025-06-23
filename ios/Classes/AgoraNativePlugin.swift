@@ -56,10 +56,20 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
                 result(false)
                 break
             }
-            
             saveConfigs(arguments)
             result(true)
             break
+        case "setBotUsers":
+            guard let arguments = call.arguments as? [String] else {
+                result(false)
+                break
+            }
+            setBotUsers(users: arguments)
+            result(true)
+            break
+            
+        case "setWhiteBoardBackground":
+            setWhiteboardBackground(call.arguments)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -107,15 +117,34 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
         }
     }
     
+    private func setBotUsers(users: [String]) {
+        VHConfigsStore.shared.botUsers = users
+    }
+    
+    private func setWhiteboardBackground(_ color: Any?) {
+        guard let colorNS = color as? NSNumber else {
+            return
+        }
+        
+        let intValue = colorNS.uint32Value
+
+        let red   = (intValue >> 16) & 0xFF
+        let green = (intValue >> 8)  & 0xFF
+        let blue  = intValue         & 0xFF
+
+        let hexString = String(format: "#%02X%02X%02X", red, green, blue)
+        VHConfigsStore.shared.whiteboardBackground = hexString
+    }
+    
     static let resourceBundle: Bundle = {
         let bundle = Bundle(for: AgoraNativePlugin.self)
         guard let resourceBundleURL = bundle.url(
             forResource: "agora_native", withExtension: "bundle")
-            else { fatalError("agora_native.bundle not found!") }
-
+        else { fatalError("agora_native.bundle not found!") }
+        
         guard let resourceBundle = Bundle(url: resourceBundleURL)
-            else { fatalError("Cannot access agora_native.bundle!") }
-
+        else { fatalError("Cannot access agora_native.bundle!") }
+        
         return resourceBundle
     }()
 }

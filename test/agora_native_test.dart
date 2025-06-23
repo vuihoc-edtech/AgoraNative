@@ -1,15 +1,45 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:agora_native/agora_native.dart';
-import 'package:agora_native/agora_native_platform_interface.dart';
-import 'package:agora_native/agora_native_method_channel.dart';
+
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:vh_agora_native/agora_native.dart';
+import 'package:vh_agora_native/agora_native_method_channel.dart';
+import 'package:vh_agora_native/agora_native_platform_interface.dart';
 
 class MockAgoraNativePlatform
     with MockPlatformInterfaceMixin
     implements AgoraNativePlatform {
-
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  Future<String> getGlobalUUID() {
+    // TODO: implement getGlobalUUID
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> joinClassRoom(String roomUUID) {
+    // TODO: implement joinClassRoom
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> setBotUsers(List<String> users) {
+    // TODO: implement saveBotUsers
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> saveConfigs(Map<String, dynamic> configs) {
+    // TODO: implement saveConfigs
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> saveLoginInfo(Map<String, dynamic> user) {
+    // TODO: implement saveLoginInfo
+    throw UnimplementedError();
+  }
 }
 
 void main() {

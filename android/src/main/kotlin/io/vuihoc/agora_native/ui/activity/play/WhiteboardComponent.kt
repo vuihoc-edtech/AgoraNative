@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 // import dagger.hilt.android.EntryPointAccessors
 // import dagger.hilt.android.components.ActivityComponent
 import io.vuihoc.agora_native.R
-import io.agora.board.fast.R.id.fast_tools_addition_layout
+//import io.agora.board.fast.R.id.fast_tools_addition_layout
 import io.vuihoc.agora_native.data.model.WindowAppItem
 import io.vuihoc.agora_native.databinding.ComponentWhiteboardBinding
 import io.vuihoc.agora_native.interfaces.BoardRoom
@@ -71,37 +71,33 @@ class WhiteboardComponent(
         boardRoom.setupView(binding.fastboardView)
         boardRoom.setRoomController(FlatControllerGroup(binding.flatControllerLayout))
         boardRoom.setDarkMode(activity.isDarkMode())
-
-        if (activity.isTabletMode()) {
-            initAdditionLayout(binding.flatControllerLayout)
-        }
     }
 
-    private fun initAdditionLayout(bindView: View) {
-        val additionLayout = bindView.findViewById<ViewGroup>(fast_tools_addition_layout)
-        val view = activity.layoutInflater.inflate(R.layout.layout_flat_tools_additions, additionLayout, true)
-        view.setOnClickListener {
-            if (RoomOverlayManager.getShowId() == RoomOverlayManager.AREA_ID_APPS) {
-                RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_NO_OVERLAY)
-            } else {
-                RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_APPS)
-            }
-        }
-        view.addOnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-            if (left == oldLeft && top == oldTop && right == oldRight && bottom == oldBottom) {
-                return@addOnLayoutChangeListener
-            }
-            updateToolboxMarginBottom(binding.root.height - view.getViewRect(binding.root).bottom)
-        }
-
-        val windowAppAdapter = WindowAppAdapter(WindowAppItem.apps)
-        windowAppAdapter.setOnItemClickListener { _, itemData ->
-            RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_NO_OVERLAY)
-            boardRoom.insertApp(itemData.kind)
-        }
-        binding.windowAppsLayout.windowAppList.adapter = windowAppAdapter
-        binding.windowAppsLayout.windowAppList.layoutManager = GridLayoutManager(activity, 4)
-    }
+//    private fun initAdditionLayout(bindView: View) {
+//        val additionLayout = bindView.findViewById<ViewGroup>(fast_tools_addition_layout)
+//        val view = activity.layoutInflater.inflate(R.layout.layout_flat_tools_additions, additionLayout, true)
+//        view.setOnClickListener {
+//            if (RoomOverlayManager.getShowId() == RoomOverlayManager.AREA_ID_APPS) {
+//                RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_NO_OVERLAY)
+//            } else {
+//                RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_APPS)
+//            }
+//        }
+//        view.addOnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+//            if (left == oldLeft && top == oldTop && right == oldRight && bottom == oldBottom) {
+//                return@addOnLayoutChangeListener
+//            }
+//            updateToolboxMarginBottom(binding.root.height - view.getViewRect(binding.root).bottom)
+//        }
+//
+//        val windowAppAdapter = WindowAppAdapter(WindowAppItem.apps)
+//        windowAppAdapter.setOnItemClickListener { _, itemData ->
+//            RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_NO_OVERLAY)
+//            boardRoom.insertApp(itemData.kind)
+//        }
+//        binding.windowAppsLayout.windowAppList.adapter = windowAppAdapter
+//        binding.windowAppsLayout.windowAppList.layoutManager = GridLayoutManager(activity, 4)
+//    }
 
     private fun updateToolboxMarginBottom(bottom: Int) {
         val layoutParams = binding.windowAppsLayout.root.layoutParams as MarginLayoutParams

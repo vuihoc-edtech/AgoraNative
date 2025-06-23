@@ -1,5 +1,8 @@
 package io.vuihoc.agora_native.data
 
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
+import io.vuihoc.agora_native.R
 import io.vuihoc.agora_native.common.board.DeviceState
 import io.vuihoc.agora_native.data.model.UserInfo
 
@@ -11,6 +14,12 @@ class AppKVCenter {
     private var token: String? = null
     private var sessionId: String = ""
     private var deviceState: DeviceState = DeviceState(camera = false, mic = true)
+
+    //VH Configs
+    val botUsersList = mutableListOf<String>()
+
+    @ColorInt
+    var whiteboardBackground = 0xFFFFFFFF.toInt()
 
     fun setToken(token: String) {
         this.token = token

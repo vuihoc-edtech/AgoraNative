@@ -77,6 +77,12 @@ class RtcViewController: UIViewController {
     func bindUsers(_ users: Driver<[RoomUser]>) {
         viewModel
             .trans(users)
+            .map { roomUsers in
+                roomUsers
+                    .filter {
+                        !VHConfigsStore.shared.botUsers.contains( $0.user.name )
+                    }
+            }
             .drive(with: self, onNext: { weakSelf, values in
                 weakSelf.updateWith(values)
             })
@@ -330,7 +336,7 @@ class RtcViewController: UIViewController {
 
     // MARK: - Fetch ContentView
 
-    func itemViewForUid(_ uid: UInt) -> RtcVideoItemView {
+    func itemViewForUid(_ uid: UInt, _ name: String? = nil) -> RtcVideoItemView {
         if let view = videoItemsStackView.arrangedSubviews.compactMap({ v -> RtcVideoItemView? in
             v as? RtcVideoItemView
         }).first(where: { $0.uid == uid }) {

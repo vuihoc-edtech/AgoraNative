@@ -3,6 +3,7 @@ package io.vuihoc.agora_native
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.herewhite.sdk.WhiteboardView
@@ -20,7 +21,13 @@ import io.vuihoc.agora_native.common.rtc.AgoraRtc
 import io.vuihoc.agora_native.common.rtm.AgoraRtm
 import io.vuihoc.agora_native.data.AppEnv
 import io.vuihoc.agora_native.data.AppKVCenter
+import io.vuihoc.agora_native.data.Failure
+import io.vuihoc.agora_native.data.Success
 import io.vuihoc.agora_native.data.model.UserInfo
+import io.vuihoc.agora_native.data.repository.RoomRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 /** AgoraNativePlugin */
@@ -38,8 +45,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         context = flutterPluginBinding.applicationContext
         AppKVCenter.getInstance().updateSessionId(UUID.randomUUID().toString())
         I18NFetcher.init(context)
-//        WhiteboardView.setEntryUrl("https://vuihoc-edtech.github.io/white_board_with_apps/")
-
+        WhiteboardView.setEntryUrl("https://vuihoc-edtech.github.io/white_board_with_apps/")
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
@@ -52,7 +58,7 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                 joinClassRoom(roomUUID, result)
             }
             "saveLoginInfo" -> {
-                Log.d("AgoraNativePlugin","saveLoginInfo")
+                Log.d(TAG,"saveLoginInfo")
                 val user = call.arguments as Map<String, Any>
                 val success = saveLoginInfo(user)
                 result.success(success)
@@ -61,37 +67,24 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success(AppKVCenter.getInstance().getSessionId())
             }
             "saveConfigs" -> {
+                saveConfigs(call, result)
+            }
 
-                val config = call.arguments as? Map<*, *>
-                Log.d("AgoraNativePlugin","saveConfigs ${config.toString()}")
-                val agora = config?.get("agora") as? Map<*, *>
-                val agoraId = agora?.get("appId") as? String
-                val baseUrl = config?.get("baseUrl") as? String
-                val cloudStorage = config?.get("cloudStorage") as? Map<*, *>
-                val accessKey = cloudStorage?.get("accessKey") as? String
-                val whiteboard = config?.get("whiteboard") as? Map<*, *>
-                val whiteboardAppId = whiteboard?.get("appId") as? String
-                AppEnv.getInstance().envItem.apply {
-                    if (agoraId != null) {
-                        agoraAppId = agoraId
-                    }
-                    if (baseUrl != null) {
-                        if (baseUrl.contains("https://")) {
-                            serviceUrl = baseUrl
-                        } else {
-                            serviceUrl = "https://$baseUrl"
-                        }
-
-                    }
-                    if (accessKey != null) {
-                        ossKey = accessKey
-                    }
-                    if(whiteboardAppId != null) {
-                        whiteAppId = whiteboardAppId
-                    }
+            "setBotUsers" -> {
+                val raw = call.arguments
+                val users = if (raw is List<*> && raw.all { it is String }) {
+                    raw.filterIsInstance<String>()
+                } else {
+                    emptyList()
                 }
-                postLogin()
-                result.success(true)
+                AppKVCenter.getInstance().botUsersList.addAll(users)
+            }
+
+            "setWhiteBoardBackground" -> {
+                val raw = call.arguments
+                if (raw is Long) {
+                    AppKVCenter.getInstance().whiteboardBackground = raw.toInt();
+                }
             }
             else -> {
                 result.notImplemented()
@@ -103,9 +96,43 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         channel.setMethodCallHandler(null)
     }
 
+    private fun saveConfigs(call: MethodCall, result: Result) {
+        val config = call.arguments as? Map<*, *>
+        Log.d(TAG,"saveConfigs ${config.toString()}")
+        val agora = config?.get("agora") as? Map<*, *>
+        val agoraId = agora?.get("appId") as? String
+        val baseUrl = config?.get("baseUrl") as? String
+        val cloudStorage = config?.get("cloudStorage") as? Map<*, *>
+        val accessKey = cloudStorage?.get("accessKey") as? String
+        val whiteboard = config?.get("whiteboard") as? Map<*, *>
+        val whiteboardAppId = whiteboard?.get("appId") as? String
+        AppEnv.getInstance().envItem.apply {
+            if (agoraId != null) {
+                agoraAppId = agoraId
+            }
+            if (baseUrl != null) {
+                if (baseUrl.contains("https://")) {
+                    serviceUrl = baseUrl
+                } else {
+                    serviceUrl = "https://$baseUrl"
+                }
+
+            }
+            if (accessKey != null) {
+                ossKey = accessKey
+            }
+            if(whiteboardAppId != null) {
+                whiteAppId = whiteboardAppId
+            }
+        }
+
+        postLogin()
+        result.success(true)
+    }
+
     private fun saveLoginInfo(user: Map<String, Any>) : Boolean {
         AppKVCenter.getInstance().setToken(user["token"] as String)
-        Log.d("AgoraNativePlugin", user.toString())
+        Log.d(TAG, user.toString())
         val userInfo = UserInfo(
             name = user["name"] as String,
             avatar = user["avatar"] as String,
@@ -119,28 +146,28 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private fun joinClassRoom(uuid: String, result: Result) {
             if(activity != null) {
-                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
-                Navigator.launchRoomPlayActivity(activity!!, uuid, null, false)
-                result.success(true)
-//                CoroutineScope(Dispatchers.Main).launch {
-//                    try {
-//                        when (val res = RoomRepository.getInstance().joinRoom(uuid)) {
-//                            is Success -> {
-//                                result.success(true)
-//                                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
-//                                Navigator.launchRoomPlayActivity(activity!!, res.data)
-//                            }
-//
-//                            is Failure -> {
-//                                result.success(false)
-//                                Toast.makeText(context, "join room error", Toast.LENGTH_SHORT).show()
-//                            }
-//                        }
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                        // Handle unexpected error
-//                    }
-//                }
+//                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
+//                Navigator.launchRoomPlayActivity(activity!!, uuid, null, false)
+//                result.success(true)
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        when (val res = RoomRepository.getInstance().joinRoom(uuid)) {
+                            is Success -> {
+                                result.success(true)
+                                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
+                                Navigator.launchRoomPlayActivity(activity!!, res.data)
+                            }
+
+                            is Failure -> {
+                                result.success(false)
+                                Toast.makeText(context, "join room error", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        // Handle unexpected error
+                    }
+                }
             }
 
     }
@@ -166,5 +193,9 @@ class AgoraNativePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromActivity() {
         activity = null
+    }
+
+    companion object {
+        const val TAG = "VHLog AgoraNativePlugin"
     }
 }

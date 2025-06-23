@@ -46,7 +46,7 @@ import io.vuihoc.agora_native.ui.view.OwnerExitDialog
 import io.vuihoc.agora_native.ui.view.RequestDeviceDialog
 import io.vuihoc.agora_native.util.FlatFormatter
 import io.vuihoc.agora_native.util.contentInfo
-import io.vuihoc.agora_native.util.isTabletMode
+//import io.vuihoc.agora_native.util.isTabletMode
 import io.vuihoc.agora_native.util.showToast
 import io.vuihoc.agora_native.R
 import io.vuihoc.agora_native.databinding.ComponentToolBinding
@@ -173,7 +173,8 @@ class ToolComponent(
 
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.state.filterNotNull().collect {
-                    binding.recordLayout.isVisible = it.isOwner && activity.isTabletMode()
+                    binding.recordLayout.isVisible = it.isOwner
+//                    binding.recordLayout.isVisible = it.isOwner && activity.isTabletMode()
 //                binding.cloudservice.isVisible = it.allowDraw
 //                binding.takePhoto.isVisible = it.allowDraw
 
@@ -455,7 +456,7 @@ class ToolComponent(
         binding.layoutSettings.root.setOnClickListener {
             // block event
         }
-        binding.recordLayout.isVisible = activity.isTabletMode()
+//        binding.recordLayout.isVisible = activity.isTabletMode()
 
         userListAdapter = UserListAdapter(viewModel)
         binding.layoutUserList.userList.adapter = userListAdapter

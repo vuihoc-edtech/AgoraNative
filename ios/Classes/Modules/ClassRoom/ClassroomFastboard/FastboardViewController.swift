@@ -155,13 +155,6 @@ class FastboardViewController: UIViewController {
         }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        // It does not affect whiteboard background color.
-        // Only for the device rotate transition
-        Theme.shared.whiteboardStyle.whiteboardTraitCollectionDidChangeResolve(traitCollection, fastRoom: fastRoom)
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUndoAndSceneConstraints()
@@ -321,10 +314,30 @@ class FastboardViewController: UIViewController {
     }()
 
     lazy var innerBorderMask = CAShapeLayer()
+    
+    private func setWhiteBoardColor() {
+        guard !VHConfigsStore.shared.whiteboardBackground.isEmpty else {
+            return
+        }
+        let js = """
+                    (function() {
+                        const stage = document.getElementsByClassName("telebox-manager-stage")[0];
+                        if (stage) {
+                            stage.style.backgroundColor = "\(VHConfigsStore.shared.whiteboardBackground)";
+                            console.log("$TAG: background color set directly");
+                        } else {
+                            console.log("$TAG: stage not found");
+                        }
+                    })();
+                """
+        fastRoom.view.whiteboardView.evaluateJavaScript(js)
+    }
 }
 
 extension FastboardViewController: FastRoomDelegate {
-    func fastboardDidJoinRoomSuccess(_: FastRoom, room _: WhiteRoom) {}
+    func fastboardDidJoinRoomSuccess(_: FastRoom, room _: WhiteRoom) {
+        setWhiteBoardColor()
+    }
 
     func fastboardUserKickedOut(_: FastRoom, reason _: String) {
         // For this error is caused by server closing, it should be noticed by teacher.

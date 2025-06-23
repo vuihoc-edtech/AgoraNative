@@ -37,8 +37,6 @@ class ClassroomCoordinator: NSObject {
     {
         guard let user = AuthStore.shared.user else { return .error("user not login") }
         let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: user.userUUID)
-        let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
-        let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
         let deviceState = DeviceState(mic: true, camera: true)
         return RoomPlayInfo.fetchByJoinWith(uuid: uuid)
             .concatMap { p -> Observable<(RoomPlayInfo, RoomBasicInfo)> in
@@ -59,25 +57,15 @@ class ClassroomCoordinator: NSObject {
         fetchClassroomViewController(uuid: uuid)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onSuccess: { _, vc in
-                result(true)
+                result(1)
                 guard let main = AgoraNativePlugin.topViewController() else { return }
                 main.present(vc, animated: true)
             }, onFailure: { weakSelf, error in
-                result(false)
                 weakSelf.currentClassroomUUID = nil
-                let controller = AgoraNativePlugin.topViewController()
                 if let flatError = error as? FlatApiError {
-                    if flatError == .RoomNotBegin {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(AgoraNativePlugin.env.joinEarly / 60))
-                        controller?.showAlertWith(message: errorStr)
-                    } else if flatError == .RoomNotBeginAndAddList {
-                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", bundle: AgoraNativePlugin.resourceBundle, comment: "room not begin alert"), Int(AgoraNativePlugin.env.joinEarly / 60))
-                        controller?.showAlertWith(message: errorStr)
-                    } else {
-                        controller?.showAlertWith(message: error.localizedDescription)
-                    }
+                    result(flatError.rawValue)
                 } else {
-                    controller?.showAlertWith(message: error.localizedDescription)
+                    result(-2)
                 }
             })
             .disposed(by: rx.disposeBag)

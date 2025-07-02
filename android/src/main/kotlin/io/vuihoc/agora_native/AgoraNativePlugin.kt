@@ -57,8 +57,14 @@ class AgoraNativePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
 
             "joinClassRoom" -> {
-                val roomUUID = call.arguments as String
-                joinClassRoom(roomUUID, result)
+                val joinRoomInfo = call.arguments as? Map<String, Any>
+                joinRoomInfo?.let {
+                    val roomID = (it["roomID"] as? String) ?: ""
+                    val cam = (it["cam"] as? Boolean) ?: false
+                    val mic = (it["mic"] as? Boolean) ?: false
+                    joinClassRoom(roomID, cam, mic, result)
+                }
+
             }
 
             "saveLoginInfo" -> {
@@ -151,18 +157,18 @@ class AgoraNativePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         return true
     }
 
-    private fun joinClassRoom(uuid: String, result: Result) {
-        if (activity != null) {
-//                AppKVCenter.getInstance().setDeviceStatePreference(DeviceState(camera = true, mic = true))
-//                Navigator.launchRoomPlayActivity(activity!!, uuid, null, false)
-//                result.success(true)
+    private fun joinClassRoom(uuid: String, cam: Boolean, mic: Boolean, result: Result) {
+        if(uuid.isEmpty()) {
+            result.success(-2)
+
+        } else if (activity != null) {
             CoroutineScope(Dispatchers.Main).launch {
                 try {
                     when (val res = RoomRepository.getInstance().joinRoom(uuid)) {
                         is Success -> {
                             result.success(1)
                             AppKVCenter.getInstance()
-                                .setDeviceStatePreference(DeviceState(camera = true, mic = true))
+                                .setDeviceStatePreference(DeviceState(camera = cam, mic = mic))
                             Navigator.launchRoomPlayActivity(activity!!, res.data)
                         }
 
@@ -171,15 +177,16 @@ class AgoraNativePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                                 result.success(res.exception.code)
                             } else {
                                 result.success(-2)
-
                             }
                         }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    // Handle unexpected error
+                    result.success(-2)
                 }
             }
+        } else {
+            result.success(-2)
         }
 
     }

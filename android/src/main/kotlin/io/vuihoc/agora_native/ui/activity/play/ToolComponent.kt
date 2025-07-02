@@ -4,8 +4,10 @@ package io.vuihoc.agora_native.ui.activity.play
 // import dagger.hilt.InstallIn
 // import dagger.hilt.android.EntryPointAccessors
 // import dagger.hilt.android.components.ActivityComponent
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
@@ -50,6 +53,7 @@ import io.vuihoc.agora_native.util.contentInfo
 import io.vuihoc.agora_native.util.showToast
 import io.vuihoc.agora_native.R
 import io.vuihoc.agora_native.databinding.ComponentToolBinding
+import io.vuihoc.agora_native.ui.view.PermissionDialog
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
@@ -162,7 +166,8 @@ class ToolComponent(
                 viewModel.teacher.collect {
                     binding.layoutUserList.teacherAvatar.load(it?.avatarURL) {
                         crossfade(true)
-                        placeholder(R.drawable.ic_class_room_user_avatar) }
+                        placeholder(R.drawable.ic_class_room_user_avatar)
+                    }
                 }
             }
 
@@ -219,7 +224,7 @@ class ToolComponent(
         lifecycleScope.launch {
 
 
-            repeatOnLifecycle(Lifecycle.State.RESUMED)  {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.classroomEvent.collect { event ->
                     when (event) {
                         is NotifyDeviceOffReceived -> {
@@ -241,7 +246,12 @@ class ToolComponent(
                                 )
                             }
                             if (event.mic == false) {
-                                activity.showToast(activity.getString(R.string.refuse_turn_on_mic_format, event.username))
+                                activity.showToast(
+                                    activity.getString(
+                                        R.string.refuse_turn_on_mic_format,
+                                        event.username
+                                    )
+                                )
                             }
                         }
 
@@ -260,7 +270,13 @@ class ToolComponent(
                         is ExpirationEvent -> {
                             val expiration = FlatFormatter.timeHM(event.expireAt)
                             val minutes = event.leftMinutes
-                            activity.showToast(activity.getString(R.string.pay_room_about_to_end, expiration, minutes))
+                            activity.showToast(
+                                activity.getString(
+                                    R.string.pay_room_about_to_end,
+                                    expiration,
+                                    minutes
+                                )
+                            )
                         }
 
                         else -> {}
@@ -268,8 +284,6 @@ class ToolComponent(
                 }
             }
         }
-
-
 
 
 //         repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -313,8 +327,10 @@ class ToolComponent(
 //        binding.userlist.isSelected = false
     }
 
-    private val expectedUserListWidth = activity.resources.getDimensionPixelSize(R.dimen.room_class_user_list_width)
-    private val panelMargin = activity.resources.getDimensionPixelSize(R.dimen.room_class_panel_margin_horizontal)
+    private val expectedUserListWidth =
+        activity.resources.getDimensionPixelSize(R.dimen.room_class_user_list_width)
+    private val panelMargin =
+        activity.resources.getDimensionPixelSize(R.dimen.room_class_panel_margin_horizontal)
 
     private fun showUserListLayout() {
         binding.layoutUserList.root.isVisible = true
@@ -440,13 +456,27 @@ class ToolComponent(
 
         binding.layoutSettings.switchVideo.setOnCheckedChangeListener { it, isChecked ->
             if (it.isPressed) {
-                viewModel.enableVideo(isChecked)
+                if (isChecked && !isGrantedPermission(Manifest.permission.CAMERA)) {
+                    hideSettingLayout()
+                    RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_SETTING, false)
+                    val dialog = PermissionDialog("Máy ảnh", R.drawable.photo_library_24px)
+                    dialog.show(activity.supportFragmentManager, "PermissionDialog")
+                } else {
+                    viewModel.enableVideo(isChecked)
+                }
             }
         }
 
         binding.layoutSettings.switchAudio.setOnCheckedChangeListener { it, isChecked ->
             if (it.isPressed) {
-                viewModel.enableAudio(isChecked)
+                if (isChecked && !isGrantedPermission(Manifest.permission.RECORD_AUDIO)) {
+                    hideSettingLayout()
+                    RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_SETTING, false)
+                    val dialog = PermissionDialog("Micro", R.drawable.mic_24px)
+                    dialog.show(activity.supportFragmentManager, "PermissionDialog")
+                } else {
+                    viewModel.enableAudio(isChecked)
+                }
             }
         }
         binding.layoutSettings.close.setOnClickListener {
@@ -485,7 +515,7 @@ class ToolComponent(
         if (state.isOwner && RoomStatus.Idle != state.roomStatus) {
             showOwnerExitDialog()
         } else {
-             showAudienceExitDialog()
+            showAudienceExitDialog()
         }
     }
 
@@ -627,7 +657,8 @@ class ToolComponent(
         RoomOverlayManager.setShown(RoomOverlayManager.AREA_ID_INVITE_DIALOG, true)
     }
 
-    private val itemSize = activity.resources.getDimensionPixelSize(R.dimen.room_class_button_area_size)
+    private val itemSize =
+        activity.resources.getDimensionPixelSize(R.dimen.room_class_button_area_size)
 
     private val collapseHeight = itemSize
     private val expandHeight: Int
@@ -653,5 +684,12 @@ class ToolComponent(
         override fun handleOnBackPressed() {
             handleExit()
         }
+    }
+
+    private fun isGrantedPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            activity,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 }

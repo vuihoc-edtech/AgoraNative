@@ -48,7 +48,7 @@ class Rtc: NSObject {
             _performCameraStateUpdate()
         }
     }
-
+    
     private func _performCameraStateUpdate() {
         agoraKit.enableLocalVideo(localCameraOn)
         agoraKit.muteLocalVideoStream(!localCameraOn)
@@ -60,7 +60,7 @@ class Rtc: NSObject {
         print("update local user status camera: \(localCameraOn)")
         updateClienRoleIfNeed()
     }
-
+    
     var localAudioOn: Bool {
         didSet {
             if localAudioOn == oldValue { return }
@@ -74,14 +74,14 @@ class Rtc: NSObject {
         // 4.2 的 AI 降噪
         agoraKit.setAINSMode(isAINS, mode: .AINS_MODE_BALANCED)
     }
-
+    
     private func _performAudioStateUpdate() {
         agoraKit.enableLocalAudio(localAudioOn)
         agoraKit.muteLocalAudioStream(!localAudioOn)
         print("update local user status mic: \(localAudioOn)")
         updateClienRoleIfNeed()
     }
-
+    
     func updateClienRoleIfNeed() {
         if localCameraOn || localAudioOn {
             if !isBroadcaster {
@@ -100,13 +100,13 @@ class Rtc: NSObject {
             }
         }
     }
-
+    
     @objc func onClassroomSettingNeedToggleFronMirrorNotification() {
         isFrontMirror.toggle()
         agoraKit.setLocalRenderMode(.hidden, mirror: isFrontMirror ? .enabled : .disabled)
         agoraKit.setVideoEncoderConfiguration(encodeConfigWith(mirror: isFrontMirror))
     }
-
+    
     @objc func onClassroomSettingNeedToggleCameraNotification() {
         isUsingFront.toggle()
         agoraKit.switchCamera()
@@ -118,11 +118,11 @@ class Rtc: NSObject {
             agoraKit.setVideoEncoderConfiguration(encodeConfigWith(mirror: isFrontMirror))
         }
     }
-
+    
     // MARK: - Public
-
+    
     func joinChannel() { joinChannelBlock?() }
-
+    
     func leave() -> Single<Void> {
         agoraKit.setupLocalVideo(nil)
         agoraKit.leaveChannel(nil)
@@ -133,16 +133,16 @@ class Rtc: NSObject {
         isJoined.accept(false)
         return .just(())
     }
-
+    
     func updateRemoteUserStreamType(rtcUID: UInt, type: AgoraVideoStreamType) {
         agoraKit.setRemoteVideoStream(rtcUID, type: type)
     }
-
+    
     func updateRemoteUser(rtcUID: UInt, cameraOn: Bool, micOn: Bool) {
         agoraKit.muteRemoteVideoStream(rtcUID, mute: !cameraOn)
         agoraKit.muteRemoteAudioStream(rtcUID, mute: !micOn)
     }
-
+    
     func updateLocalUser(cameraOn: Bool) {
         if isJoined.value {
             targetLocalCamera = nil
@@ -152,7 +152,7 @@ class Rtc: NSObject {
             print("update local user status camera: \(cameraOn) to target")
         }
     }
-
+    
     func updateLocalUser(micOn: Bool) {
         if isJoined.value {
             targetLocalMic = nil
@@ -162,7 +162,7 @@ class Rtc: NSObject {
             print("update local user status mic: \(micOn) to target")
         }
     }
-
+    
     func createOrFetchFromCacheCanvas(for uid: UInt) -> AgoraRtcVideoCanvas {
         if let canvas = remoteCanvas[uid] {
             return canvas
@@ -174,7 +174,7 @@ class Rtc: NSObject {
             return canvas
         }
     }
-
+    
     var remoteCanvas: [UInt: AgoraRtcVideoCanvas] = [:]
     lazy var screenShareCanvas: AgoraRtcVideoCanvas = {
         let canvas = AgoraRtcVideoCanvas()
@@ -182,9 +182,9 @@ class Rtc: NSObject {
         canvas.renderMode = AgoraVideoRenderMode.fit
         return canvas
     }()
-
+    
     var localVideoCanvas: AgoraRtcVideoCanvas!
-
+    
     init(appId: String,
          channelId: String,
          token: String,
@@ -192,28 +192,32 @@ class Rtc: NSObject {
          communication: Bool,
          isFrontMirror: Bool,
          isUsingFront: Bool,
-         screenShareInfo: ShareScreenInfo?)
+         screenShareInfo: ShareScreenInfo?,
+         localCameraOn: Bool,
+         localAudioOn: Bool)
     {
         self.screenShareInfo = screenShareInfo
         self.isFrontMirror = isFrontMirror
         self.isUsingFront = isUsingFront
-        localCameraOn = false
-        localAudioOn = false
+        targetLocalMic = localAudioOn
+        targetLocalCamera = localCameraOn
+        self.localAudioOn = false
+        self.localCameraOn = false
         super.init()
-
+        
         let agoraKitConfig = AgoraRtcEngineConfig()
         agoraKitConfig.appId = appId
         agoraKitConfig.areaCode = .global
         agoraKitConfig.channelProfile = communication ? .communication : .liveBroadcasting
         agoraKit = .sharedEngine(with: agoraKitConfig, delegate: self)
-
+        
         agoraKit.setLogFile("") // set to default path
         agoraKit.setLogFilter(AgoraLogFilter.error.rawValue)
         agoraKit.setVideoEncoderConfiguration(encodeConfigWith(mirror: isFrontMirror))
         let captureConfig = AgoraCameraCapturerConfiguration()
         captureConfig.cameraDirection = isUsingFront ? .front : .rear
         agoraKit.setCameraCapturerConfiguration(captureConfig)
-
+        
         // 启用针对多人通信场景的优化策略。
         agoraKit.setParameters("{\"che.audio.live_for_comm\": true}")
         // 4.2 用新的 api 开启多流
@@ -223,7 +227,7 @@ class Rtc: NSObject {
         streamConfig.framerate = 5
         streamConfig.kBitrate = 140
         agoraKit.setDualStreamMode(.autoSimulcastStream, streamConfig: streamConfig)
-
+        
         agoraKit.enableVideo()
         agoraKit.enableAudio()
         agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: false)
@@ -232,24 +236,24 @@ class Rtc: NSObject {
         _performCameraStateUpdate()
         // 初始化降噪
         _updateAINS()
-
+        
         joinChannelBlock = { [weak self] in
             let canvas = AgoraRtcVideoCanvas()
             canvas.uid = uid
             canvas.renderMode = .hidden
             self?.localVideoCanvas = canvas
-
+            
             print("start join channel: \(channelId) uid: \(uid)")
             self?.agoraKit.joinChannel(byToken: token,
                                        channelId: channelId,
                                        info: nil,
                                        uid: uid, joinSuccess: { [weak self] msg, _, elapsed in
-                                           print("end join \(msg), elapsed \(elapsed)")
-                                           self?.isJoined.accept(true)
-                                       })
+                print("end join \(msg), elapsed \(elapsed)")
+                self?.isJoined.accept(true)
+            })
         }
         joinChannel()
-
+        
         isJoined
             .filter { $0 }
             .subscribe(with: self, onNext: { weakSelf, _ in
@@ -262,13 +266,13 @@ class Rtc: NSObject {
                 }
             })
             .disposed(by: rx.disposeBag)
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleCameraNotification), name: classroomSettingNeedToggleCameraNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleFronMirrorNotification), name: classroomSettingNeedToggleFrontMirrorNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(_updateAINS), name: ainsPreferenceUpdateNotificaton, object: nil)
-            //TODO: Check this
-//        if remoteConfigReader.useRTCWorkaround {
-
+        //TODO: Check this
+        //        if remoteConfigReader.useRTCWorkaround {
+        
         if true {
             rtcVideoRotateErrorWorkaround()
             NotificationCenter.default.addObserver(self, selector: #selector(rtcVideoRotateErrorWorkaround), name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -286,16 +290,16 @@ extension Rtc: AgoraRtcEngineDelegate {
     func rtcEngine(_: AgoraRtcEngineKit, didOccurWarning warningCode: AgoraWarningCode) {
         print("didOccurWarning \(warningCode)")
     }
-
+    
     func rtcEngine(_: AgoraRtcEngineKit, didOccurError errorCode: AgoraErrorCode) {
         print("didOccurError \(errorCode)")
     }
-
+    
     func rtcEngineConnectionDidLost(_: AgoraRtcEngineKit) {
         print("lost connection")
         errorPublisher.accept(.connectionLost)
     }
-
+    
     func rtcEngine(_: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionState, reason: AgoraConnectionChangedReason) {
         switch state {
         case .disconnected, .connecting, .reconnecting, .failed:
@@ -306,7 +310,7 @@ extension Rtc: AgoraRtcEngineDelegate {
         }
         print("connectionChangedTo \(state) \(reason)")
     }
-
+    
     func rtcEngine(_: AgoraRtcEngineKit, reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], totalVolume _: Int) {
         for speaker in speakers {
             let strenth = CGFloat(speaker.volume) / 255
@@ -318,11 +322,11 @@ extension Rtc: AgoraRtcEngineDelegate {
             }
         }
     }
-
+    
     func rtcEngine(_: AgoraRtcEngineKit, reportRtcStats stats: AgoraChannelStats) {
         lastMileDelay.accept(Int(stats.lastmileDelay))
     }
-
+    
     func rtcEngine(_: AgoraRtcEngineKit, networkQuality uid: UInt, txQuality: AgoraNetworkQuality, rxQuality: AgoraNetworkQuality) {
         if uid == 0 {
             switch (rxQuality, txQuality) {
@@ -337,23 +341,23 @@ extension Rtc: AgoraRtcEngineDelegate {
             }
         }
     }
-
+    
     func rtcEngine(_: AgoraRtcEngineKit, didApiCallExecute _: Int, api _: String, result _: String) {}
     func rtcEngine(_: AgoraRtcEngineKit, didJoinChannel _: String, withUid _: UInt, elapsed _: Int) {}
     func rtcEngine(_: AgoraRtcEngineKit, didLeaveChannelWith _: AgoraChannelStats) {}
-
+    
     func rtcEngine(_: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason _: AgoraUserOfflineReason) {
         if isScreenShareUid(uid: uid) {
             screenShareJoinBehavior.accept(false)
         }
     }
-
+    
     func rtcEngine(_: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed _: Int) {
         if isScreenShareUid(uid: uid) {
             screenShareJoinBehavior.accept(true)
         }
     }
-
+    
     func isScreenShareUid(uid: UInt) -> Bool {
         if let id = screenShareInfo?.uid, id == uid { return true }
         return false

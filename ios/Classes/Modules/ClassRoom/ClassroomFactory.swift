@@ -25,7 +25,10 @@ enum ClassroomFactory {
                       communication: basicInfo.roomType == .oneToOne,
                       isFrontMirror: ClassroomDefaultConfig.frontCameraMirror,
                       isUsingFront: ClassroomDefaultConfig.usingFrontCamera,
-                      screenShareInfo: playInfo.rtcShareScreen)
+                      screenShareInfo: playInfo.rtcShareScreen,
+                      localCameraOn: deviceStatus.camera,
+                      localAudioOn: deviceStatus.mic
+                        )
 
         FastRoom.followSystemPencilBehavior = PerferrenceManager.shared.preferences[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
@@ -159,17 +162,10 @@ enum ClassroomFactory {
                                     roomTimeLimit: 0)
 
         let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
-        let shareViewController: () -> UIViewController = {
-            let controller = InviteViewController(shareInfo: .init(roomDetail: basicInfo))
-            controller.contentView.backgroundColor = .classroomChildBG
-            controller.seperatorLine.backgroundColor = .classroomBorderColor
-            return controller
-        }
         let controller = ClassRoomViewController(viewModel: vm,
                                                  fastboardViewController: fastboardViewController,
                                                  rtcListViewController: rtcViewController,
                                                  userListViewController: userListViewController,
-                                                 inviteViewController: shareViewController,
                                                  isOwner: basicInfo.isOwner,
                                                  ownerUUID: playInfo.ownerUUID,
                                                  beginTime: basicInfo.beginTime)

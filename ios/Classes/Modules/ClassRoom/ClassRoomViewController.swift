@@ -51,7 +51,7 @@ class ClassRoomViewController: UIViewController {
     let fastboardViewController: FastboardViewController
     let rtcListViewController: RtcViewController
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true, deviceUpdateEnable: false)
-    let inviteViewController: () -> UIViewController
+//    let inviteViewController: () -> UIViewController
     let userListViewController: ClassRoomUsersViewController
     var chatVC: ChatViewController?
 //    lazy var raiseHandListViewController = RaiseHandListViewController()
@@ -62,7 +62,7 @@ class ClassRoomViewController: UIViewController {
          fastboardViewController: FastboardViewController,
          rtcListViewController: RtcViewController,
          userListViewController: ClassRoomUsersViewController,
-         inviteViewController: @escaping () -> UIViewController,
+//         inviteViewController: @escaping () -> UIViewController,
          isOwner: Bool,
          ownerUUID: String,
          beginTime: Date)
@@ -71,7 +71,7 @@ class ClassRoomViewController: UIViewController {
         self.fastboardViewController = fastboardViewController
         self.rtcListViewController = rtcListViewController
         self.userListViewController = userListViewController
-        self.inviteViewController = inviteViewController
+//        self.inviteViewController = inviteViewController
         self.isOwner = isOwner
         self.ownerUUID = ownerUUID
         classroomStatusBar = .init(beginTime: beginTime)
@@ -228,7 +228,6 @@ class ClassRoomViewController: UIViewController {
         bindSetting()
         bindChat()
         bindTerminate()
-        bindInvite()
         bindStatusBar()
         bindStopped()
         
@@ -390,11 +389,6 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindInvite() {
-//        inviteButton.rx.tap
-//            .subscribe(with: self, onNext: { weakSelf, _ in
-//                weakSelf.present(weakSelf.inviteViewController(), animated: true)
-//            })
-//            .disposed(by: rx.disposeBag)
     }
 
     func bindChat() {
@@ -522,7 +516,12 @@ class ClassRoomViewController: UIViewController {
                                                tapSomeUserMic: tapSomeUserMic,
                                                tapSomeUserReward: rtcListViewController.rewardsClick.asObservable()))
             .drive(with: self, onNext: { weakSelf, s in
-                weakSelf.toast(s, timeInterval: 3, preventTouching: false)
+                if s == "request_pemission" {
+                    weakSelf
+                        .present(PermissionDialogVC(), animated: true)
+                } else {
+                    weakSelf.toast(s, timeInterval: 3, preventTouching: false)
+                }
             })
             .disposed(by: rx.disposeBag)
     }

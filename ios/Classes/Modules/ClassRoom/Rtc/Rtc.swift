@@ -11,6 +11,7 @@ import Foundation
 import RxRelay
 import RxSwift
 import UIKit
+import AVFAudio
 
 enum RtcError {
     case connectionLost
@@ -217,7 +218,7 @@ class Rtc: NSObject {
         let captureConfig = AgoraCameraCapturerConfiguration()
         captureConfig.cameraDirection = isUsingFront ? .front : .rear
         agoraKit.setCameraCapturerConfiguration(captureConfig)
-        
+        agoraKit.setAudioScenario(.chatRoom)
         // 启用针对多人通信场景的优化策略。
         agoraKit.setParameters("{\"che.audio.live_for_comm\": true}")
         // 4.2 用新的 api 开启多流

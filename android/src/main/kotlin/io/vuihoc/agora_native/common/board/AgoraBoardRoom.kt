@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.herewhite.sdk.WhiteSdk
 import com.herewhite.sdk.domain.Promise
 import com.herewhite.sdk.domain.RoomPhase
 import com.herewhite.sdk.domain.SDKError
@@ -24,16 +25,16 @@ import io.agora.board.fast.model.FastRegion
 import io.agora.board.fast.model.FastRoomOptions
 import io.agora.board.fast.model.FastUserPayload
 import io.agora.board.fast.ui.RoomControllerGroup
+import io.vuihoc.agora_native.R
 import io.vuihoc.agora_native.common.FlatBoardException
+import io.vuihoc.agora_native.common.rtc.AgoraRtc
 import io.vuihoc.agora_native.data.AppEnv
+import io.vuihoc.agora_native.data.AppKVCenter
 import io.vuihoc.agora_native.data.repository.UserRepository
 import io.vuihoc.agora_native.interfaces.BoardRoom
 import io.vuihoc.agora_native.interfaces.SyncedClassState
 import io.vuihoc.agora_native.util.dp
-import io.vuihoc.agora_native.util.getAppVersion
 import io.vuihoc.agora_native.util.px2dp
-import io.vuihoc.agora_native.R
-import io.vuihoc.agora_native.data.AppKVCenter
 import io.vuihoc.agora_native.util.toRgbHex
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -97,7 +98,6 @@ class AgoraBoardRoom(
             isLog = true
             netlessUA = flatNetlessUA
             isEnableSyncedStore = true
-//            useMultiViews = false
         }
 
         fastRoomOptions.roomParams = fastRoomOptions.roomParams.apply {
@@ -174,15 +174,17 @@ class AgoraBoardRoom(
         }
         fastRoom?.setResource(fastResource)
         setDarkMode(darkMode)
+//        WhiteSdk.setAudioMixerBridge(AgoraRtc.getInstance())
         fastRoom?.join()
         fastboard.setWhiteboardRatio(null)
 
     }
 
     private fun setBoardBackground() {
-        val color = AppKVCenter.getInstance().whiteboardBackground.toRgbHex()
-        Log.d(TAG, "set background Board $color")
-        val js = """
+        try {
+            val color = AppKVCenter.getInstance().whiteboardBackground.toRgbHex()
+            Log.d(TAG, "set background Board $color")
+            val js = """
                     (function() {
                         const stage = document.getElementsByClassName("telebox-manager-stage")[0];
                         if (stage) {
@@ -193,7 +195,11 @@ class AgoraBoardRoom(
                         }
                     })();
                 """.trimIndent()
-        fastboardView.whiteboardView.evaluateJavascript(js, null)
+            fastboardView.whiteboardView.evaluateJavascript(js, null)
+        } catch (e: Exception) {
+            Log.d(TAG, "Change background error")
+        }
+
     }
 
     private fun getCollectorStyle(): HashMap<String, String> {

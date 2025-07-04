@@ -27,7 +27,8 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
         case "getPlatformVersion":
             result("iOS " + UIDevice.current.systemVersion)
         case "joinClassRoom":
-            guard AuthStore.shared.user != nil, let roomId = call.arguments as? String else {
+            guard AuthStore.shared.user != nil, let args = call.arguments as? Dictionary<String, Any> else {
+                result(-2)
                 break
             }
             if #available(iOS 13.0, *) {
@@ -38,7 +39,11 @@ public class AgoraNativePlugin: NSObject, FlutterPlugin {
                     }
                 }
             }
-            ClassroomCoordinator.shared.enterClassroomFromFlutter(uuid: roomId,
+            let roomID = (args["roomID"] as? String) ?? ""
+            let cam = (args["cam"] as? Bool) ?? false
+            let mic = (args["mic"] as? Bool) ?? false
+            ClassroomCoordinator.shared
+                .enterClassroomFromFlutter(uuid: roomID, cam: cam, mic: mic,
                                                                   result: result)
         case "login":
             result("iOS " + UIDevice.current.systemVersion)

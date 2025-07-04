@@ -466,6 +466,10 @@ class ClassRoomViewModel {
             }.flatMap { [unowned self] user -> Single<String> in
                 guard let user else { return .error("User not found") }
                 guard user.rtmUUID == self.userUUID || self.isOwner else { return .just("") }
+                if user.rtmUUID == self.userUUID && !user.status.camera && !Utils
+                    .isGrantedCamera() {
+                    return .just("request_pemission")
+                }
                 let newDeviceState = DeviceState(mic: user.status.mic, camera: !user.status.camera)
                 let command = ClassroomCommand.updateDeviceState(uuid: user.rtmUUID, state: newDeviceState)
                 let sending = self.stateHandler.send(command: command)
@@ -489,6 +493,9 @@ class ClassRoomViewModel {
             }.flatMap { [unowned self] user -> Single<String> in
                 guard let user else { return .error("User not found") }
                 guard user.rtmUUID == self.userUUID || self.isOwner else { return .just("") }
+                if user.rtmUUID == self.userUUID && !user.status.mic && !Utils.isGrantedMicrophone() {
+                    return .just("request_pemission")
+                }
                 let newDeviceState = DeviceState(mic: !user.status.mic, camera: user.status.camera)
                 let command = ClassroomCommand.updateDeviceState(uuid: user.rtmUUID, state: newDeviceState)
                 let sending = self.stateHandler.send(command: command)

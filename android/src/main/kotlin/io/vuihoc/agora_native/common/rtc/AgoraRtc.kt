@@ -2,6 +2,7 @@ package io.vuihoc.agora_native.common.rtc
 
 import android.content.Context
 import android.util.Log
+import com.herewhite.sdk.AudioMixerBridge
 import io.vuihoc.agora_native.data.AppEnv
 import io.vuihoc.agora_native.interfaces.RtcApi
 import io.vuihoc.agora_native.interfaces.StartupInitializer
@@ -16,7 +17,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class AgoraRtc : RtcApi, StartupInitializer {
+class AgoraRtc : RtcApi, StartupInitializer, AudioMixerBridge {
     private lateinit var rtcEngine: RtcEngine
     private val eventHandler: RTCEventHandler = RTCEventHandler()
     private var currentUid = 0
@@ -181,5 +182,30 @@ class AgoraRtc : RtcApi, StartupInitializer {
                 INSTANCE ?: AgoraRtc().also { INSTANCE = it }
             }
         }
+    }
+
+    override fun startAudioMixing(
+        filepath: String?,
+        loopback: Boolean,
+        replace: Boolean,
+        cycle: Int
+    ) {
+        this.rtcEngine.startAudioMixing(filepath, loopback, cycle)
+    }
+
+    override fun stopAudioMixing() {
+        this.rtcEngine.stopAudioMixing()
+    }
+
+    override fun setAudioMixingPosition(position: Int) {
+        this.rtcEngine.setAudioMixingPosition(position)
+    }
+
+    override fun pauseAudioMixing() {
+        this.rtcEngine.pauseAudioMixing()
+    }
+
+    override fun resumeAudioMixing() {
+        this.rtcEngine.resumeAudioMixing()
     }
 }

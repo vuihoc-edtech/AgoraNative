@@ -44,14 +44,15 @@ import io.vuihoc.agora_native.databinding.ComponentFullscreenBinding
 import io.vuihoc.agora_native.databinding.ComponentUserWindowsBinding
 import io.vuihoc.agora_native.databinding.ComponentVideoListBinding
 import io.vuihoc.agora_native.interfaces.RtcApi
-import io.vuihoc.agora_native.event.*
 import io.vuihoc.agora_native.ui.animator.SimpleAnimator
 import io.vuihoc.agora_native.ui.manager.RoomOverlayManager
 import io.vuihoc.agora_native.ui.manager.WindowsDragManager
 import io.vuihoc.agora_native.ui.view.PaddingItemDecoration
 import io.vuihoc.agora_native.ui.view.UserWindowLayout
 import io.vuihoc.agora_native.common.rtc.RtcVideoController
+import io.vuihoc.agora_native.data.AppKVCenter
 import io.vuihoc.agora_native.event.RewardReceived
+import io.vuihoc.agora_native.ui.view.PermissionDialog
 import io.vuihoc.agora_native.util.dp2px
 import io.vuihoc.agora_native.util.renderTo
 import io.vuihoc.agora_native.util.showToast
@@ -135,7 +136,7 @@ class RtcComponent(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.videoUsers.collect { users ->
-                    Log.d("Vuihoc_Log","[RTC] videoUsers changed to ${users.size}")
+                    Log.d("Vuihoc_Log", "[RTC] videoUsers changed to ${users.size}")
                     Log.d("Vuihoc_Log", users.toString())
                     adapter.updateUsers(users)
                     updateUserWindows(users)
@@ -198,7 +199,7 @@ class RtcComponent(
 
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 rtcApi.observeRtcEvent().collect { event ->
-                    Log.d("Vuihoc_Log","[RTC] event: $event")
+                    Log.d("Vuihoc_Log", "[RTC] event: $event")
 
                     when (event) {
                         is RtcEvent.UserJoined -> lifecycleScope.launch {
@@ -364,11 +365,21 @@ class RtcComponent(
     private val onClickListener = View.OnClickListener {
         when (it) {
             fullScreenBinding.fullAudioOpt, videoListBinding.audioOpt -> userCallOut?.run {
-                viewModel.enableAudio(!it.isSelected, userUUID)
+                if (!it.isSelected && !isGrantedPermission(Manifest.permission.RECORD_AUDIO)) {
+                    val dialog = PermissionDialog("Micro", R.drawable.mic_24px)
+                    dialog.show(activity.supportFragmentManager, "PermissionDialog")
+                } else {
+                    viewModel.enableAudio(!it.isSelected, userUUID)
+                }
             }
 
             fullScreenBinding.fullVideoOpt, videoListBinding.videoOpt -> userCallOut?.run {
-                viewModel.enableVideo(!it.isSelected, userUUID)
+                if (!it.isSelected && !isGrantedPermission(Manifest.permission.CAMERA)) {
+                    val dialog = PermissionDialog("Máy ảnh", R.drawable.photo_library_24px)
+                    dialog.show(activity.supportFragmentManager, "PermissionDialog")
+                } else {
+                    viewModel.enableVideo(!it.isSelected, userUUID)
+                }
             }
 
             fullScreenBinding.exitFullScreen -> {
@@ -380,6 +391,13 @@ class RtcComponent(
                 fullScreenAnimator.show()
             }
         }
+    }
+
+    private fun isGrantedPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            activity,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun initView() {
@@ -449,11 +467,26 @@ class RtcComponent(
             }
 
             override fun onSwitchCamera(userId: String, on: Boolean) {
-                viewModel.enableVideo(on, userId)
+                if (on && userId == AppKVCenter.getInstance()
+                        .getUserInfo()?.uuid && !isGrantedPermission(Manifest.permission.CAMERA)
+                ) {
+                    val dialog = PermissionDialog("Máy ảnh", R.drawable.photo_library_24px)
+                    dialog.show(activity.supportFragmentManager, "PermissionDialog")
+                } else {
+                    viewModel.enableVideo(on, userId)
+                }
+
             }
 
             override fun onSwitchMic(userId: String, on: Boolean) {
-                viewModel.enableAudio(enableAudio = on, uuid = userId)
+                if (on && userId == AppKVCenter.getInstance()
+                        .getUserInfo()?.uuid && !isGrantedPermission(Manifest.permission.RECORD_AUDIO)
+                ) {
+                    val dialog = PermissionDialog("Micro", R.drawable.mic_24px)
+                    dialog.show(activity.supportFragmentManager, "PermissionDialog")
+                } else {
+                    viewModel.enableAudio(on, userId)
+                }
             }
 
             override fun onAllowDraw(userUUID: String, allow: Boolean) {
@@ -484,7 +517,8 @@ class RtcComponent(
             )
         )
 
-        videoAreaAnimator = SimpleAnimator(onUpdate = ::updateVideoContainer,
+        videoAreaAnimator = SimpleAnimator(
+            onUpdate = ::updateVideoContainer,
             onShowStart = { videoListBinding.root.isVisible = true },
             onHideEnd = { videoListBinding.root.isVisible = false })
 
@@ -584,7 +618,7 @@ class RtcComponent(
         val right = start.right + (end.right - start.right) * value
         val top = start.top + (end.top - start.top) * value
         val bottom = start.bottom + (end.bottom - start.bottom) * value
-        Log.d("Vuihoc_Log","left:$left,right:$right,top:$top,bottom:$bottom")
+        Log.d("Vuihoc_Log", "left:$left,right:$right,top:$top,bottom:$bottom")
 
         fullScreenBinding.fullVideoView.run {
             val lp = layoutParams as ViewGroup.MarginLayoutParams
@@ -634,7 +668,7 @@ class RtcComponent(
             return
         }
 
-        Log.d("Vuihoc_Log","[RTC] checkPermission request $permissions")
+        Log.d("Vuihoc_Log", "[RTC] checkPermission request $permissions")
 
         activity.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { it ->
             val allGranted = it.mapNotNull { it.key }.size == it.size
@@ -656,7 +690,7 @@ class RtcComponent(
     private val atomIndex = AtomicInteger(0)
 
     private val onDragListener = View.OnDragListener { _, event ->
-        Log.d("Vuihoc_Log","onDragListener ${event.action}")
+        Log.d("Vuihoc_Log", "onDragListener ${event.action}")
         when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
                 val user = adapter.findUserByUuid(windowsDragManager.currentUUID())
@@ -741,11 +775,26 @@ class RtcComponent(
                 }
 
                 override fun onSwitchCamera(user: RoomUser, on: Boolean) {
-                    viewModel.enableVideo(on, user.userUUID)
+                    if (on && user.userUUID == AppKVCenter.getInstance()
+                            .getUserInfo()?.uuid && !isGrantedPermission(Manifest.permission.CAMERA)
+                    ) {
+                        val dialog = PermissionDialog("Máy ảnh", R.drawable.photo_library_24px)
+                        dialog.show(activity.supportFragmentManager, "PermissionDialog")
+                    } else {
+                        viewModel.enableVideo(on, user.userUUID)
+                    }
+
                 }
 
                 override fun onSwitchMic(user: RoomUser, on: Boolean) {
-                    viewModel.enableAudio(on, user.userUUID)
+                    if (on && user.userUUID == AppKVCenter.getInstance()
+                            .getUserInfo()?.uuid && !isGrantedPermission(Manifest.permission.RECORD_AUDIO)
+                    ) {
+                        val dialog = PermissionDialog("Micro", R.drawable.mic_24px)
+                        dialog.show(activity.supportFragmentManager, "PermissionDialog")
+                    } else {
+                        viewModel.enableAudio(on, user.userUUID)
+                    }
                 }
             })
         }

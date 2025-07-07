@@ -87,14 +87,13 @@ class ClassRoomViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        startAudioCallSession()
         UIApplication.shared.isIdleTimerDisabled = true
         becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        cleanupAudioSession()
+        ClassroomFactory.cleanupAudioSession()
         UIApplication.shared.isIdleTimerDisabled = false
     }
     
@@ -794,18 +793,9 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
-    func startAudioCallSession() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .defaultToSpeaker])
-        try? session.setActive(true)
-    }
     
-    func cleanupAudioSession() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setActive(false)
-        try? session.setCategory(.soloAmbient, mode: .default, options: [])
-        try? session.setActive(true)
-    }
+    
+  
     
     // MARK: - Lazy
     

@@ -29,7 +29,7 @@ enum ClassroomFactory {
                       localCameraOn: deviceStatus.camera,
                       localAudioOn: deviceStatus.mic
                         )
-
+        startAudioCallSession()
         FastRoom.followSystemPencilBehavior = PerferrenceManager.shared.preferences[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
         
@@ -172,5 +172,18 @@ enum ClassroomFactory {
         alertProvider.root = controller
         print("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
         return controller
+    }
+    
+    static func startAudioCallSession() {
+        let session = AVAudioSession.sharedInstance()
+        try? session.setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .defaultToSpeaker])
+        try? session.setActive(true)
+    }
+    
+    static func cleanupAudioSession() {
+        let session = AVAudioSession.sharedInstance()
+        try? session.setActive(false)
+        try? session.setCategory(.soloAmbient, mode: .default, options: [])
+        try? session.setActive(true)
     }
 }

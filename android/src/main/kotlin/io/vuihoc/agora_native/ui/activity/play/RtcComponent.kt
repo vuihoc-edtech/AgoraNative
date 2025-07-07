@@ -366,7 +366,7 @@ class RtcComponent(
         when (it) {
             fullScreenBinding.fullAudioOpt, videoListBinding.audioOpt -> userCallOut?.run {
                 if (!it.isSelected && !isGrantedPermission(Manifest.permission.RECORD_AUDIO)) {
-                    val dialog = PermissionDialog("Micro", R.drawable.mic_24px)
+                    val dialog = PermissionDialog("Micrô", R.drawable.mic_24px)
                     dialog.show(activity.supportFragmentManager, "PermissionDialog")
                 } else {
                     viewModel.enableAudio(!it.isSelected, userUUID)
@@ -482,7 +482,7 @@ class RtcComponent(
                 if (on && userId == AppKVCenter.getInstance()
                         .getUserInfo()?.uuid && !isGrantedPermission(Manifest.permission.RECORD_AUDIO)
                 ) {
-                    val dialog = PermissionDialog("Micro", R.drawable.mic_24px)
+                    val dialog = PermissionDialog("Micrô", R.drawable.mic_24px)
                     dialog.show(activity.supportFragmentManager, "PermissionDialog")
                 } else {
                     viewModel.enableAudio(on, userId)
@@ -790,7 +790,7 @@ class RtcComponent(
                     if (on && user.userUUID == AppKVCenter.getInstance()
                             .getUserInfo()?.uuid && !isGrantedPermission(Manifest.permission.RECORD_AUDIO)
                     ) {
-                        val dialog = PermissionDialog("Micro", R.drawable.mic_24px)
+                        val dialog = PermissionDialog("Micrô", R.drawable.mic_24px)
                         dialog.show(activity.supportFragmentManager, "PermissionDialog")
                     } else {
                         viewModel.enableAudio(on, user.userUUID)

@@ -9,15 +9,6 @@
     android:padding="16dp">
 
     <ImageView
-        android:id="@+id/close"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_class_room_close"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
         android:id="@+id/icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
@@ -25,8 +16,9 @@
         android:tint="@color/orange_rino"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/close"
-        tools:ignore="ContentDescription,UseAppTint" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription,UseAppTint"
+        tools:layout_editor_absoluteY="40dp" />
 
     <TextView
         android:id="@+id/title"

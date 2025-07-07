@@ -11,6 +11,7 @@ import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.view.View
 import androidx.annotation.DrawableRes
+import androidx.core.text.set
 import io.vuihoc.agora_native.R
 import io.vuihoc.agora_native.databinding.DialogPermissionBinding
 
@@ -44,35 +45,40 @@ class PermissionDialog(val permission: String, @DrawableRes val icon: Int ) : Cl
                 dismiss()
             }
         }
-
-        binding.close.setOnClickListener {
-            dismiss()
-        }
     }
 
     private fun createTitle(): String {
-        return "Hướng dẫn cấp quyền $permission"
+        return "Hướng dẫn bật $permission"
     }
 
     private fun createFirstLine(): SpannableString{
-        val fullText = "1. Vào cài đặt ứng dụng RINO EDU"
+        val fullText = "Vào cài đặt RINO EDU"
         val spannable = SpannableString(fullText)
-        val start = fullText.indexOf("RINO EDU")
-        val end = start + "RINO EDU".length
+        return spannable
+    }
 
+    private fun createSecondLine(): SpannableString {
+        val fullText = "Chọn Quyền > Chọn $permission"
+        val start = fullText.indexOf("Quyền")
+        val end = start + "Quyền".length
+        val spannable = SpannableString(fullText)
         spannable.setSpan(
             StyleSpan(Typeface.BOLD),
             start, end,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+
+        val start1 = fullText.indexOf(permission)
+        val end1 = start1 + permission.length
+        spannable.setSpan(
+            StyleSpan(Typeface.BOLD),
+            start1, end1,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         return spannable
     }
 
-    private fun createSecondLine(): String {
-        return "2. Chọn quyền $permission"
-    }
-
     private fun createThirdLine(): String {
-        return "3. Chọn cho phép sử dụng $permission"
+        return "Chọn cho phép khi dùng ứng dụng"
     }
 }

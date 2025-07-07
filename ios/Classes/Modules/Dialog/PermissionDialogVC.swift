@@ -57,17 +57,15 @@ class PermissionDialogVC: UIViewController {
         contentView.addSubview(stackView)
         NSLayoutConstraint.activate([
             stackView.topAnchor
-                .constraint(equalTo: contentView.topAnchor, constant: 8),
+                .constraint(equalTo: contentView.topAnchor, constant: 16),
             stackView.bottomAnchor
-                .constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+                .constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         ])
         
-        stackView.addArrangedSubview(closeButton)
-        closeButton.widthAnchor
-            .constraint(equalTo: stackView.widthAnchor, multiplier: 1).isActive = true
         stackView.addArrangedSubview(imageView)
+        stackView.setCustomSpacing(8, after: imageView)
         stackView.addArrangedSubview(titleLbl)
         stackView.setCustomSpacing(8, after: titleLbl)
         stackView.addArrangedSubview(firstStepLbl)
@@ -98,29 +96,10 @@ class PermissionDialogVC: UIViewController {
         return view
     }()
     
-    lazy var closeButton: UIView = {
-        let closeButton = UIButton(type: .custom)
-        closeButton.setImage(UIImage.fromPlugin(named: "close-bold"), for: .normal)
-        closeButton.tintColor = .gray
-        closeButton.addTarget(self, action: #selector(onClickClose), for: .touchUpInside)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        let closeContainer = UIView()
-        closeContainer.addSubview(closeButton)
-        closeContainer.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            closeContainer.heightAnchor.constraint(equalToConstant: 24),
-            closeButton.rightAnchor.constraint(equalTo: closeContainer.rightAnchor),
-            closeButton.topAnchor.constraint(equalTo: closeContainer.topAnchor),
-            closeButton.bottomAnchor
-                .constraint(equalTo: closeContainer.bottomAnchor),
-        ])
-        return closeContainer
-    }()
-    
     lazy var titleLbl: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "Hướng dẫn cấp quyền\n Camera và Micro"
+        label.text = "Hướng dẫn bật Camera và Micrô"
         label.numberOfLines = 2
         label.font = .boldSystemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -129,15 +108,11 @@ class PermissionDialogVC: UIViewController {
     }()
     
     lazy var firstStepLbl: UILabel = {
-        let text = "1. Vào cài đặt ứng dụng RINO EDU"
+        let text = "Vào cài đặt RINO EDU"
         let attributedString = NSMutableAttributedString(string: text)
         let boldFont = UIFont.boldSystemFont(ofSize: 14)
         let regularFont = UIFont.systemFont(ofSize: 14)
         attributedString.addAttribute(.font, value: regularFont, range: NSRange(location: 0, length: text.count))
-        if let rinoRange = text.range(of: "RINO EDU") {
-            let nsRange = NSRange(rinoRange, in: text)
-                    attributedString.addAttribute(.font, value: boldFont, range: nsRange)
-                }
         let label = UILabel()
         label.textColor = .black
         label.attributedText = attributedString
@@ -147,7 +122,7 @@ class PermissionDialogVC: UIViewController {
     }()
     
     lazy var secondStepLbl: UILabel = {
-        let text = "2. Bật nút Camera và Micro"
+        let text = "Bật nút Camera và Micrô"
         let attributedString = NSMutableAttributedString(string: text)
         let boldFont = UIFont.boldSystemFont(ofSize: 14)
         let regularFont = UIFont.systemFont(ofSize: 14)
@@ -156,7 +131,7 @@ class PermissionDialogVC: UIViewController {
             let nsRange = NSRange(rinoRange, in: text)
                     attributedString.addAttribute(.font, value: boldFont, range: nsRange)
                 }
-        if let rinoRange = text.range(of: "Micro") {
+        if let rinoRange = text.range(of: "Micrô") {
             let nsRange = NSRange(rinoRange, in: text)
                     attributedString.addAttribute(.font, value: boldFont, range: nsRange)
                 }
@@ -186,7 +161,7 @@ class PermissionDialogVC: UIViewController {
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage.fromPlugin(named: "mic_phone_permission")
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

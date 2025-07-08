@@ -32,7 +32,7 @@ class AgoraNative {
   }
 
   //Step 5
-  Future<int> joinClassRoom(String roomUUID) {
-    return AgoraNativePlatform.instance.joinClassRoom(roomUUID);
+  Future<int> joinClassRoom(String roomUUID, bool cam, bool mic) {
+    return AgoraNativePlatform.instance.joinClassRoom(roomUUID, cam, mic);
   }
 }

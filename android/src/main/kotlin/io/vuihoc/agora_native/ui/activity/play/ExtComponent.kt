@@ -62,14 +62,12 @@ class ExtComponent(
 
     private fun observeState() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 classRoomViewModel.loginThirdParty()
             }
-
         }
 
         lifecycleScope.launch {
-
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.state.collect {
                     showLoading(it.loading)
@@ -82,8 +80,6 @@ class ExtComponent(
         }
 
         lifecycleScope.launch {
-
-
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 classRoomViewModel.state.filterNotNull().collect {
                     if (it.roomStatus == RoomStatus.Stopped) {

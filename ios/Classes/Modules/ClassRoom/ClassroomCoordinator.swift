@@ -33,11 +33,11 @@ class ClassroomCoordinator: NSObject {
         }
     }
     
-    private func fetchClassroomViewController(uuid: String) -> Single<ClassRoomViewController>
+    private func fetchClassroomViewController(uuid: String, cam: Bool, mic: Bool) -> Single<ClassRoomViewController>
     {
         guard let user = AuthStore.shared.user else { return .error("user not login") }
         let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: user.userUUID)
-        let deviceState = DeviceState(mic: true, camera: true)
+        let deviceState = DeviceState(mic: mic, camera: cam)
         return RoomPlayInfo.fetchByJoinWith(uuid: uuid)
             .concatMap { p -> Observable<(RoomPlayInfo, RoomBasicInfo)> in
                 return RoomBasicInfo.fetchInfoBy(uuid: p.roomUUID, periodicUUID: nil)
@@ -48,13 +48,13 @@ class ClassroomCoordinator: NSObject {
     }
     
     
-    func enterClassroomFromFlutter(uuid: String,
+    func enterClassroomFromFlutter(uuid: String, cam: Bool, mic: Bool,
                                    result: @escaping FlutterResult)
     {
         currentClassroomUUID = uuid
         enterClassDate = Date()
         
-        fetchClassroomViewController(uuid: uuid)
+        fetchClassroomViewController(uuid: uuid, cam: cam, mic: mic)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onSuccess: { _, vc in
                 result(1)

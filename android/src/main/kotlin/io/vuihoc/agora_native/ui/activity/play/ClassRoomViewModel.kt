@@ -895,7 +895,7 @@ class ClassRoomViewModel(
     }
 
     companion object {
-        const val TAG = "VHLog ClassRoomViewModel"
+        const val TAG = "VHLog ClassRoomVM"
     }
 }
 

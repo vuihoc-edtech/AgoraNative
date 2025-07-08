@@ -30,39 +30,39 @@ class ClassRoomViewController: UIViewController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         traitCollection.hasCompact ? .landscapeRight : .landscape
     }
-
+    
     func raiseHandButtonWidth() -> CGFloat {
         traitCollection.hasCompact ? 40 : 48
     }
-
+    
     let isOwner: Bool
     let ownerUUID: String
     let viewModel: ClassRoomViewModel
-
+    
     // MARK: - Rtc dragging variables
-
+    
     var rtcIndicatorDraggingPreviousTranslation = CGFloat(0)
     var draggingTranslation = CGFloat(0)
     var rtcLengthConstraint: Constraint?
     var draggingStartRtcLength = CGFloat(0)
-
+    
     // MARK: - Child Controllers
-
+    
     let fastboardViewController: FastboardViewController
     let rtcListViewController: RtcViewController
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true, deviceUpdateEnable: false)
-    let inviteViewController: () -> UIViewController
+    //    let inviteViewController: () -> UIViewController
     let userListViewController: ClassRoomUsersViewController
     var chatVC: ChatViewController?
-//    lazy var raiseHandListViewController = RaiseHandListViewController()
-
+    //    lazy var raiseHandListViewController = RaiseHandListViewController()
+    
     // MARK: - LifeCycle
-
+    
     init(viewModel: ClassRoomViewModel,
          fastboardViewController: FastboardViewController,
          rtcListViewController: RtcViewController,
          userListViewController: ClassRoomUsersViewController,
-         inviteViewController: @escaping () -> UIViewController,
+         //         inviteViewController: @escaping () -> UIViewController,
          isOwner: Bool,
          ownerUUID: String,
          beginTime: Date)
@@ -71,7 +71,7 @@ class ClassRoomViewController: UIViewController {
         self.fastboardViewController = fastboardViewController
         self.rtcListViewController = rtcListViewController
         self.userListViewController = userListViewController
-        self.inviteViewController = inviteViewController
+        //        self.inviteViewController = inviteViewController
         self.isOwner = isOwner
         self.ownerUUID = ownerUUID
         classroomStatusBar = .init(beginTime: beginTime)
@@ -79,23 +79,24 @@ class ClassRoomViewController: UIViewController {
         modalPresentationStyle = .fullScreen
         print("\(self) init")
     }
-
+    
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIApplication.shared.isIdleTimerDisabled = true
         becomeFirstResponder()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        ClassroomFactory.cleanupAudioSession()
         UIApplication.shared.isIdleTimerDisabled = false
     }
-
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         // Prevent iPad split compact window
@@ -125,7 +126,7 @@ class ClassRoomViewController: UIViewController {
             splitWarningsView.isHidden = true
         }
     }
-
+    
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
         if container.superview != nil {
@@ -145,11 +146,11 @@ class ClassRoomViewController: UIViewController {
             setNeedsStatusBarAppearanceUpdate()
         }
     }
-
+    
     deinit {
         customLog("\(self) deinit")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -158,14 +159,14 @@ class ClassRoomViewController: UIViewController {
             observeScene()
         }
     }
-
+    
     // MARK: - Private
-
+    
     func initRoomStatus() {
         // Only status is required
         // Other service can join later
         let result = viewModel.initialRoomStatus()
-
+        
         result.initRoomResult
             .do(
                 onSuccess: { [weak self] in
@@ -195,14 +196,14 @@ class ClassRoomViewController: UIViewController {
                     }
                 }
             ).disposed(by: rx.disposeBag)
-
+        
         result.autoPickMemberOnStageOnce?
             .subscribe(with: self, onSuccess: { weakSelf, user in
                 if let user {
                     weakSelf.toast(localizeStrings("ownerAutoOnStageTips") + user.name, timeInterval: 3, preventTouching: false)
                 }
             }).disposed(by: rx.disposeBag)
-
+        
         result.roomError
             .subscribe(with: self, onNext: { weakSelf, error in
                 func loopToAlert() {
@@ -220,7 +221,7 @@ class ClassRoomViewController: UIViewController {
                 loopToAlert()
             }).disposed(by: rx.disposeBag)
     }
-
+    
     func setupBinding() {
         bindUsersList()
         bindRtc()
@@ -228,7 +229,6 @@ class ClassRoomViewController: UIViewController {
         bindSetting()
         bindChat()
         bindTerminate()
-        bindInvite()
         bindStatusBar()
         bindStopped()
         
@@ -242,7 +242,7 @@ class ClassRoomViewController: UIViewController {
             bindUserRaiseHand()
         }
     }
-
+    
     func bindDeviceNotifyOff() {
         viewModel.listeningDeviceNotifyOff()
             .drive(with: self) { weakSelf, s in
@@ -250,7 +250,7 @@ class ClassRoomViewController: UIViewController {
             }
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindDeviceResponse() {
         viewModel
             .listeningDeviceResponse()
@@ -260,14 +260,14 @@ class ClassRoomViewController: UIViewController {
             }
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindDeviceRequest() {
         viewModel
             .listeningDeviceRequest()
             .drive()
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindStopped() {
         viewModel.roomStopped
             .take(1)
@@ -280,56 +280,14 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindRaiseHandList() {
-//        let raiseHandUsers = viewModel.members
-//            .map { ms in
-//                ms.filter(\.status.isRaisingHand)
-//            }
-//        raiseHandListViewController.raiseHandUsers = raiseHandUsers
-//
-//        raiseHandUsers
-//            .asDriver(onErrorJustReturn: [])
-//            .map(\.count)
-//            .drive(with: self, onNext: { weakSelf, c in
-//                weakSelf.raiseHandListButton.isSelected = c > 0
-//                weakSelf.raiseHandListButton.updateBadgeHide(c <= 0, count: c)
-//            })
-//            .disposed(by: rx.disposeBag)
-//
-//        raiseHandListButton.rx.tap
-//            .asDriver()
-//            .drive(with: self, onNext: { weakSelf, _ in
-//                weakSelf.popoverViewController(viewController: weakSelf.raiseHandListViewController,
-//                                               fromSource: weakSelf.raiseHandListButton,
-//                                               permittedArrowDirections: .none)
-//            })
-//            .disposed(by: rx.disposeBag)
+       
     }
-
+    
     func bindRecording() {
-//        let output = viewModel.transformRecordTap(recordButton.rx.tap)
-//
-//        output.recording
-//            .skip(while: { !$0 })
-//            .asDriver(onErrorJustReturn: false)
-//            .do(onNext: { [weak self] recording in
-//                self?.toast(localizeStrings(recording ? "RecordingStartTips" : "RecordingEndTips"))
-//            })
-//            .drive(recordButton.rx.isSelected)
-//            .disposed(by: rx.disposeBag)
-//
-//        output
-//            .loading
-//            .asDriver(onErrorJustReturn: false)
-//            .drive(recordButton.rx.isLoading)
-//            .disposed(by: rx.disposeBag)
-//
-//        output.layoutUpdate
-//            .subscribe()
-//            .disposed(by: rx.disposeBag)
     }
-
+    
     func bindTerminate() {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
@@ -338,41 +296,28 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindUserRaiseHand() {
-//        viewModel.transformRaiseHandClick(raiseHandButton.rx.tap)
-//            .drive()
-//            .disposed(by: rx.disposeBag)
-
-//        viewModel.raiseHandHide
-//            .asDriver(onErrorJustReturn: true)
-//            .drive(raiseHandButton.rx.isHidden)
-//            .disposed(by: rx.disposeBag)
-
-//        viewModel.isRaisingHand.asDriver(onErrorJustReturn: false)
-//            .drive(raiseHandButton.rx.isSelected)
-//            .disposed(by: rx.disposeBag)
-
         viewModel.transWhiteboardPermissionUpdate(whiteboardEnable: fastboardViewController.roomPermission.map(\.writable).asObservable())
             .drive(with: self, onNext: { weakSelf, toastString in
                 weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)
             })
             .disposed(by: rx.disposeBag)
-
+        
         viewModel.transOnStageUpdate(whiteboardEnable: fastboardViewController.roomPermission.map(\.writable).asObservable())
             .subscribe(with: self, onNext: { weakSelf, toastString in
                 weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)
             })
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindStatusBar() {
         rtcListViewController.viewModel.rtc.lastMileDelay
             .subscribe(with: self) { ws, v in
                 ws.classroomStatusBar.latency = v
             }
             .disposed(by: rx.disposeBag)
-
+        
         rtcListViewController.viewModel.rtc.networkStatusBehavior
             .subscribe(with: self) { ws, q in
                 switch q {
@@ -388,22 +333,17 @@ class ClassRoomViewController: UIViewController {
             }
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindInvite() {
-//        inviteButton.rx.tap
-//            .subscribe(with: self, onNext: { weakSelf, _ in
-//                weakSelf.present(weakSelf.inviteViewController(), animated: true)
-//            })
-//            .disposed(by: rx.disposeBag)
     }
-
+    
     func bindChat() {
         let initChatResult = viewModel.initChatChannel(
             .init(chatButtonTap: chatButton.rx.tap, chatControllerPresentedFetch: { [weak self] in
                 guard let chatVC = self?.chatVC else { return .just(false) }
                 return chatVC.rx.isPresented
             }))
-
+        
         initChatResult
             .subscribe(with: self, onSuccess: { weakSelf, r in
                 r.toast
@@ -426,22 +366,22 @@ class ClassRoomViewController: UIViewController {
                 }
                 weakSelf.chatVC = vc
                 weakSelf.rightToolBar.forceUpdate(button: weakSelf.chatButton, visible: true)
-
+                
                 weakSelf.viewModel.transformBanClick(vc.banTextButton.rx.tap)
                     .subscribe()
                     .disposed(by: weakSelf.rx.disposeBag)
-
+                
                 r.chatButtonShowRedPoint
                     .drive(with: weakSelf, onNext: { weakSelf, show in
                         weakSelf.chatButton.updateBadgeHide(!show)
                     })
                     .disposed(by: weakSelf.rx.disposeBag)
-
+                
                 // To trigger bind function
                 vc.loadViewIfNeeded()
             })
             .disposed(by: rx.disposeBag)
-
+        
         chatButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, _ in
                 guard let vc = weakSelf.chatVC else { return }
@@ -452,19 +392,19 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindUsersList() {
         userListViewController.popOverDismissHandler = { [weak self] in
             self?.usersButton.isSelected = false
         }
-
-//        let raiseHandCheckAll = raiseHandListViewController.checkAllPublisher
-//            .asObservable()
-//            .flatMap { [weak self] _ -> Observable<Void> in
-//                guard let self else { return .error("self not exist") }
-//                return self.rx.dismiss(animated: false).asObservable()
-//            }
-
+        
+        //        let raiseHandCheckAll = raiseHandListViewController.checkAllPublisher
+        //            .asObservable()
+        //            .flatMap { [weak self] _ -> Observable<Void> in
+        //                guard let self else { return .error("self not exist") }
+        //                return self.rx.dismiss(animated: false).asObservable()
+        //            }
+        
         // Click raisehand list check all or click users will trigger user list viewcontroller
         usersButton.rx.tap.asObservable()
             .subscribe(with: self, onNext: { weakSelf, _ in
@@ -478,55 +418,55 @@ class ClassRoomViewController: UIViewController {
                 }
             })
             .disposed(by: rx.disposeBag)
-
+        
         userListViewController.users = viewModel.members
-
+        
         viewModel.showUsersResPoint
             .subscribe(with: self, onNext: { weakSelf, show in
                 weakSelf.usersButton.updateBadgeHide(!show)
             })
             .disposed(by: rx.disposeBag)
-
+        
         let tapSomeUserCamera = Observable.merge(
             userListViewController.cameraTap.asObservable().map(\.rtmUUID),
             settingVC.cameraPublish.asObservable().map { [unowned self] in self.viewModel.userUUID },
             rtcListViewController.userCameraClick.asObservable()
         )
-
+        
         let tapSomeUserMic = Observable.merge(
             userListViewController.micTap.asObservable().map(\.rtmUUID),
             settingVC.micPublish.asObservable().map { [unowned self] in self.viewModel.userUUID },
             rtcListViewController.userMicClick.asObservable()
         )
-
+        
         let whiteboardTap = Observable.merge(
             rtcListViewController.whiteboardClick.asObservable(),
             userListViewController.whiteboardTap.asObservable()
         )
-
+        
         let muteAll = Observable.merge(
             rtcListViewController.muteAllClick.asObservable(),
             userListViewController.allMuteTap.asObservable()
         )
-
+        
         viewModel.transformUserListInput(.init(allMuteTap: muteAll,
                                                stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
                                                tapSomeUserWhiteboard: whiteboardTap,
-//                                               tapSomeUserRaiseHand:
-//                                               Observable.merge([
-//                                                   userListViewController.raiseHandTap.asObservable(),
-//                                                   raiseHandListViewController.acceptRaiseHandPublisher.asObservable(),
-//                                               ]),
                                                tapSomeUserCamera: tapSomeUserCamera,
                                                tapSomeUserMic: tapSomeUserMic,
                                                tapSomeUserReward: rtcListViewController.rewardsClick.asObservable()))
-            .drive(with: self, onNext: { weakSelf, s in
+        .drive(with: self, onNext: { weakSelf, s in
+            if s == "request_pemission" {
+                weakSelf
+                    .present(PermissionDialogVC(), animated: true)
+            } else {
                 weakSelf.toast(s, timeInterval: 3, preventTouching: false)
-            })
-            .disposed(by: rx.disposeBag)
+            }
+        })
+        .disposed(by: rx.disposeBag)
     }
-
+    
     func bindRtc() {
         viewModel
             .members
@@ -534,17 +474,17 @@ class ClassRoomViewController: UIViewController {
             .map { localizeStrings("People on stage hint") + " \($0)" }
             .bind(to: classroomStatusBar.onStageStatusButton.rx.title(for: .normal))
             .disposed(by: rx.disposeBag)
-
+        
         rtcListViewController.bindUsers(viewModel.members.asDriver(onErrorJustReturn: []))
         rtcListViewController.draggingCanvasProvider = self
-
+        
         viewModel
             .observableRewards()
             .subscribe(with: rtcListViewController) { r, uid in
                 r.rewardAnimation(uid: uid)
             }
             .disposed(by: rx.disposeBag)
-
+        
         rtcListViewController.viewModel.rtc.screenShareJoinBehavior
             .skip(while: { !$0 })
             .subscribe(with: self, onNext: { weakSelf, isOn in
@@ -553,15 +493,13 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindWhiteboard() {
         fastboardViewController.bind(observablePermission: viewModel.whiteboardPermission)
             .subscribe(with: self, onNext: { weakSelf, permission in
-//                weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: permission.inputEnable)
-//                weakSelf.rightToolBar.forceUpdate(button: weakSelf.takePhotoButton, visible: permission.inputEnable)
             })
             .disposed(by: rx.disposeBag)
-
+        
         fastboardViewController.appsClickHandler = { [weak self] room, button in
             guard let self else { return }
             let vc = WhiteboardAppsViewController()
@@ -572,12 +510,12 @@ class ClassRoomViewController: UIViewController {
                                        permittedArrowDirections: .none)
         }
     }
-
+    
     func bindSetting() {
         settingVC.popOverDismissHandler = { [weak self] in
             self?.settingButton.isSelected = false
         }
-
+        
         settingVC.preferencePublish
             .asObservable()
             .flatMap { [unowned self] in self.rx.dismiss(animated: true).asObservable() }
@@ -590,7 +528,7 @@ class ClassRoomViewController: UIViewController {
                 ws.popoverViewController(viewController: vc, fromSource: ws.settingButton)
             })
             .disposed(by: rx.disposeBag)
-
+        
         settingButton.rx.controlEvent(.touchUpInside)
             .subscribe(with: self, onNext: { weakSelf, _ in
                 weakSelf.settingButton.isSelected = true
@@ -599,7 +537,7 @@ class ClassRoomViewController: UIViewController {
                                                permittedArrowDirections: .none)
             })
             .disposed(by: rx.disposeBag)
-
+        
         Driver.merge(
             classroomStatusBar.onStageStatusButton.rx.tap.asDriver(),
             settingVC.videoAreaPublish.asDriver(onErrorJustReturn: ())
@@ -610,7 +548,7 @@ class ClassRoomViewController: UIViewController {
             weakSelf.performRtc(hide: !isOpen)
         })
         .disposed(by: rx.disposeBag)
-
+        
         viewModel.transformLogoutTap(settingVC.logoutButton.rx.sourceTap.map { [unowned self] _ in
             self.settingButton
         })
@@ -620,25 +558,25 @@ class ClassRoomViewController: UIViewController {
             }
         })
         .disposed(by: rx.disposeBag)
-
+        
         viewModel.currentUser.map(\.status.isSpeak)
             .asDriver(onErrorJustReturn: false)
             .drive(settingVC.deviceUpdateEnable)
             .disposed(by: rx.disposeBag)
-
+        
         viewModel.currentUser
             .map(\.status.camera)
             .asDriver(onErrorJustReturn: false)
             .drive(settingVC.cameraOn)
             .disposed(by: rx.disposeBag)
-
+        
         viewModel.currentUser
             .map(\.status.mic)
             .asDriver(onErrorJustReturn: false)
             .drive(settingVC.micOn)
             .disposed(by: rx.disposeBag)
     }
-
+    
     func turnScreenShare(on: Bool) {
         let canvas = rtcListViewController.viewModel.rtc.screenShareCanvas
         canvas.view = on ? screenShareView : nil
@@ -656,7 +594,7 @@ class ClassRoomViewController: UIViewController {
             }
         }
     }
-
+    
     lazy var rtcAndBoardContainer: UIStackView = {
         let rtcView = rtcListViewController.view!
         let boardView = fastboardViewController.view!
@@ -671,7 +609,7 @@ class ClassRoomViewController: UIViewController {
         mainContentContainer.bringSubviewToFront(boardView) // To let video drag zIndex property.
         return mainContentContainer
     }()
-
+    
     lazy var container: UIStackView = {
         let container = UIStackView(arrangedSubviews: [classroomStatusBar, rtcAndBoardContainer])
         container.axis = .vertical
@@ -679,33 +617,33 @@ class ClassRoomViewController: UIViewController {
         container.clipsToBounds = true
         return container
     }()
-
+    
     lazy var draggingDridMaskView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
         view.isHidden = true
         return view
     }()
-
+    
     func setupViews() {
         view.backgroundColor = .color(type: .background)
         addChild(rtcListViewController)
         addChild(fastboardViewController)
-
+        
         let boardView = fastboardViewController.view!
-
+        
         view.addSubview(draggingDridMaskView) // Make sure the container is on the bottom hierachy.
         view.addSubview(container)
         rtcListViewController.didMove(toParent: self)
         fastboardViewController.didMove(toParent: self)
-            
+        
         let isiPhone = UIDevice.current.userInterfaceIdiom == .phone
-
+        
         draggingDridMaskView.snp.makeConstraints { make in
             make.left.right.equalTo(view)
             make.top.bottom.equalTo(fastboardViewController.blackMaskView)
         }
-
+        
         container.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview().offset(view.safeAreaInsets.left / 2) // Only work for some iPhone.
@@ -713,11 +651,11 @@ class ClassRoomViewController: UIViewController {
             make.height.lessThanOrEqualToSuperview()
             make.width.height.equalToSuperview().priority(.high)
         }
-
+        
         classroomStatusBar.snp.remakeConstraints { make in
             make.height.equalTo(classroomStatusBarMinHeight)
         }
-
+        
         if isiPhone {
             boardView.snp.makeConstraints { make in
                 make.width.equalTo(boardView.snp.height).dividedBy(ClassRoomLayoutRatioConfig.whiteboardRatio)
@@ -729,13 +667,13 @@ class ClassRoomViewController: UIViewController {
                 make.width.equalTo(view).priority(.low)
             }
         }
-
+        
         // Keep dragging view order lower than operation panel.
         setupRtcDragging()
         setupToolbar()
         updateRtcViewConstraint()
     }
-
+    
     /// - Parameter length: width for vertical. height for horizontal
     func updateRtcViewConstraint(length: CGFloat? = nil) {
         guard let rtcView = rtcListViewController.view else { return }
@@ -763,31 +701,15 @@ class ClassRoomViewController: UIViewController {
             }
         }
     }
-
+    
     func setupToolbar() {
         view.addSubview(rightToolBar)
         rightToolBar.snp.makeConstraints { make in
             make.right.equalTo(fastboardViewController.view.snp.right).inset(8)
             make.centerY.equalTo(fastboardViewController.view)
         }
-
-//        if !isOwner {
-//            view.addSubview(raiseHandButton)
-//            raiseHandButton.snp.makeConstraints { make in
-//                make.width.height.equalTo(raiseHandButtonWidth())
-//                make.centerX.equalTo(rightToolBar)
-//                make.top.equalTo(rightToolBar.snp.bottom).offset(12)
-//            }
-//        } else {
-//            view.addSubview(raiseHandListButton)
-//            raiseHandListButton.snp.makeConstraints { make in
-//                make.width.height.equalTo(raiseHandButtonWidth())
-//                make.centerX.equalTo(rightToolBar)
-//                make.top.equalTo(rightToolBar.snp.bottom).offset(12)
-//            }
-//        }
     }
-
+    
     // Clean rtc may made crash when app is terminating.
     func stopSubModules(cleanRtc: Bool) {
         viewModel.destroy(sender: self)
@@ -799,20 +721,20 @@ class ClassRoomViewController: UIViewController {
                 .disposed(by: rx.disposeBag)
         }
     }
-
+    
     func leaveUIHierarchy() {
-//        if #available(iOS 13.0, *) {
-//            if let session = view.window?.windowScene?.session,
-//               view.window?.rootViewController === self
-//            {
-//                UIApplication.shared.requestSceneSessionDestruction(session,
-//                                                                    options: nil)
-//                return
-//            }
-//        } 
+        //        if #available(iOS 13.0, *) {
+        //            if let session = view.window?.windowScene?.session,
+        //               view.window?.rootViewController === self
+        //            {
+        //                UIApplication.shared.requestSceneSessionDestruction(session,
+        //                                                                    options: nil)
+        //                return
+        //            }
+        //        }
         self.dismiss(animated: true, completion: nil)
     }
-
+    
     func stopSubModulesAndLeaveUIHierarchy() {
         leaveUIHierarchy()
         customLog("after leave")
@@ -822,14 +744,14 @@ class ClassRoomViewController: UIViewController {
             customLog("after clean rtc")
         }
     }
-
+    
     // MARK: - Scene
-
+    
     @available(iOS 13.0, *)
     func observeScene() {
         NotificationCenter.default.addObserver(self, selector: #selector(onSceneDisconnect(notification:)), name: UIScene.didDisconnectNotification, object: nil)
     }
-
+    
     @available(iOS 13.0, *)
     @objc func onSceneDisconnect(notification: Notification) {
         guard let scene = notification.object as? UIWindowScene else { return }
@@ -838,9 +760,9 @@ class ClassRoomViewController: UIViewController {
             stopSubModules(cleanRtc: true)
         }
     }
-
+    
     // MARK: - Layout
-
+    
     func updateLayout() {
         if settingVC.videoAreaOn.value {
             // Do not use the left safe area.
@@ -856,7 +778,7 @@ class ClassRoomViewController: UIViewController {
             }
         }
     }
-
+    
     func performRtc(hide: Bool, animation: Bool = true) {
         updateRtcViewConstraint(length: hide ? classroomRtcComactLength : nil)
         let animationBlock: (() -> Void) = {
@@ -870,9 +792,13 @@ class ClassRoomViewController: UIViewController {
             animationBlock()
         }
     }
-
+    
+    
+    
+  
+    
     // MARK: - Lazy
-
+    
     lazy var rtcDraggingHandlerView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .clear
@@ -881,76 +807,29 @@ class ClassRoomViewController: UIViewController {
         view.contentMode = .center
         return view
     }()
-
+    
     lazy var settingButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage.fromPlugin(named: "classroom_setting")!
         return button
     }()
-
-//    lazy var recordButton: FastRoomPanelItemButton = {
-//        let button = FastRoomPanelItemButton(type: .custom)
-//        button.rawImage = UIImage.fromPlugin(named: "classroom_record")!
-//        button.style = .selectableAppliance
-//        return button
-//    }()
-
-//    lazy var takePhotoButton: FastRoomPanelItemButton = {
-//        let button = FastRoomPanelItemButton(type: .custom)
-//        button.rawImage = UIImage.fromPlugin(named: "classroom_take_photo")!
-//        button.addTarget(self, action: #selector(onClickTakePhoto(_:)), for: .touchUpInside)
-//        return button
-//    }()
-
-//    lazy var raiseHandListButton: UIButton = {
-//        let button = UIButton(type: .custom)
-//        button.setupBadgeView(rightInset: -6, topInset: -6, width: 20)
-//        button.setImage(UIImage.fromPlugin(named: "raisehand_normal"), for: .normal)
-//        button.setImage(UIImage.fromPlugin(named: "raisehand_selected"), for: .selected)
-//        return button
-//    }()
-//
-//    lazy var raiseHandButton: UIButton = {
-//        let button = UIButton(type: .custom)
-//        button.setImage(UIImage.fromPlugin(named: "raisehand_normal"), for: .normal)
-//        button.setImage(UIImage.fromPlugin(named: "raisehand_selected"), for: .selected)
-//        return button
-//    }()
-
+    
     lazy var chatButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage.fromPlugin(named: "chat")!
         button.setupBadgeView(rightInset: 5, topInset: 5)
         return button
     }()
-
+    
     lazy var usersButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage.fromPlugin(named: "users")!
         button.setupBadgeView(rightInset: 5, topInset: 5)
         return button
     }()
-
-//    @objc func onClickTakePhoto(_: UIButton) {
-//        let picker = UIImagePickerController()
-//        picker.sourceType = .camera
-//        picker.modalPresentationStyle = .pageSheet
-//        picker.delegate = self
-//        present(picker, animated: true)
-//    }
-
-//    @objc func onClickStorage(_ sender: UIButton) {
-//        cloudStorageNavigationController.popOverDismissHandler = { [weak self] in
-//            self?.cloudStorageButton.isSelected = false
-//        }
-//        cloudStorageButton.isSelected = true
-//        popoverViewController(viewController: cloudStorageNavigationController,
-//                              fromSource: sender,
-//                              permittedArrowDirections: .none)
-//    }
-
+    
     lazy var cloudStorageNavigationController = BaseNavigationViewController(rootViewController: cloudStorageListViewController)
-
+    
     lazy var cloudStorageListViewController: CloudStorageInClassViewController = {
         let vc = CloudStorageInClassViewController()
         vc.fileContentSelectedHandler = { [weak self] fileContent in
@@ -970,53 +849,35 @@ class ClassRoomViewController: UIViewController {
         }
         return vc
     }()
-
-//    lazy var cloudStorageButton: FastRoomPanelItemButton = {
-//        let button = FastRoomPanelItemButton(type: .custom)
-//        button.rawImage = UIImage.fromPlugin(named: "classroom_cloud")!
-//        button.addTarget(self, action: #selector(onClickStorage(_:)), for: .touchUpInside)
-//        return button
-//    }()
-
-//    lazy var inviteButton: FastRoomPanelItemButton = {
-//        let button = FastRoomPanelItemButton(type: .custom)
-//        button.rawImage = UIImage.fromPlugin(named: "invite")!
-//        return button
-//    }()
-
+    
     lazy var rightToolBar: FastRoomControlBar = {
         if traitCollection.hasCompact {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [chatButton,/* usersButton, inviteButton, cloudStorageButton,*/ settingButton])
-//            bar.forceUpdate(button: takePhotoButton, visible: false)
-//            bar.forceUpdate(button: cloudStorageButton, visible: false)
+                                         views: [chatButton, settingButton])
             bar.forceUpdate(button: chatButton, visible: false)
             bar.narrowStyle = .none
             return bar
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [chatButton, /*usersButton, inviteButton, cloudStorageButton, recordButton,*/ settingButton])
-//            bar.forceUpdate(button: takePhotoButton, visible: false)
-//            bar.forceUpdate(button: cloudStorageButton, visible: false)
+                                         views: [chatButton, settingButton])
             bar.forceUpdate(button: chatButton, visible: false)
-//            bar.forceUpdate(button: recordButton, visible: isOwner)
             return bar
         }
     }()
-
+    
     lazy var screenShareView: UIView = {
         let view = UIView()
         view.backgroundColor = .color(type: .background)
         return view
     }()
-
+    
     lazy var splitWarningsView: UIVisualEffectView = {
         let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         return effectView
     }()
-
+    
     let classroomStatusBar: ClassroomStatusBar
 }
 
@@ -1044,12 +905,12 @@ extension ClassRoomViewController: VideoDraggingCanvasProvider {
             let videoHeight = itemWidth * ClassRoomLayoutRatioConfig.rtcPreviewRatio
             videoSize = .init(width: itemWidth, height: videoHeight)
         }
-
+        
         videoSize = .init(width: floor(videoSize.width), height: floor(videoSize.height)) // Round to prevent pixel error.
-
+        
         let horizontalSpacing = bounds.height - (videoSize.height * rowCount)
         let topMargin = floor(horizontalSpacing / 2)
-
+        
         let needCenterLastRow = totalCount % colCount != 0 // Center last row
         let isLastRow = rowIndex == rowCount - 1
         let y = topMargin + (rowIndex * videoSize.height)
@@ -1065,22 +926,22 @@ extension ClassRoomViewController: VideoDraggingCanvasProvider {
             return rect
         }
     }
-
+    
     func onStartGridPreview() {
         fastboardViewController.blackMaskView.isHidden = false
         draggingDridMaskView.isHidden = false
     }
-
+    
     func onEndGridPreview() {
         fastboardViewController.blackMaskView.isHidden = true
         draggingDridMaskView.isHidden = true
     }
-
+    
     func startHint() {
         fastboardViewController.innerBorderMaskView.isHidden = false
         fastboardViewController.view.bringSubviewToFront(fastboardViewController.innerBorderMaskView)
     }
-
+    
     func endHint() {
         fastboardViewController.innerBorderMaskView.isHidden = true
     }

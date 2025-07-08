@@ -25,8 +25,11 @@ enum ClassroomFactory {
                       communication: basicInfo.roomType == .oneToOne,
                       isFrontMirror: ClassroomDefaultConfig.frontCameraMirror,
                       isUsingFront: ClassroomDefaultConfig.usingFrontCamera,
-                      screenShareInfo: playInfo.rtcShareScreen)
-
+                      screenShareInfo: playInfo.rtcShareScreen,
+                      localCameraOn: deviceStatus.camera,
+                      localAudioOn: deviceStatus.mic
+                        )
+        startAudioCallSession()
         FastRoom.followSystemPencilBehavior = PerferrenceManager.shared.preferences[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
         
@@ -159,22 +162,28 @@ enum ClassroomFactory {
                                     roomTimeLimit: 0)
 
         let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
-        let shareViewController: () -> UIViewController = {
-            let controller = InviteViewController(shareInfo: .init(roomDetail: basicInfo))
-            controller.contentView.backgroundColor = .classroomChildBG
-            controller.seperatorLine.backgroundColor = .classroomBorderColor
-            return controller
-        }
         let controller = ClassRoomViewController(viewModel: vm,
                                                  fastboardViewController: fastboardViewController,
                                                  rtcListViewController: rtcViewController,
                                                  userListViewController: userListViewController,
-                                                 inviteViewController: shareViewController,
                                                  isOwner: basicInfo.isOwner,
                                                  ownerUUID: playInfo.ownerUUID,
                                                  beginTime: basicInfo.beginTime)
         alertProvider.root = controller
         print("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
         return controller
+    }
+    
+    static func startAudioCallSession() {
+        let session = AVAudioSession.sharedInstance()
+        try? session.setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .defaultToSpeaker])
+        try? session.setActive(true)
+    }
+    
+    static func cleanupAudioSession() {
+        let session = AVAudioSession.sharedInstance()
+        try? session.setActive(false)
+        try? session.setCategory(.soloAmbient, mode: .default, options: [])
+        try? session.setActive(true)
     }
 }

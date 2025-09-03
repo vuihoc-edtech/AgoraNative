@@ -93,7 +93,7 @@ class ClassRoomViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        ClassroomFactory.cleanupAudioSession()
+//         ClassroomFactory.cleanupAudioSession()
         UIApplication.shared.isIdleTimerDisabled = false
     }
     

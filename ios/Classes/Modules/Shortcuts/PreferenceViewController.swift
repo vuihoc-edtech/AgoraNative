@@ -13,7 +13,7 @@ let undoRedoPreferenceUpdateNotificaton: Notification.Name = .init("undoRedoShor
 let ainsPreferenceUpdateNotificaton: Notification.Name = .init("ainsPreferenceUpdateNotificaton")
 let defaultPreferences: [PreferrenceType: Bool] = supportApplePencil() ?
     [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true, .audioMixing: true, .ains: true] :
-    [.disableDefaultUndoRedo: false, .pencilTail: true, .audioMixing: true, .ains: true]
+    [.disableDefaultUndoRedo: false, .pencilTail: true, .audioMixing: false, .ains: true]
 
 class PerferrenceManager {
     static var key: String {

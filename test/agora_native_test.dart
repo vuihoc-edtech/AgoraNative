@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -18,12 +20,6 @@ class MockAgoraNativePlatform
   }
 
   @override
-  Future<bool> joinClassRoom(String roomUUID) {
-    // TODO: implement joinClassRoom
-    throw UnimplementedError();
-  }
-
-  @override
   Future<bool> setBotUsers(List<String> users) {
     // TODO: implement saveBotUsers
     throw UnimplementedError();
@@ -38,6 +34,18 @@ class MockAgoraNativePlatform
   @override
   Future<bool> saveLoginInfo(Map<String, dynamic> user) {
     // TODO: implement saveLoginInfo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setWhiteBoardBackground(Color color) {
+    // TODO: implement setWhiteBoardBackground
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> joinClassRoom(String roomUUID, bool cam, bool mic) {
+    // TODO: implement joinClassRoom
     throw UnimplementedError();
   }
 }

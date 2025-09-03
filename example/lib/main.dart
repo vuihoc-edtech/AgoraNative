@@ -20,6 +20,7 @@ class _MyAppState extends State<MyApp> {
   final _agoraNativePlugin = AgoraNative();
   bool saved = false;
   String roomId = '2719 215 4979';
+
   @override
   void initState() {
     super.initState();
@@ -77,8 +78,11 @@ class _MyAppState extends State<MyApp> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  _agoraNativePlugin
-                      .joinClassRoom(roomId.trim().replaceAll(' ', ''));
+                  _agoraNativePlugin.joinClassRoom(
+                    roomId.trim().replaceAll(' ', ''),
+                    true,
+                    true,
+                  );
                 },
                 child: const Text("Join Room"),
               ),

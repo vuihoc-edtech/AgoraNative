@@ -82,6 +82,11 @@ class AgoraNativePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 saveConfigs(call, result)
             }
 
+            "postLogin" -> {
+                postLogin()
+                result.success(true)
+            }
+
             "setBotUsers" -> {
                 val raw = call.arguments
                 val users = if (raw is List<*> && raw.all { it is String }) {
@@ -139,7 +144,7 @@ class AgoraNativePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
         }
 
-        postLogin()
+//        postLogin()
         result.success(true)
     }
 

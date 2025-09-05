@@ -52,4 +52,8 @@ abstract class AgoraNativePlatform extends PlatformInterface {
   Future<void> setWhiteBoardBackground(Color color) {
     throw UnimplementedError('saveBotUsers() has not been implemented.');
   }
+
+  Future<void> postLogin() {
+    throw UnimplementedError('postLogin() has not been implemented.');
+  }
 }

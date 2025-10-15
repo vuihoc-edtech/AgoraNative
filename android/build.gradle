@@ -33,10 +33,12 @@ apply plugin: "kotlin-android"
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+//apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 //apply plugin: "androidx.navigation.safeargs"
 android {
     namespace = "io.vuihoc.agora_native"
-    compileSdk = 34
+    compileSdk = 36
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
